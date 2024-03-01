@@ -1,0 +1,3 @@
+package genetic.clusters.async_cluster.lifecycle
+
+object AsyncClusterLifecycleInstance : AsyncClusterLifecycle
