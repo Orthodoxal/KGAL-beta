@@ -1,18 +1,25 @@
-package genetic.clusters.cluster
+package genetic.clusters.async_cluster
 
 import genetic.chromosome.Chromosome
 import genetic.chromosome.ChromosomeComparator
+import genetic.clusters.async_cluster.operator.AsyncOperator
+import genetic.clusters.async_cluster.operator.AsyncOperatorResult
+import genetic.clusters.async_cluster.operator.AsyncOperatorTask
 import genetic.clusters.state.ClusterState
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.random.Random
 import kotlin.reflect.KProperty
 
-internal class ClusterInstance<V, F>(
+class ClusterAsyncInstance<V, F>(
     override val state: MutableStateFlow<ClusterState> = MutableStateFlow(ClusterState.INITIALIZE),
+    override val taskChannel: Channel<AsyncOperatorTask<V, F>>,
+    override val resultChannel: Channel<AsyncOperatorResult<V, F>>,
     override var clusterJob: Job? = null,
-) : Cluster<V, F> {
-
+    override var dispatchers: Array<CoroutineDispatcher> = arrayOf(),
+) : AsyncCluster<V, F> {
     private val params: MutableMap<String, Any?> = Params
     private val paramsFutureChange: MutableMap<String, Any?> = mutableMapOf()
 
@@ -23,6 +30,7 @@ internal class ClusterInstance<V, F>(
     override var fitnessFunction: (Chromosome<V, F>) -> Unit by this
     override var comparator: ChromosomeComparator<V, F> by this
     override var clone: Chromosome<V, F>.() -> Chromosome<V, F> by this
+    override var operators: Array<AsyncOperator<V, F>> by this
 
     override var generation: Int by this
     override var maxGeneration: Int by this
@@ -44,11 +52,11 @@ internal class ClusterInstance<V, F>(
         params + paramsFutureChange
     }
 
-    operator fun <E, V, F> ClusterInstance<V, F>.getValue(thisRef: Any?, property: KProperty<*>): E =
+    operator fun <E, V, F> ClusterAsyncInstance<V, F>.getValue(thisRef: Any?, property: KProperty<*>): E =
         @Suppress("UNCHECKED_CAST")
         (params[property.name] as? E) ?: error("Unknown type for property ${property.name}")
 
-    operator fun <E, V, F> ClusterInstance<V, F>.setValue(thisRef: Any?, property: KProperty<*>, value: E) {
+    operator fun <E, V, F> ClusterAsyncInstance<V, F>.setValue(thisRef: Any?, property: KProperty<*>, value: E) {
         val name = property.name
         if (state.value == ClusterState.INITIALIZE) {
             params[name] = value
