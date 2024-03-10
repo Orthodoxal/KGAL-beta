@@ -1,7 +1,24 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
+import genetic.chromosome.Chromosome
+import genetic.clusters.cluster.builder.cluster
+import kotlinx.coroutines.runBlocking
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+fun test1() {
+    val cluster = cluster<Int, Int> {
+        population = arrayOf(
+            Chromosome(1, 1),
+            Chromosome(2, 2),
+            Chromosome(3, 3),
+        )
+        lifecycle {
+
+        }
+    }
+    runBlocking {
+        cluster.start()
+        cluster.stop()
+    }
+}
+
+fun main(args: Array<String>) {
+    test1()
 }
