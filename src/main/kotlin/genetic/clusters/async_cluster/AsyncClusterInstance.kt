@@ -1,7 +1,6 @@
 package genetic.clusters.async_cluster
 
 import genetic.chromosome.Chromosome
-import genetic.chromosome.ChromosomeComparator
 import genetic.clusters.AbstractCluster
 import genetic.clusters.async_cluster.builder.AsyncClusterBuilder
 import genetic.clusters.async_cluster.lifecycle.AsyncClusterLifecycle
@@ -20,17 +19,14 @@ internal class AsyncClusterInstance<V, F>(
     private val lifecycleScope: AsyncClusterLifecycle<V, F> by lazy {
         AsyncClusterLifecycleInstance(builder = this, resultChannel = resultChannel)
     }
-    private lateinit var lifecycle: AsyncClusterLifecycle<V, F>.() -> Unit
-    private var random: Random = Random
+    private var lifecycle: (AsyncClusterLifecycle<V, F>.() -> Unit)? = null
 
     override var randomSeed: Int = 0
         set(value) {
             random = Random(value)
         }
     override lateinit var populationFactory: (index: Int, random: Random) -> Chromosome<V, F>
-    override lateinit var fitnessFunction: (Chromosome<V, F>) -> Unit
-    override lateinit var comparator: ChromosomeComparator<V, F>
-    override lateinit var clone: Chromosome<V, F>.() -> Chromosome<V, F>
+    override lateinit var fitnessFunction: (V) -> F
 
     override var dispatchers: Array<CoroutineDispatcher> = arrayOf()
     override var operators: Array<AsyncOperator<V, F>> = arrayOf()

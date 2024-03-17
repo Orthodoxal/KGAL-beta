@@ -6,12 +6,14 @@ import genetic.clusters.state.ClusterStopPolicy
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withTimeout
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.random.Random
 
-internal abstract class AbstractCluster<V, F> : Cluster<V, F> {
+abstract class AbstractCluster<V, F> : Cluster<V, F> {
     private var stopSignal: Boolean = false
     protected var state: ClusterState = ClusterState.INITIALIZE
     protected var clusterJob: Job? = null
 
+    var random: Random = Random
     override lateinit var population: Array<Chromosome<V, F>>
     override lateinit var clusterId: String
     override var populationSize: Int = 0
@@ -28,7 +30,10 @@ internal abstract class AbstractCluster<V, F> : Cluster<V, F> {
             is ClusterStopPolicy.Default -> stopSignal = true
             is ClusterStopPolicy.Immediately -> {
                 clusterJob?.cancel(
-                    cause = CancellationException(message = "Cluster $clusterId stop cause force $stopPolicy policy", cause = null)
+                    cause = CancellationException(
+                        message = "Cluster $clusterId stop cause force $stopPolicy policy",
+                        cause = null
+                    )
                 )
                 state = ClusterState.STOPPED
             }
@@ -38,7 +43,10 @@ internal abstract class AbstractCluster<V, F> : Cluster<V, F> {
                 withTimeout(stopPolicy.millis) {
                     if (state != ClusterState.STOPPED) {
                         clusterJob?.cancel(
-                            cause = CancellationException(message = "Cluster $clusterId stop cause force $stopPolicy policy", cause = null)
+                            cause = CancellationException(
+                                message = "Cluster $clusterId stop cause force $stopPolicy policy",
+                                cause = null
+                            )
                         )
                     }
                 }
