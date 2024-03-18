@@ -1,4 +1,6 @@
-package genetic.chromosome
+package genetic.chromosome.base_instances
+
+import genetic.chromosome.Chromosome
 
 data class ChromosomeIntArray<F : Comparable<F>>(
     override var value: IntArray,

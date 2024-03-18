@@ -1,10 +1,14 @@
-import genetic.chromosome.ChromosomeIntArray
-import genetic.ga.panmictic.operators.crossover.crossoverOnePointIntArray
-import genetic.ga.panmictic.operators.mutation.mutationFlipBitIntArray
+import genetic.chromosome.base_instances.ChromosomeBooleanArray
+import genetic.chromosome.base_instances.ChromosomeIntArray
+import genetic.chromosome.base_instances.ChromosomeMutableList
+import genetic.ga.panmictic.operators.crossover.crossoverOnePointBooleanArray
+import genetic.ga.panmictic.operators.crossover.crossoverOnePointMutableList
+import genetic.ga.panmictic.operators.mutation.mutation
+import genetic.ga.panmictic.operators.mutation.mutationFlipBitBooleanArray
 import genetic.ga.panmictic.operators.selection.selectionTournament
 import genetic.ga.simplePanmicticGA
+import genetic.utils.randomByChance
 import kotlinx.coroutines.runBlocking
-
 
 /*fun PanmicticGABuilder<IntArray, Int>.gaCluster() = simpleCluster<IntArray, Int> {
     randomSeed = 42
@@ -71,22 +75,41 @@ fun oneMax() {
     val c2 = ChromosomeIntArray(value = intArrayOf(12, 15, 16), fitness = 15)
     val equal = c1 == c2
 
-    val ga = simplePanmicticGA<IntArray, Int> {
+    val ga = simplePanmicticGA<BooleanArray, Int> {
         randomSeed = 42
-        fitnessFunction = { value -> value.sum() }
-        population = Array(200) { ChromosomeIntArray(value = IntArray(100) { random.nextInt(0, 2) }) }
+        fitnessFunction = { value -> value.sumOf { (if (it) 1 else 0).toInt() } }
+        population = Array(200) { ChromosomeBooleanArray(value = BooleanArray(100) { random.nextBoolean() }) }
         maxGeneration = 50
         populationSize = 200
 
         lifecycle {
             selectionTournament(it, tournamentSize = 3)
-            crossoverOnePointIntArray(it, chance = 0.9)
-            mutationFlipBitIntArray(it, chance = 0.01)
+            crossoverOnePointBooleanArray(it, chance = 0.9)
+            mutationFlipBitBooleanArray(it, chance = 0.01)
+        }
+    }
+
+    val ga2 = simplePanmicticGA<MutableList<Int>, Int> {
+        randomSeed = 42
+        fitnessFunction = { value -> value.sum() }
+        population = Array(200) { ChromosomeMutableList(value = MutableList(100) { random.nextInt(0, 2) }) }
+        maxGeneration = 50
+        populationSize = 200
+
+        lifecycle {
+            selectionTournament(it, tournamentSize = 3)
+            crossoverOnePointMutableList(it, chance = 0.9)
+            mutation(it, chance = 1.0) {
+                it.value.forEachIndexed { index, gene ->
+                    randomByChance(0.01) { it.value[index] = if (gene == 1) 0 else 1 }
+                }
+            }
         }
     }
 
     runBlocking {
-        ga.start()
+        //ga.start()
+        ga2.start()
     }
 
     println("XXX")
