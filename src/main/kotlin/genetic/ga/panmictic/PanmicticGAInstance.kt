@@ -1,7 +1,6 @@
 package genetic.ga.panmictic
 
 import genetic.chromosome.Chromosome
-import genetic.chromosome.ChromosomeComparator
 import genetic.clusters.Cluster
 import genetic.ga.AbstractGA
 import genetic.ga.panmictic.builder.PanmicticGABuilder
@@ -51,8 +50,6 @@ internal class PanmicticGAInstance<V, F> : AbstractGA<V, F>(), PanmicticGABuilde
         }
     override lateinit var populationFactory: (index: Int, random: Random) -> Chromosome<V, F>
     override lateinit var fitnessFunction: (Chromosome<V, F>) -> Unit
-    override lateinit var comparator: ChromosomeComparator<V, F>
-    override lateinit var clone: Chromosome<V, F>.() -> Chromosome<V, F>
 
     companion object {
         private val BASE_LIFECYCLE: suspend PanmicticGALifecycle<*, *>.() -> Unit = {
