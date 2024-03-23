@@ -21,7 +21,9 @@ inline fun <reified T> Array<out T>.random(count: Int, random: Random): Array<T>
     val indices = buildList<Int> {
         repeat(count) {
             var index = random.nextInt(0, this@random.size)
-            while (this.contains(index)) ++index % this@random.size
+            while (this.contains(index)) {
+                index = ++index % this@random.size
+            }
             add(index)
         }
     }
