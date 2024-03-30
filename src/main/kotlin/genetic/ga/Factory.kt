@@ -19,4 +19,3 @@ inline fun <V, F> simplePanmicticGA(
 ) = panmicticGA {
     +simpleCluster<V, F> { builder(this@panmicticGA) }
 }
-// FIXME add asyncPanmicticGA

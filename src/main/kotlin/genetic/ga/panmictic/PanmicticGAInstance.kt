@@ -16,7 +16,9 @@ import kotlin.random.Random
 
 internal class PanmicticGAInstance<V, F> : AbstractGA<V, F>(), PanmicticGABuilder<V, F> {
     private val lifecycleScope: PanmicticGALifecycle<V, F> by lazy { PanmicticGALifecycleInstance(builder = this) }
+    private var beforeLifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit = { }
     private var lifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit = BASE_LIFECYCLE
+    private var afterLifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit = { }
     private var random: Random = Random
 
     override suspend fun start(coroutineContext: CoroutineContext) {
@@ -24,11 +26,12 @@ internal class PanmicticGAInstance<V, F> : AbstractGA<V, F>(), PanmicticGABuilde
         coroutineScope {
             gaJob = launch(coroutineContext) {
                 with(lifecycleScope) {
-                    iteration++
-                    while (iteration <= maxIteration) {
-                        iteration++
+                    beforeLifecycle()
+                    while (iteration < maxIteration) {
                         lifecycle()
+                        super.iteration++
                     }
+                    afterLifecycle()
                 }
             }
         }
@@ -40,7 +43,13 @@ internal class PanmicticGAInstance<V, F> : AbstractGA<V, F>(), PanmicticGABuilde
         clusters.add(cluster)
     }
 
-    override fun PanmicticGABuilder<V, F>.lifecycle(lifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit) {
+    override fun PanmicticGABuilder<V, F>.lifecycle(
+        before: (suspend PanmicticGALifecycle<V, F>.() -> Unit)?,
+        after: (suspend PanmicticGALifecycle<V, F>.() -> Unit)?,
+        lifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit,
+    ) {
+        before?.let { beforeLifecycle = before }
+        after?.let { afterLifecycle = after }
         this@PanmicticGAInstance.lifecycle = lifecycle
     }
 

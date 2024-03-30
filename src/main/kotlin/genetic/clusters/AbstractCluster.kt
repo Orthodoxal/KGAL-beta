@@ -9,7 +9,7 @@ import kotlin.coroutines.cancellation.CancellationException
 import kotlin.random.Random
 
 abstract class AbstractCluster<V, F> : Cluster<V, F> {
-    private var stopSignal: Boolean = false
+    protected var stopSignal: Boolean = false
     protected var state: ClusterState = ClusterState.INITIALIZE
     protected var clusterJob: Job? = null
 

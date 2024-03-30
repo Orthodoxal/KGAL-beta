@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.9.22"
-    application
+    id("java-library")
 }
 
 group = "io.github.orthodoxal"
@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
     testImplementation(kotlin("test"))
 }
 
@@ -23,8 +23,4 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-application {
-    mainClass.set("MainKt")
 }

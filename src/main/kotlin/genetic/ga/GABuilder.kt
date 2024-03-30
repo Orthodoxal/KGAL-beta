@@ -5,7 +5,7 @@ import genetic.clusters.Cluster
 import kotlin.random.Random
 
 interface GABuilder<V, F> {
-    var iteration: Int
+    val iteration: Int
     var maxIteration: Int
     val clusters: List<Cluster<V, F>>
     var populationFactory: (index: Int, random: Random) -> Chromosome<V, F>
