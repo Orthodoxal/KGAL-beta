@@ -2,6 +2,8 @@ package genetic.ga
 
 import genetic.clusters.simpleCluster
 import genetic.clusters.simple_cluster.builder.SimpleClusterBuilder
+import genetic.ga.cellular.CellularGAInstance
+import genetic.ga.cellular.builder.CellularGABuilder
 import genetic.ga.panmictic.PanmicticGAInstance
 import genetic.ga.panmictic.builder.PanmicticGABuilder
 
@@ -18,4 +20,13 @@ inline fun <V, F> simplePanmicticGA(
     builder: SimpleClusterBuilder<V, F>.(panmicticBuilder: PanmicticGABuilder<V, F>) -> Unit,
 ) = panmicticGA {
     +simpleCluster<V, F> { builder(this@panmicticGA) }
+}
+
+fun <V, F> cellularGA(): Pair<GA<V, F>, CellularGABuilder<V, F>> =
+    CellularGAInstance<V, F>().let { it to it }
+
+inline fun <V, F> cellularGA(builder: CellularGABuilder<V, F>.() -> Unit): GA<V, F> {
+    val (ga, gaBuilder) = cellularGA<V, F>()
+    gaBuilder.apply(builder)
+    return ga
 }

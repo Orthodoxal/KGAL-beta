@@ -1,4 +1,4 @@
-package genetic.ga.cellular.utils
+package genetic.ga.cellular.neighborhood.von_neumann
 
 /**
  * @see <a href="https://en.wikipedia.org/wiki/Delannoy_number">Delannoy number</a>

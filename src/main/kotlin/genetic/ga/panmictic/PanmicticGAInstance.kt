@@ -7,6 +7,7 @@ import genetic.ga.panmictic.builder.PanmicticGABuilder
 import genetic.ga.panmictic.lifecycle.PanmicticGALifecycle
 import genetic.ga.panmictic.lifecycle.PanmicticGALifecycleInstance
 import genetic.ga.state.GAState
+import genetic.utils.checkClusterNameOrTrySetDefaultName
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
@@ -24,22 +25,25 @@ internal class PanmicticGAInstance<V, F> : AbstractGA<V, F>(), PanmicticGABuilde
     override suspend fun start(coroutineContext: CoroutineContext) {
         state = GAState.STARTED
         coroutineScope {
-            gaJob = launch(coroutineContext) {
-                with(lifecycleScope) {
-                    beforeLifecycle()
-                    while (iteration < maxIteration) {
-                        lifecycle()
-                        super.iteration++
-                    }
-                    afterLifecycle()
-                }
-            }
+            gaJob = launch(coroutineContext) { startGA() }
         }
         state = GAState.FINISHED
     }
 
-    override fun addCluster(cluster: Cluster<V, F>) {
+    private suspend fun startGA() {
+        with(lifecycleScope) {
+            beforeLifecycle()
+            while (iteration < maxIteration) {
+                lifecycle()
+                super.iteration++
+            }
+            afterLifecycle()
+        }
+    }
+
+    override fun addCluster(cluster: Cluster<V, F>): Cluster<V, F> = cluster.apply {
         if (clusters.isNotEmpty()) throw Exception("Panmictic clusters maximum count = 1")
+        checkClusterNameOrTrySetDefaultName(cluster, clusters)
         clusters.add(cluster)
     }
 
@@ -58,7 +62,7 @@ internal class PanmicticGAInstance<V, F> : AbstractGA<V, F>(), PanmicticGABuilde
             random = Random(value)
         }
     override lateinit var populationFactory: (index: Int, random: Random) -> Chromosome<V, F>
-    override lateinit var fitnessFunction: (Chromosome<V, F>) -> Unit
+    override lateinit var fitnessFunction: (V) -> F
 
     companion object {
         private val BASE_LIFECYCLE: suspend PanmicticGALifecycle<*, *>.() -> Unit = {

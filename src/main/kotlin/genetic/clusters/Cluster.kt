@@ -4,7 +4,7 @@ import genetic.chromosome.Chromosome
 import genetic.clusters.state.ClusterStopPolicy
 
 interface Cluster<V, F> {
-    val clusterId: String
+    val name: String?
     val population: Array<Chromosome<V, F>>
     val generation: Int
     val maxGeneration: Int

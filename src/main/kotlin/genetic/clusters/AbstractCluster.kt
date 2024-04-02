@@ -15,13 +15,13 @@ abstract class AbstractCluster<V, F> : Cluster<V, F> {
 
     var random: Random = Random
     override lateinit var population: Array<Chromosome<V, F>>
-    override lateinit var clusterId: String
+    override var name: String? = null
     override var populationSize: Int = 0
     override var generation: Int = 0
     override var maxGeneration: Int = 0
 
     override suspend fun resume() {
-        if (state == ClusterState.STOPPED) throw IllegalStateException("Cluster $clusterId state $state incorrect for resuming: State must be STOPPED or FINISHED")
+        if (state == ClusterState.STOPPED) throw IllegalStateException("Cluster $name state $state incorrect for resuming: State must be STOPPED or FINISHED")
         start()
     }
 
@@ -31,7 +31,7 @@ abstract class AbstractCluster<V, F> : Cluster<V, F> {
             is ClusterStopPolicy.Immediately -> {
                 clusterJob?.cancel(
                     cause = CancellationException(
-                        message = "Cluster $clusterId stop cause force $stopPolicy policy",
+                        message = "Cluster $name stop cause force $stopPolicy policy",
                         cause = null
                     )
                 )
@@ -44,7 +44,7 @@ abstract class AbstractCluster<V, F> : Cluster<V, F> {
                     if (state != ClusterState.STOPPED) {
                         clusterJob?.cancel(
                             cause = CancellationException(
-                                message = "Cluster $clusterId stop cause force $stopPolicy policy",
+                                message = "Cluster $name stop cause force $stopPolicy policy",
                                 cause = null
                             )
                         )

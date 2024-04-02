@@ -4,11 +4,11 @@ import genetic.chromosome.Chromosome
 import genetic.utils.random
 import kotlin.random.Random
 
-private const val DEFAULT_TOURNAMENT_SIZE = 3
+const val DEFAULT_TOURNAMENT_SIZE = 3
 
 internal fun <V, F> selectionTournament(
     source: Array<Chromosome<V, F>>,
-    tournamentSize: Int = DEFAULT_TOURNAMENT_SIZE,
+    tournamentSize: Int,
     random: Random,
 ): Chromosome<V, F> {
     val tournament = source.random(tournamentSize, random)

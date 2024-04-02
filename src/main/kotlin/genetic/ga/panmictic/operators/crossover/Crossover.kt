@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.crossover(
     panmicticGABuilder: PanmicticGABuilder<V, F>,
-    chance: Double = 0.9,
+    chance: Double,
     onlySingleRun: Boolean,
     crossinline crossover: (chromosome1: Chromosome<V, F>, chromosome2: Chromosome<V, F>) -> Unit,
 ) {
@@ -23,7 +23,7 @@ suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.crossover(
 
 inline fun <V, F> SimpleClusterLifecycle<V, F>.singleRunCrossover(
     panmicticGABuilder: PanmicticGABuilder<V, F>,
-    chance: Double = 0.9,
+    chance: Double,
     crossover: (chromosome1: Chromosome<V, F>, chromosome2: Chromosome<V, F>) -> Unit,
 ) = repeat(populationSize / 2) { index ->
     randomByChance(chance) {
@@ -35,7 +35,7 @@ inline fun <V, F> SimpleClusterLifecycle<V, F>.singleRunCrossover(
 
 suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.multiRunCrossover(
     panmicticGABuilder: PanmicticGABuilder<V, F>,
-    chance: Double = 0.9,
+    chance: Double,
     crossinline crossover: (chromosome1: Chromosome<V, F>, chromosome2: Chromosome<V, F>) -> Unit,
 ) {
     maxIteration = populationSize / 2

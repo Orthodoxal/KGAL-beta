@@ -1,5 +1,6 @@
 package genetic.clusters.simple_cluster.lifecycle.utils
 
+import genetic.chromosome.Chromosome
 import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll
@@ -33,4 +34,8 @@ suspend fun <V, F> SimpleClusterLifecycle<V, F>.multiRunSelection() {
             }
         }
     }?.joinAll()
+}
+
+fun <V, F> SimpleClusterLifecycle<V, F>.fitness(chromosome: Chromosome<V, F>) {
+    chromosome.fitness = fitnessFunction(chromosome.value)
 }
