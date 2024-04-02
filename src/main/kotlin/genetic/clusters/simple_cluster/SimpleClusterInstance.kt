@@ -17,8 +17,8 @@ import kotlin.random.Random
 internal class SimpleClusterInstance<V, F> : AbstractCluster<V, F>(), SimpleClusterBuilder<V, F> {
     private val lifecycleScope: SimpleClusterLifecycle<V, F> by lazy { SimpleClusterLifecycleInstance(this) }
     private var beforeLifecycle: suspend SimpleClusterLifecycle<V, F>.() -> Unit = BASE_BEFORE_LIFECYCLE
-    private var afterLifecycle: suspend SimpleClusterLifecycle<V, F>.() -> Unit = { }
     private lateinit var lifecycle: suspend SimpleClusterLifecycle<V, F>.() -> Unit
+    private var afterLifecycle: suspend SimpleClusterLifecycle<V, F>.() -> Unit = { }
 
     override var randomSeed: Int = 0
         set(value) {
@@ -61,6 +61,10 @@ internal class SimpleClusterInstance<V, F> : AbstractCluster<V, F>(), SimpleClus
             while (generation < maxGeneration) {
                 lifecycle()
                 super.generation++
+                if (stopSignal) {
+                    state = ClusterState.STOPPED
+                    return
+                }
             }
             afterLifecycle()
         }

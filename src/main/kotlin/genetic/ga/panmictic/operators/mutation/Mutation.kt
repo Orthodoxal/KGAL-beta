@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.mutation(
     panmicticGABuilder: PanmicticGABuilder<V, F>,
-    chance: Double = 0.1,
+    chance: Double,
     onlySingleRun: Boolean,
     crossinline mutation: (chromosome: Chromosome<V, F>) -> Unit,
 ) {
@@ -23,7 +23,7 @@ suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.mutation(
 
 inline fun <V, F> SimpleClusterLifecycle<V, F>.singleRunMutation(
     panmicticGABuilder: PanmicticGABuilder<V, F>,
-    chance: Double = 0.1,
+    chance: Double,
     mutation: (chromosome: Chromosome<V, F>) -> Unit,
 ) {
     for (chromosome in population) randomByChance(chance) { mutation(chromosome) }
@@ -31,7 +31,7 @@ inline fun <V, F> SimpleClusterLifecycle<V, F>.singleRunMutation(
 
 suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.multiRunMutation(
     panmicticGABuilder: PanmicticGABuilder<V, F>,
-    chance: Double = 0.1,
+    chance: Double,
     crossinline mutation: (chromosome: Chromosome<V, F>) -> Unit,
 ) {
     maxIteration = populationSize

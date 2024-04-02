@@ -7,16 +7,18 @@ import genetic.ga.base_operators.mutation.flip_bit.mutationFlipBitIntArray
 
 suspend fun <F> SimpleClusterLifecycle<BooleanArray, F>.mutationFlipBitBooleanArray(
     panmicticGABuilder: PanmicticGABuilder<BooleanArray, F>,
-    chance: Double = 0.01,
+    mutationChance: Double,
+    mutationFlipBitChance: Double,
     onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, 0.1, onlySingleRun) { chromosome ->
-    mutationFlipBitBooleanArray(chromosome, chance, random)
+) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
+    mutationFlipBitBooleanArray(chromosome, mutationFlipBitChance, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<IntArray, F>.mutationFlipBitIntArray(
     panmicticGABuilder: PanmicticGABuilder<IntArray, F>,
-    chance: Double = 0.01,
+    mutationChance: Double,
+    mutationFlipBitChance: Double,
     onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, 0.1, onlySingleRun) { chromosome ->
-    mutationFlipBitIntArray(chromosome, chance, random)
+) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
+    mutationFlipBitIntArray(chromosome, mutationFlipBitChance, random)
 }

@@ -5,7 +5,7 @@ import kotlin.random.Random
 
 interface ClusterBuilder<V, F> {
     val random: Random
-    var clusterId: String
+    var name: String?
     var population: Array<Chromosome<V, F>>
     var populationSize: Int
     var populationFactory: (index: Int, random: Random) -> Chromosome<V, F>

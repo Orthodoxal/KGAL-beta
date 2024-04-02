@@ -5,13 +5,13 @@ import genetic.clusters.Cluster
 import kotlin.random.Random
 
 interface GABuilder<V, F> {
-    var iteration: Int
+    val iteration: Int
     var maxIteration: Int
     val clusters: List<Cluster<V, F>>
     var populationFactory: (index: Int, random: Random) -> Chromosome<V, F>
     var randomSeed: Int
-    var fitnessFunction: (Chromosome<V, F>) -> Unit
+    var fitnessFunction: (V) -> F
 
-    fun addCluster(cluster: Cluster<V, F>)
-    operator fun Cluster<V, F>.unaryPlus() = addCluster(this)
+    fun addCluster(cluster: Cluster<V, F>): Cluster<V, F>
+    operator fun Cluster<V, F>.unaryPlus(): Cluster<V, F> = addCluster(this)
 }
