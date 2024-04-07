@@ -17,26 +17,39 @@ inline fun randomByChance(chance: Double, random: Random = Random, action: () ->
 inline fun <V, F> ClusterBuilder<V, F>.randomByChance(chance: Double, action: () -> Unit) =
     randomByChance(chance, random, action)
 
-inline fun <reified T> Array<out T>.random(count: Int, random: Random): Array<T> {
-    val indices = buildList<Int> {
-        repeat(count) {
-            var index = random.nextInt(0, this@random.size)
-            while (this.contains(index)) {
-                index = ++index % this@random.size
-            }
-            add(index)
-        }
+fun IntArray.inUntil(elem: Int, subSize: Int): Boolean {
+    for (i in 0..<subSize) {
+        if (get(i) == elem) return true
     }
+    return false
+}
+
+fun Array<*>.indicesByRandom(count: Int, random: Random): IntArray {
+    if (count > size) throw IllegalStateException("Count cannot be more than size")
+
+    return if (size > 5000 && count > size / 4) {
+        val newAr = IntArray(size) { it }
+        newAr.shuffle(random)
+        newAr.copyOf(count)
+    } else {
+        val randomIndices = IntArray(count)
+        repeat(count) { counter ->
+            var index = random.nextInt(0, size)
+            while (randomIndices.inUntil(index, counter)) {
+                index = ++index % size
+            }
+            randomIndices[counter] = index
+        }
+        randomIndices
+    }
+}
+
+inline fun <reified T> Array<out T>.random(count: Int, random: Random): Array<T> {
+    val indices = indicesByRandom(count, random)
     return Array(count) { get(indices[it]) }
 }
 
 inline fun <reified T> Array<out T>.randomWithIndices(count: Int, random: Random): Pair<Array<T>, IntArray> {
-    val indices = buildList<Int> {
-        repeat(count) {
-            var index = random.nextInt(0, size)
-            while (this.contains(index)) ++index % size
-            add(index)
-        }
-    }
-    return Array(count) { get(indices[it]) } to indices.toIntArray()
+    val indices = indicesByRandom(count, random)
+    return Array(count) { get(indices[it]) } to indices
 }

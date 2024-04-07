@@ -32,7 +32,7 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
     private var beforeLifecycle: suspend CellularGALifecycle<V, F>.() -> Unit = { }
     private var lifecycle: suspend CellularGALifecycle<V, F>.() -> Unit = BASE_LIFECYCLE
     private var afterLifecycle: suspend CellularGALifecycle<V, F>.() -> Unit = { }
-    private var random: Random = Random
+    override var random: Random = Random
     private var neighborhoodChanged = true
 
     override suspend fun start(coroutineContext: CoroutineContext) {
@@ -155,9 +155,7 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
                 val updatePolicy = cellularType.updatePolicy
                 if (isSingleRun) {
                     singleRunAsynchronous(
-                        elitism,
-                        updatePolicy,
-                        populationNeighboursIndices
+                        elitism, updatePolicy, populationNeighboursIndices
                     ) { chromosome, neighbours ->
                         lifecycle(chromosome, neighbours)
                     }
