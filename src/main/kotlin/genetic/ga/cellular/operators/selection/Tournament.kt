@@ -8,4 +8,4 @@ import genetic.ga.cellular.lifecycle.SimpleClusterCellLifecycle
 fun <V, F> SimpleClusterCellLifecycle<V, F>.selectionTournament(
     cellularGABuilder: CellularGABuilder<V, F>,
     tournamentSize: Int = DEFAULT_TOURNAMENT_SIZE,
-) = selection(cellularGABuilder) { selectionTournament(neighbours, tournamentSize, random) }
+) = selection(cellularGABuilder) { source -> selectionTournament(source, tournamentSize, random) }
