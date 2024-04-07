@@ -8,7 +8,7 @@ import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycleInstance
 import genetic.clusters.simple_cluster.lifecycle.utils.fitnessAll
 import genetic.clusters.state.ClusterState
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlin.coroutines.coroutineContext
@@ -39,20 +39,24 @@ internal class SimpleClusterInstance<V, F> : AbstractCluster<V, F>(), SimpleClus
         this@SimpleClusterInstance.lifecycle = lifecycle
     }
 
-    override suspend fun start() {
+    override suspend fun start(generationFrom: Int) {
         if (state == ClusterState.STARTED) return
 
+        super.generation = generationFrom
         state = ClusterState.STARTED
         val dispatcher = mainDispatcher
         if (dispatcher == null) {
             clusterJob = coroutineContext.job
             startCluster()
+            state = ClusterState.FINISHED
         } else {
-            coroutineScope {
-                clusterJob = launch(dispatcher) { startCluster() }
+            with(CoroutineScope(coroutineContext)) {
+                clusterJob = launch(dispatcher) {
+                    startCluster()
+                    state = ClusterState.FINISHED
+                }
             }
         }
-        state = ClusterState.FINISHED
     }
 
     private suspend fun startCluster() {

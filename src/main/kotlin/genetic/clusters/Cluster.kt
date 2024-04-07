@@ -10,7 +10,7 @@ interface Cluster<V, F> {
     val maxGeneration: Int
     val populationSize: Int
 
-    suspend fun start()
+    suspend fun start(generationFrom: Int = 0)
     suspend fun resume()
     suspend fun restart()
     suspend fun stop(stopPolicy: ClusterStopPolicy = ClusterStopPolicy.Default)

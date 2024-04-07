@@ -1,11 +1,13 @@
-package genetic.ga.panmictic
+package genetic.ga.distributed
 
 import genetic.chromosome.Chromosome
 import genetic.clusters.Cluster
 import genetic.ga.AbstractGA
+import genetic.ga.distributed.builder.DistributedGABuilder
+import genetic.ga.distributed.lifecycle.DistributedGALifecycle
+import genetic.ga.distributed.lifecycle.DistributedGALifecycleInstance
 import genetic.ga.panmictic.builder.PanmicticGABuilder
 import genetic.ga.panmictic.lifecycle.PanmicticGALifecycle
-import genetic.ga.panmictic.lifecycle.PanmicticGALifecycleInstance
 import genetic.ga.state.GAState
 import genetic.utils.checkClusterNameOrTrySetDefaultName
 import kotlinx.coroutines.coroutineScope
@@ -15,11 +17,11 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
 
-internal class PanmicticGAInstance<V, F> : AbstractGA<V, F>(), PanmicticGABuilder<V, F> {
-    private val lifecycleScope: PanmicticGALifecycle<V, F> by lazy { PanmicticGALifecycleInstance(builder = this) }
-    private var beforeLifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit = { }
-    private var lifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit = BASE_LIFECYCLE
-    private var afterLifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit = { }
+internal class DistributedGAInstance<V, F> : AbstractGA<V, F>(), DistributedGABuilder<V, F> {
+    private val lifecycleScope: DistributedGALifecycle<V, F> by lazy { DistributedGALifecycleInstance(builder = this) }
+    private var beforeLifecycle: suspend DistributedGALifecycle<V, F>.() -> Unit = { }
+    private var lifecycle: suspend DistributedGALifecycle<V, F>.() -> Unit = BASE_LIFECYCLE
+    private var afterLifecycle: suspend DistributedGALifecycle<V, F>.() -> Unit = { }
     override var random: Random = Random
 
     override suspend fun start(coroutineContext: CoroutineContext) {
@@ -42,31 +44,43 @@ internal class PanmicticGAInstance<V, F> : AbstractGA<V, F>(), PanmicticGABuilde
     }
 
     override fun addCluster(cluster: Cluster<V, F>): Cluster<V, F> = cluster.apply {
-        if (clusters.isNotEmpty()) throw Exception("Panmictic clusters maximum count = 1")
         checkClusterNameOrTrySetDefaultName(cluster, clusters)
         clusters.add(cluster)
     }
 
-    override fun PanmicticGABuilder<V, F>.lifecycle(
-        before: (suspend PanmicticGALifecycle<V, F>.() -> Unit)?,
-        after: (suspend PanmicticGALifecycle<V, F>.() -> Unit)?,
-        lifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit,
+    override fun DistributedGABuilder<V, F>.lifecycleDistributed(
+        defaultLifecycleRunFirst: Boolean,
+        before: (suspend DistributedGALifecycle<V, F>.() -> Unit)?,
+        after: (suspend DistributedGALifecycle<V, F>.() -> Unit)?,
+        lifecycle: suspend DistributedGALifecycle<V, F>.() -> Unit
     ) {
         before?.let { beforeLifecycle = before }
         after?.let { afterLifecycle = after }
-        this@PanmicticGAInstance.lifecycle = lifecycle
+        this@DistributedGAInstance.lifecycle = {
+            if (defaultLifecycleRunFirst) BASE_LIFECYCLE()
+            lifecycle()
+        }
     }
 
     override var randomSeed: Int = 0
         set(value) {
             random = Random(value)
         }
+
+    override fun PanmicticGABuilder<V, F>.lifecycle(
+        before: (suspend PanmicticGALifecycle<V, F>.() -> Unit)?,
+        after: (suspend PanmicticGALifecycle<V, F>.() -> Unit)?,
+        lifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit
+    ) {
+        throw IllegalStateException("Distributed GA not support lifecycle use lifecycleDistributed")
+    }
+
     override lateinit var populationFactory: (index: Int, random: Random) -> Chromosome<V, F>
     override lateinit var fitnessFunction: (V) -> F
 
     companion object {
-        private val BASE_LIFECYCLE: suspend PanmicticGALifecycle<*, *>.() -> Unit = {
-            clusters.forEach { it.start() }
+        private val BASE_LIFECYCLE: suspend DistributedGALifecycle<*, *>.() -> Unit = {
+            for (cluster in clusters) cluster.start()
             coroutineContext.job.children.forEach { it.join() }
         }
     }
