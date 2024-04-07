@@ -24,6 +24,19 @@ fun IntArray.inUntil(elem: Int, subSize: Int): Boolean {
     return false
 }
 
+fun IntRange.indicesByRandom(count: Int, random: Random): IntArray {
+    if (count > last - first) throw IllegalStateException("Count cannot be more than size")
+    val randomIndices = IntArray(count)
+    repeat(count) { counter ->
+        var index = random.nextInt(first, last)
+        while (randomIndices.inUntil(index, counter)) {
+            index = ++index % last
+        }
+        randomIndices[counter] = index
+    }
+    return randomIndices
+}
+
 fun Array<*>.indicesByRandom(count: Int, random: Random): IntArray {
     if (count > size) throw IllegalStateException("Count cannot be more than size")
 
