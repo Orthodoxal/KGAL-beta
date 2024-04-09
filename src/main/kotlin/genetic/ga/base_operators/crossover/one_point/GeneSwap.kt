@@ -1,6 +1,6 @@
 package genetic.ga.base_operators.crossover.one_point
 
-private inline fun swapStrategy(size: Int, crossIndex: Int, swapper: (swapIndex: Int) -> Unit) {
+internal inline fun swapStrategy(size: Int, crossIndex: Int, swapper: (swapIndex: Int) -> Unit) {
     val isSecondHalf = crossIndex > size / 2
     var start = if (isSecondHalf) crossIndex else 0
     val end = if (isSecondHalf) size else crossIndex

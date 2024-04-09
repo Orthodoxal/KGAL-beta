@@ -2,10 +2,14 @@ package genetic.ga.base_operators.crossover.k_point
 
 import genetic.chromosome.Chromosome
 import genetic.utils.indicesByRandom
+import java.lang.UnsupportedOperationException
 import kotlin.random.Random
 
-private fun crossIndices(size: Int, count: Int, random: Random): IntArray =
-    IntRange(1, size - 1).indicesByRandom(count, random)
+internal fun multiCrossIndices(size: Int, count: Int, random: Random): IntArray {
+    if (count < 1) throw UnsupportedOperationException("Count must be more than 0")
+    return IntRange(1, size - 1).indicesByRandom(count, random)
+}
+
 
 internal fun <T, F> crossoverKPointArray(
     chromosome1: Chromosome<Array<T>, F>,
@@ -15,7 +19,7 @@ internal fun <T, F> crossoverKPointArray(
 ) = geneSwap(
     chromosome1.value,
     chromosome2.value,
-    crossIndices(chromosome1.value.size, count, random),
+    multiCrossIndices(chromosome1.value.size, count, random),
 )
 
 internal fun <F> crossoverKPointBooleanArray(
@@ -26,7 +30,7 @@ internal fun <F> crossoverKPointBooleanArray(
 ) = geneSwap(
     chromosome1.value,
     chromosome2.value,
-    crossIndices(chromosome1.value.size, count, random),
+    multiCrossIndices(chromosome1.value.size, count, random),
 )
 
 internal fun <F> crossoverKPointByteArray(
@@ -37,7 +41,7 @@ internal fun <F> crossoverKPointByteArray(
 ) = geneSwap(
     chromosome1.value,
     chromosome2.value,
-    crossIndices(chromosome1.value.size, count, random),
+    multiCrossIndices(chromosome1.value.size, count, random),
 )
 
 internal fun <F> crossoverKPointCharArray(
@@ -48,7 +52,7 @@ internal fun <F> crossoverKPointCharArray(
 ) = geneSwap(
     chromosome1.value,
     chromosome2.value,
-    crossIndices(chromosome1.value.size, count, random),
+    multiCrossIndices(chromosome1.value.size, count, random),
 )
 
 internal fun <F> crossoverKPointDoubleArray(
@@ -59,7 +63,7 @@ internal fun <F> crossoverKPointDoubleArray(
 ) = geneSwap(
     chromosome1.value,
     chromosome2.value,
-    crossIndices(chromosome1.value.size, count, random),
+    multiCrossIndices(chromosome1.value.size, count, random),
 )
 
 internal fun <F> crossoverKPointFloatArray(
@@ -70,7 +74,7 @@ internal fun <F> crossoverKPointFloatArray(
 ) = geneSwap(
     chromosome1.value,
     chromosome2.value,
-    crossIndices(chromosome1.value.size, count, random),
+    multiCrossIndices(chromosome1.value.size, count, random),
 )
 
 internal fun <F> crossoverKPointIntArray(
@@ -81,7 +85,7 @@ internal fun <F> crossoverKPointIntArray(
 ) = geneSwap(
     chromosome1.value,
     chromosome2.value,
-    crossIndices(chromosome1.value.size, count, random),
+    multiCrossIndices(chromosome1.value.size, count, random),
 )
 
 internal fun <F> crossoverKPointLongArray(
@@ -92,7 +96,7 @@ internal fun <F> crossoverKPointLongArray(
 ) = geneSwap(
     chromosome1.value,
     chromosome2.value,
-    crossIndices(chromosome1.value.size, count, random),
+    multiCrossIndices(chromosome1.value.size, count, random),
 )
 
 internal fun <T, F> crossoverKPointMutableList(
@@ -103,7 +107,7 @@ internal fun <T, F> crossoverKPointMutableList(
 ) = geneSwap(
     chromosome1.value,
     chromosome2.value,
-    crossIndices(chromosome1.value.size, count, random),
+    multiCrossIndices(chromosome1.value.size, count, random),
 )
 
 internal fun <F> crossoverKPointShortArray(
@@ -114,5 +118,5 @@ internal fun <F> crossoverKPointShortArray(
 ) = geneSwap(
     chromosome1.value,
     chromosome2.value,
-    crossIndices(chromosome1.value.size, count, random),
+    multiCrossIndices(chromosome1.value.size, count, random),
 )

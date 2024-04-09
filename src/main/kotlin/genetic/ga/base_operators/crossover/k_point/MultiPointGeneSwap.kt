@@ -1,6 +1,13 @@
 package genetic.ga.base_operators.crossover.k_point
 
-private inline fun swapStrategy(size: Int, crossIndices: IntArray, swapper: (swapIndex: Int) -> Unit) {
+import genetic.ga.base_operators.crossover.one_point.swapStrategy
+
+internal inline fun multiSwapStrategy(size: Int, crossIndices: IntArray, swapper: (swapIndex: Int) -> Unit) {
+    if (crossIndices.size == 1) {
+        swapStrategy(size, crossIndices[0], swapper)
+        return
+    }
+
     var evenSegmentsGenesToSwap = 0
     var oddSegmentsGenesToSwap = 0
     crossIndices.forEachIndexed { index, crossIndex ->
@@ -28,70 +35,70 @@ private inline fun swapStrategy(size: Int, crossIndices: IntArray, swapper: (swa
 }
 
 internal fun <T> geneSwap(first: Array<T>, second: Array<T>, crossIndices: IntArray) =
-    swapStrategy(first.size, crossIndices) { swapIndex ->
+    multiSwapStrategy(first.size, crossIndices) { swapIndex ->
         val temp = first[swapIndex]
         first[swapIndex] = second[swapIndex]
         second[swapIndex] = temp
     }
 
 internal fun geneSwap(first: BooleanArray, second: BooleanArray, crossIndices: IntArray) =
-    swapStrategy(first.size, crossIndices) { swapIndex ->
+    multiSwapStrategy(first.size, crossIndices) { swapIndex ->
         val temp = first[swapIndex]
         first[swapIndex] = second[swapIndex]
         second[swapIndex] = temp
     }
 
 internal fun geneSwap(first: ByteArray, second: ByteArray, crossIndices: IntArray) =
-    swapStrategy(first.size, crossIndices) { swapIndex ->
+    multiSwapStrategy(first.size, crossIndices) { swapIndex ->
         val temp = first[swapIndex]
         first[swapIndex] = second[swapIndex]
         second[swapIndex] = temp
     }
 
 internal fun geneSwap(first: CharArray, second: CharArray, crossIndices: IntArray) =
-    swapStrategy(first.size, crossIndices) { swapIndex ->
+    multiSwapStrategy(first.size, crossIndices) { swapIndex ->
         val temp = first[swapIndex]
         first[swapIndex] = second[swapIndex]
         second[swapIndex] = temp
     }
 
 internal fun geneSwap(first: DoubleArray, second: DoubleArray, crossIndices: IntArray) =
-    swapStrategy(first.size, crossIndices) { swapIndex ->
+    multiSwapStrategy(first.size, crossIndices) { swapIndex ->
         val temp = first[swapIndex]
         first[swapIndex] = second[swapIndex]
         second[swapIndex] = temp
     }
 
 internal fun geneSwap(first: FloatArray, second: FloatArray, crossIndices: IntArray) =
-    swapStrategy(first.size, crossIndices) { swapIndex ->
+    multiSwapStrategy(first.size, crossIndices) { swapIndex ->
         val temp = first[swapIndex]
         first[swapIndex] = second[swapIndex]
         second[swapIndex] = temp
     }
 
 internal fun geneSwap(first: IntArray, second: IntArray, crossIndices: IntArray) =
-    swapStrategy(first.size, crossIndices) { swapIndex ->
+    multiSwapStrategy(first.size, crossIndices) { swapIndex ->
         val temp = first[swapIndex]
         first[swapIndex] = second[swapIndex]
         second[swapIndex] = temp
     }
 
 internal fun geneSwap(first: LongArray, second: LongArray, crossIndices: IntArray) =
-    swapStrategy(first.size, crossIndices) { swapIndex ->
+    multiSwapStrategy(first.size, crossIndices) { swapIndex ->
         val temp = first[swapIndex]
         first[swapIndex] = second[swapIndex]
         second[swapIndex] = temp
     }
 
 internal fun <T> geneSwap(first: MutableList<T>, second: MutableList<T>, crossIndices: IntArray) =
-    swapStrategy(first.size, crossIndices) { swapIndex ->
+    multiSwapStrategy(first.size, crossIndices) { swapIndex ->
         val temp = first[swapIndex]
         first[swapIndex] = second[swapIndex]
         second[swapIndex] = temp
     }
 
 internal fun geneSwap(first: ShortArray, second: ShortArray, crossIndices: IntArray) =
-    swapStrategy(first.size, crossIndices) { swapIndex ->
+    multiSwapStrategy(first.size, crossIndices) { swapIndex ->
         val temp = first[swapIndex]
         first[swapIndex] = second[swapIndex]
         second[swapIndex] = temp
