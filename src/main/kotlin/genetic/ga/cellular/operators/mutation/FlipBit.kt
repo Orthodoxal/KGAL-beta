@@ -10,7 +10,7 @@ fun <F> SimpleClusterCellLifecycle<BooleanArray, F>.mutationFlipBitBooleanArray(
     mutationChance: Double,
     mutationFlipBitChance: Double,
 ) = mutation(cellularGABuilder, mutationChance) { chromosome ->
-    mutationFlipBitBooleanArray(chromosome, mutationFlipBitChance, random)
+    mutationFlipBitBooleanArray(chromosome.value, mutationFlipBitChance, random)
 }
 
 fun <F> SimpleClusterCellLifecycle<IntArray, F>.mutationFlipBitIntArray(
@@ -18,5 +18,5 @@ fun <F> SimpleClusterCellLifecycle<IntArray, F>.mutationFlipBitIntArray(
     mutationChance: Double,
     mutationFlipBitChance: Double,
 ) = mutation(cellularGABuilder, mutationChance) { chromosome ->
-    mutationFlipBitIntArray(chromosome, mutationFlipBitChance, random)
+    mutationFlipBitIntArray(chromosome.value, mutationFlipBitChance, random)
 }

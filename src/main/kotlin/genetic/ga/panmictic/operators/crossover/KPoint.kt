@@ -10,7 +10,7 @@ suspend fun <T, F> SimpleClusterLifecycle<Array<T>, F>.crossoverKPointArray(
     count: Int,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointArray(chromosome1, chromosome2, count, random)
+    crossoverKPointArray(chromosome1.value, chromosome2.value, count, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<BooleanArray, F>.crossoverKPointBooleanArray(
@@ -19,7 +19,7 @@ suspend fun <F> SimpleClusterLifecycle<BooleanArray, F>.crossoverKPointBooleanAr
     count: Int,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointBooleanArray(chromosome1, chromosome2, count, random)
+    crossoverKPointBooleanArray(chromosome1.value, chromosome2.value, count, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<ByteArray, F>.crossoverKPointByteArray(
@@ -28,7 +28,7 @@ suspend fun <F> SimpleClusterLifecycle<ByteArray, F>.crossoverKPointByteArray(
     count: Int,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointByteArray(chromosome1, chromosome2, count, random)
+    crossoverKPointByteArray(chromosome1.value, chromosome2.value, count, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<CharArray, F>.crossoverKPointCharArray(
@@ -37,7 +37,7 @@ suspend fun <F> SimpleClusterLifecycle<CharArray, F>.crossoverKPointCharArray(
     count: Int,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointCharArray(chromosome1, chromosome2, count, random)
+    crossoverKPointCharArray(chromosome1.value, chromosome2.value, count, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<DoubleArray, F>.crossoverKPointDoubleArray(
@@ -46,7 +46,7 @@ suspend fun <F> SimpleClusterLifecycle<DoubleArray, F>.crossoverKPointDoubleArra
     count: Int,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointDoubleArray(chromosome1, chromosome2, count, random)
+    crossoverKPointDoubleArray(chromosome1.value, chromosome2.value, count, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<FloatArray, F>.crossoverKPointFloatArray(
@@ -55,7 +55,7 @@ suspend fun <F> SimpleClusterLifecycle<FloatArray, F>.crossoverKPointFloatArray(
     count: Int,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointFloatArray(chromosome1, chromosome2, count, random)
+    crossoverKPointFloatArray(chromosome1.value, chromosome2.value, count, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<IntArray, F>.crossoverKPointIntArray(
@@ -64,7 +64,7 @@ suspend fun <F> SimpleClusterLifecycle<IntArray, F>.crossoverKPointIntArray(
     count: Int,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointIntArray(chromosome1, chromosome2, count, random)
+    crossoverKPointIntArray(chromosome1.value, chromosome2.value, count, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<LongArray, F>.crossoverKPointLongArray(
@@ -73,7 +73,7 @@ suspend fun <F> SimpleClusterLifecycle<LongArray, F>.crossoverKPointLongArray(
     count: Int,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointLongArray(chromosome1, chromosome2, count, random)
+    crossoverKPointLongArray(chromosome1.value, chromosome2.value, count, random)
 }
 
 suspend fun <T, F> SimpleClusterLifecycle<MutableList<T>, F>.crossoverKPointMutableList(
@@ -82,7 +82,7 @@ suspend fun <T, F> SimpleClusterLifecycle<MutableList<T>, F>.crossoverKPointMuta
     count: Int,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointMutableList(chromosome1, chromosome2, count, random)
+    crossoverKPointMutableList(chromosome1.value, chromosome2.value, count, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<ShortArray, F>.crossoverKPointShortArray(
@@ -91,5 +91,5 @@ suspend fun <F> SimpleClusterLifecycle<ShortArray, F>.crossoverKPointShortArray(
     count: Int,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointShortArray(chromosome1, chromosome2, count, random)
+    crossoverKPointShortArray(chromosome1.value, chromosome2.value, count, random)
 }

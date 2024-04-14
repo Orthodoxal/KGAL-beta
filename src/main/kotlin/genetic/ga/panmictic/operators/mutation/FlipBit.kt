@@ -11,7 +11,7 @@ suspend fun <F> SimpleClusterLifecycle<BooleanArray, F>.mutationFlipBitBooleanAr
     mutationFlipBitChance: Double,
     onlySingleRun: Boolean = false,
 ) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationFlipBitBooleanArray(chromosome, mutationFlipBitChance, random)
+    mutationFlipBitBooleanArray(chromosome.value, mutationFlipBitChance, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<IntArray, F>.mutationFlipBitIntArray(
@@ -20,5 +20,5 @@ suspend fun <F> SimpleClusterLifecycle<IntArray, F>.mutationFlipBitIntArray(
     mutationFlipBitChance: Double,
     onlySingleRun: Boolean = false,
 ) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationFlipBitIntArray(chromosome, mutationFlipBitChance, random)
+    mutationFlipBitIntArray(chromosome.value, mutationFlipBitChance, random)
 }

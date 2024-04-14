@@ -11,7 +11,7 @@ suspend fun <F> SimpleClusterCellLifecycle<DoubleArray, F>.crossoverBlendDoubleA
     alpha: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverBlendDoubleArray(chromosome1, chromosome2, alpha, random)
+    crossoverBlendDoubleArray(chromosome1.value, chromosome2.value, alpha, random)
 }
 
 suspend fun <F> SimpleClusterCellLifecycle<FloatArray, F>.crossoverBlendFloatArray(
@@ -20,5 +20,5 @@ suspend fun <F> SimpleClusterCellLifecycle<FloatArray, F>.crossoverBlendFloatArr
     alpha: Float,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverBlendFloatArray(chromosome1, chromosome2, alpha, random)
+    crossoverBlendFloatArray(chromosome1.value, chromosome2.value, alpha, random)
 }

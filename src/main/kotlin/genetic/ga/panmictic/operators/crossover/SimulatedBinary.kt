@@ -10,5 +10,5 @@ suspend fun <F> SimpleClusterCellLifecycle<DoubleArray, F>.crossoverSimulatedBin
     eta: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverSimulatedBinaryDoubleArray(chromosome1, chromosome2, eta, random)
+    crossoverSimulatedBinaryDoubleArray(chromosome1.value, chromosome2.value, eta, random)
 }

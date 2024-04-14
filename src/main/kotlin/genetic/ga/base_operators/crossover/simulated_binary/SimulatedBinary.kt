@@ -1,16 +1,15 @@
 package genetic.ga.base_operators.crossover.simulated_binary
 
-import genetic.chromosome.Chromosome
 import kotlin.math.pow
 import kotlin.random.Random
 
-internal fun crossoverSimulatedBinaryDoubleArray(
-    chromosome1: Chromosome<DoubleArray, *>,
-    chromosome2: Chromosome<DoubleArray, *>,
+fun crossoverSimulatedBinaryDoubleArray(
+    value1: DoubleArray,
+    value2: DoubleArray,
     eta: Double,
-    random: Random,
+    random: Random
 ) {
-    for (i in chromosome1.value.indices) {
+    for (i in value1.indices) {
         val rand = random.nextDouble()
         var beta = if (rand <= 0.5) {
             2.0 * rand
@@ -19,7 +18,7 @@ internal fun crossoverSimulatedBinaryDoubleArray(
         }
         beta = beta.pow(1.0 / (eta + 1.0))
 
-        chromosome1.value[i] = 0.5 * (((1 + beta) * chromosome1.value[i]) + ((1 - beta) * chromosome2.value[i]))
-        chromosome2.value[i] = 0.5 * (((1 - beta) * chromosome1.value[i]) + ((1 + beta) * chromosome2.value[i]))
+        value1[i] = 0.5 * (((1 + beta) * value1[i]) + ((1 - beta) * value2[i]))
+        value2[i] = 0.5 * (((1 - beta) * value1[i]) + ((1 + beta) * value2[i]))
     }
 }

@@ -9,5 +9,5 @@ suspend fun <F> SimpleClusterCellLifecycle<IntArray, F>.crossoverOrderedIntArray
     chance: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverOrderedIntArray(chromosome1, chromosome2, random)
+    crossoverOrderedIntArray(chromosome1.value, chromosome2.value, random)
 }

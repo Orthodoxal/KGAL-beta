@@ -9,5 +9,5 @@ fun <F> SimpleClusterCellLifecycle<DoubleArray, F>.crossoverSimulatedBinaryDoubl
     chance: Double,
     eta: Double,
 ) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverSimulatedBinaryDoubleArray(chromosome1, chromosome2, eta, random)
+    crossoverSimulatedBinaryDoubleArray(chromosome1.value, chromosome2.value, eta, random)
 }

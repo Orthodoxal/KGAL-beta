@@ -20,7 +20,7 @@ internal inline fun <V, N> roulette(
     error("Selection roulette critical exception")
 }
 
-internal fun <V> selectionRouletteFitDouble(
+fun <V> selectionRouletteFitDouble(
     source: Array<Chromosome<V, Double>>,
     totalFitness: Double,
     random: Random,
@@ -37,7 +37,7 @@ internal fun <V> selectionRouletteFitDouble(
 }
 
 
-internal fun <V> selectionRouletteFitFloat(
+fun <V> selectionRouletteFitFloat(
     source: Array<Chromosome<V, Float>>,
     totalFitness: Float,
     random: Random,
@@ -53,25 +53,25 @@ internal fun <V> selectionRouletteFitFloat(
     error("selectionRoulette critical exception")
 }
 
-internal fun <V> selectionRouletteFitInt(
+fun <V> selectionRouletteFitInt(
     source: Array<Chromosome<V, Int>>,
     totalFitness: Long,
     random: Random,
 ): Chromosome<V, Int> = roulette(source, totalFitness, random) { sum, fitness -> sum + fitness }
 
-internal fun <V> selectionRouletteFitLong(
+fun <V> selectionRouletteFitLong(
     source: Array<Chromosome<V, Long>>,
     totalFitness: Long,
     random: Random,
 ): Chromosome<V, Long> = roulette(source, totalFitness, random) { sum, fitness -> sum + fitness }
 
-internal fun <V> selectionRouletteFitShort(
+fun <V> selectionRouletteFitShort(
     source: Array<Chromosome<V, Short>>,
     totalFitness: Long,
     random: Random,
 ): Chromosome<V, Short> = roulette(source, totalFitness, random) { sum, fitness -> sum + fitness }
 
-internal fun <V> selectionRouletteFitByte(
+fun <V> selectionRouletteFitByte(
     source: Array<Chromosome<V, Byte>>,
     totalFitness: Long,
     random: Random,

@@ -1,64 +1,33 @@
 package genetic.ga.base_operators.crossover.one_point
 
-import genetic.chromosome.Chromosome
 import kotlin.random.Random
 
-internal fun <T, F> crossoverOnePointArray(
-    chromosome1: Chromosome<Array<T>, F>,
-    chromosome2: Chromosome<Array<T>, F>,
-    random: Random,
-) = geneSwap(chromosome1.value, chromosome2.value, random.nextInt(1, chromosome1.value.lastIndex))
+fun <T> crossoverOnePointArray(value1: Array<T>, value2: Array<T>, random: Random) =
+    geneSwap(value1, value2, random.nextInt(1, value1.lastIndex))
 
-internal fun <F> crossoverOnePointBooleanArray(
-    chromosome1: Chromosome<BooleanArray, F>,
-    chromosome2: Chromosome<BooleanArray, F>,
-    random: Random,
-) = geneSwap(chromosome1.value, chromosome2.value, random.nextInt(1, chromosome1.value.lastIndex))
+fun crossoverOnePointBooleanArray(value1: BooleanArray, value2: BooleanArray, random: Random) =
+    geneSwap(value1, value2, random.nextInt(1, value1.lastIndex))
 
-internal fun <F> crossoverOnePointByteArray(
-    chromosome1: Chromosome<ByteArray, F>,
-    chromosome2: Chromosome<ByteArray, F>,
-    random: Random,
-) = geneSwap(chromosome1.value, chromosome2.value, random.nextInt(1, chromosome1.value.lastIndex))
+fun crossoverOnePointByteArray(value1: ByteArray, value2: ByteArray, random: Random) =
+    geneSwap(value1, value2, random.nextInt(1, value1.lastIndex))
 
-internal fun <F> crossoverOnePointCharArray(
-    chromosome1: Chromosome<CharArray, F>,
-    chromosome2: Chromosome<CharArray, F>,
-    random: Random,
-) = geneSwap(chromosome1.value, chromosome2.value, random.nextInt(1, chromosome1.value.lastIndex))
+fun crossoverOnePointCharArray(value1: CharArray, value2: CharArray, random: Random) =
+    geneSwap(value1, value2, random.nextInt(1, value1.lastIndex))
 
-internal fun <F> crossoverOnePointDoubleArray(
-    chromosome1: Chromosome<DoubleArray, F>,
-    chromosome2: Chromosome<DoubleArray, F>,
-    random: Random,
-) = geneSwap(chromosome1.value, chromosome2.value, random.nextInt(1, chromosome1.value.lastIndex))
+fun crossoverOnePointDoubleArray(value1: DoubleArray, value2: DoubleArray, random: Random) =
+    geneSwap(value1, value2, random.nextInt(1, value1.lastIndex))
 
-internal fun <F> crossoverOnePointFloatArray(
-    chromosome1: Chromosome<FloatArray, F>,
-    chromosome2: Chromosome<FloatArray, F>,
-    random: Random,
-) = geneSwap(chromosome1.value, chromosome2.value, random.nextInt(1, chromosome1.value.lastIndex))
+fun crossoverOnePointFloatArray(value1: FloatArray, value2: FloatArray, random: Random) =
+    geneSwap(value1, value2, random.nextInt(1, value1.lastIndex))
 
-internal fun <F> crossoverOnePointIntArray(
-    chromosome1: Chromosome<IntArray, F>,
-    chromosome2: Chromosome<IntArray, F>,
-    random: Random,
-) = geneSwap(chromosome1.value, chromosome2.value, random.nextInt(1, chromosome1.value.lastIndex))
+fun crossoverOnePointIntArray(value1: IntArray, value2: IntArray, random: Random) =
+    geneSwap(value1, value2, random.nextInt(1, value1.lastIndex))
 
-internal fun <F> crossoverOnePointLongArray(
-    chromosome1: Chromosome<LongArray, F>,
-    chromosome2: Chromosome<LongArray, F>,
-    random: Random,
-) = geneSwap(chromosome1.value, chromosome2.value, random.nextInt(1, chromosome1.value.lastIndex))
+fun crossoverOnePointLongArray(value1: LongArray, value2: LongArray, random: Random) =
+    geneSwap(value1, value2, random.nextInt(1, value1.lastIndex))
 
-internal fun <T, F> crossoverOnePointMutableList(
-    chromosome1: Chromosome<MutableList<T>, F>,
-    chromosome2: Chromosome<MutableList<T>, F>,
-    random: Random,
-) = geneSwap(chromosome1.value, chromosome2.value, random.nextInt(1, chromosome1.value.lastIndex))
+fun <T> crossoverOnePointMutableList(value1: MutableList<T>, value2: MutableList<T>, random: Random) =
+    geneSwap(value1, value2, random.nextInt(1, value1.lastIndex))
 
-internal fun <F> crossoverOnePointShortArray(
-    chromosome1: Chromosome<ShortArray, F>,
-    chromosome2: Chromosome<ShortArray, F>,
-    random: Random,
-) = geneSwap(chromosome1.value, chromosome2.value, random.nextInt(1, chromosome1.value.lastIndex))
+fun crossoverOnePointShortArray(value1: ShortArray, value2: ShortArray, random: Random) =
+    geneSwap(value1, value2, random.nextInt(1, value1.lastIndex))

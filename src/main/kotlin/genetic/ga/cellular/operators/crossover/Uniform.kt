@@ -9,7 +9,7 @@ fun <T, F> SimpleClusterCellLifecycle<Array<T>, F>.crossoverUniformArray(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 fun <F> SimpleClusterCellLifecycle<BooleanArray, F>.crossoverUniformBooleanArray(
@@ -17,7 +17,7 @@ fun <F> SimpleClusterCellLifecycle<BooleanArray, F>.crossoverUniformBooleanArray
     chance: Double,
     chanceUniform: Double,
 ) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformBooleanArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformBooleanArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 fun <F> SimpleClusterCellLifecycle<ByteArray, F>.crossoverUniformByteArray(
@@ -25,7 +25,7 @@ fun <F> SimpleClusterCellLifecycle<ByteArray, F>.crossoverUniformByteArray(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformByteArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformByteArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 fun <F> SimpleClusterCellLifecycle<CharArray, F>.crossoverUniformCharArray(
@@ -33,7 +33,7 @@ fun <F> SimpleClusterCellLifecycle<CharArray, F>.crossoverUniformCharArray(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformCharArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformCharArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 fun <F> SimpleClusterCellLifecycle<DoubleArray, F>.crossoverUniformDoubleArray(
@@ -41,7 +41,7 @@ fun <F> SimpleClusterCellLifecycle<DoubleArray, F>.crossoverUniformDoubleArray(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformDoubleArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformDoubleArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 fun <F> SimpleClusterCellLifecycle<FloatArray, F>.crossoverUniformFloatArray(
@@ -49,7 +49,7 @@ fun <F> SimpleClusterCellLifecycle<FloatArray, F>.crossoverUniformFloatArray(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformFloatArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformFloatArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 fun <F> SimpleClusterCellLifecycle<IntArray, F>.crossoverUniformIntArray(
@@ -57,7 +57,7 @@ fun <F> SimpleClusterCellLifecycle<IntArray, F>.crossoverUniformIntArray(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformIntArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformIntArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 fun <F> SimpleClusterCellLifecycle<LongArray, F>.crossoverUniformLongArray(
@@ -65,7 +65,7 @@ fun <F> SimpleClusterCellLifecycle<LongArray, F>.crossoverUniformLongArray(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformLongArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformLongArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 fun <T, F> SimpleClusterCellLifecycle<MutableList<T>, F>.crossoverUniformMutableList(
@@ -73,7 +73,7 @@ fun <T, F> SimpleClusterCellLifecycle<MutableList<T>, F>.crossoverUniformMutable
     chance: Double,
     chanceUniform: Double,
 ) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformMutableList(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformMutableList(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 fun <F> SimpleClusterCellLifecycle<ShortArray, F>.crossoverUniformShortArray(
@@ -81,5 +81,5 @@ fun <F> SimpleClusterCellLifecycle<ShortArray, F>.crossoverUniformShortArray(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformShortArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformShortArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
