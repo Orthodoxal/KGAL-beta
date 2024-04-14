@@ -8,5 +8,5 @@ fun <F> SimpleClusterCellLifecycle<IntArray, F>.crossoverOrderedIntArray(
     cellularGABuilder: CellularGABuilder<IntArray, F>,
     chance: Double,
 ) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverOrderedIntArray(chromosome1, chromosome2, random)
+    crossoverOrderedIntArray(chromosome1.value, chromosome2.value, random)
 }

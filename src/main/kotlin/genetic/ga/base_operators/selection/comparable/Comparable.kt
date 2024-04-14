@@ -3,7 +3,7 @@ package genetic.ga.base_operators.selection.comparable
 import genetic.chromosome.Chromosome
 import java.util.*
 
-internal fun <V, F> selectionComparable(
+fun <V, F> selectionComparable(
     source: Array<Chromosome<V, F>>,
     count: Int,
     priority: PriorityQueue<Chromosome<V, F>>,
@@ -17,7 +17,7 @@ internal fun <V, F> selectionComparable(
     return Array(count) { priority.poll().clone() }
 }
 
-internal fun <V, F> selectionBest(
+fun <V, F> selectionBest(
     source: Array<Chromosome<V, F>>,
     count: Int,
 ): Array<Chromosome<V, F>> {
@@ -26,7 +26,7 @@ internal fun <V, F> selectionBest(
     return selectionComparable(source, count, priority)
 }
 
-internal fun <V, F> selectionWorst(
+fun <V, F> selectionWorst(
     source: Array<Chromosome<V, F>>,
     count: Int,
 ): Array<Chromosome<V, F>> {

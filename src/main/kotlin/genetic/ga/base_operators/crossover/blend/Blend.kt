@@ -1,30 +1,29 @@
 package genetic.ga.base_operators.crossover.blend
 
-import genetic.chromosome.Chromosome
 import kotlin.random.Random
 
-internal fun crossoverBlendDoubleArray(
-    chromosome1: Chromosome<DoubleArray, *>,
-    chromosome2: Chromosome<DoubleArray, *>,
+fun crossoverBlendDoubleArray(
+    value1: DoubleArray,
+    value2: DoubleArray,
     alpha: Double,
     random: Random,
 ) {
-    repeat(chromosome1.value.size) {
+    repeat(value1.size) {
         val gamma = (1.0 + 2.0 * alpha) * random.nextDouble() - alpha
-        chromosome1.value[it] = (1.0 - gamma) * chromosome1.value[it] + gamma * chromosome2.value[it]
-        chromosome2.value[it] = gamma * chromosome1.value[it] + (1.0 - gamma) * chromosome2.value[it]
+        value1[it] = (1.0 - gamma) * value1[it] + gamma * value2[it]
+        value2[it] = gamma * value1[it] + (1.0 - gamma) * value2[it]
     }
 }
 
-internal fun crossoverBlendFloatArray(
-    chromosome1: Chromosome<FloatArray, *>,
-    chromosome2: Chromosome<FloatArray, *>,
+fun crossoverBlendFloatArray(
+    value1: FloatArray,
+    value2: FloatArray,
     alpha: Float,
     random: Random,
 ) {
-    repeat(chromosome1.value.size) {
+    repeat(value1.size) {
         val gamma = (1f + 2f * alpha) * random.nextFloat() - alpha
-        chromosome1.value[it] = (1f - gamma) * chromosome1.value[it] + gamma * chromosome2.value[it]
-        chromosome2.value[it] = gamma * chromosome1.value[it] + (1f - gamma) * chromosome2.value[it]
+        value1[it] = (1f - gamma) * value1[it] + gamma * value2[it]
+        value2[it] = gamma * value1[it] + (1f - gamma) * value2[it]
     }
 }

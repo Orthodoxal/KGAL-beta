@@ -1,21 +1,14 @@
 package genetic.ga.base_operators.mutation.flip_bit
 
-import genetic.chromosome.Chromosome
 import genetic.utils.randomByChance
 import kotlin.random.Random
 
-internal fun <F> mutationFlipBitBooleanArray(
-    chromosome: Chromosome<BooleanArray, F>,
-    chance: Double,
-    random: Random,
-) = chromosome.value.forEachIndexed { index, gene ->
-    randomByChance(chance, random) { chromosome.value[index] = !gene }
-}
+fun mutationFlipBitBooleanArray(value: BooleanArray, chance: Double, random: Random) =
+    value.forEachIndexed { index, gene ->
+        randomByChance(chance, random) { value[index] = !gene }
+    }
 
-internal fun <F> mutationFlipBitIntArray(
-    chromosome: Chromosome<IntArray, F>,
-    chance: Double,
-    random: Random,
-) = chromosome.value.forEachIndexed { index, gene ->
-    randomByChance(chance, random) { chromosome.value[index] = if (gene == 1) 0 else 1 }
-}
+fun mutationFlipBitIntArray(value: IntArray, chance: Double, random: Random) =
+    value.forEachIndexed { index, gene ->
+        randomByChance(chance, random) { value[index] = if (gene == 1) 0 else 1 }
+    }

@@ -10,7 +10,7 @@ suspend fun <T, F> SimpleClusterLifecycle<Array<T>, F>.crossoverUniformArray(
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<BooleanArray, F>.crossoverUniformBooleanArray(
@@ -19,7 +19,7 @@ suspend fun <F> SimpleClusterLifecycle<BooleanArray, F>.crossoverUniformBooleanA
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformBooleanArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformBooleanArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<ByteArray, F>.crossoverUniformByteArray(
@@ -28,7 +28,7 @@ suspend fun <F> SimpleClusterLifecycle<ByteArray, F>.crossoverUniformByteArray(
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformByteArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformByteArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<CharArray, F>.crossoverUniformCharArray(
@@ -37,7 +37,7 @@ suspend fun <F> SimpleClusterLifecycle<CharArray, F>.crossoverUniformCharArray(
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformCharArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformCharArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<DoubleArray, F>.crossoverUniformDoubleArray(
@@ -46,7 +46,7 @@ suspend fun <F> SimpleClusterLifecycle<DoubleArray, F>.crossoverUniformDoubleArr
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformDoubleArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformDoubleArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<FloatArray, F>.crossoverUniformFloatArray(
@@ -55,7 +55,7 @@ suspend fun <F> SimpleClusterLifecycle<FloatArray, F>.crossoverUniformFloatArray
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformFloatArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformFloatArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<IntArray, F>.crossoverUniformIntArray(
@@ -64,7 +64,7 @@ suspend fun <F> SimpleClusterLifecycle<IntArray, F>.crossoverUniformIntArray(
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformIntArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformIntArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<LongArray, F>.crossoverUniformLongArray(
@@ -73,7 +73,7 @@ suspend fun <F> SimpleClusterLifecycle<LongArray, F>.crossoverUniformLongArray(
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformLongArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformLongArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 suspend fun <T, F> SimpleClusterLifecycle<MutableList<T>, F>.crossoverUniformMutableList(
@@ -82,7 +82,7 @@ suspend fun <T, F> SimpleClusterLifecycle<MutableList<T>, F>.crossoverUniformMut
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformMutableList(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformMutableList(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
 suspend fun <F> SimpleClusterLifecycle<ShortArray, F>.crossoverUniformShortArray(
@@ -91,5 +91,5 @@ suspend fun <F> SimpleClusterLifecycle<ShortArray, F>.crossoverUniformShortArray
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformShortArray(chromosome1, chromosome2, chanceUniform, random)
+    crossoverUniformShortArray(chromosome1.value, chromosome2.value, chanceUniform, random)
 }

@@ -10,7 +10,7 @@ fun <F> SimpleClusterCellLifecycle<DoubleArray, F>.crossoverBlendDoubleArray(
     chance: Double,
     alpha: Double,
 ) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverBlendDoubleArray(chromosome1, chromosome2, alpha, random)
+    crossoverBlendDoubleArray(chromosome1.value, chromosome2.value, alpha, random)
 }
 
 fun <F> SimpleClusterCellLifecycle<FloatArray, F>.crossoverBlendFloatArray(
@@ -18,5 +18,5 @@ fun <F> SimpleClusterCellLifecycle<FloatArray, F>.crossoverBlendFloatArray(
     chance: Double,
     alpha: Float,
 ) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverBlendFloatArray(chromosome1, chromosome2, alpha, random)
+    crossoverBlendFloatArray(chromosome1.value, chromosome2.value, alpha, random)
 }
