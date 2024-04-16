@@ -1,9 +1,12 @@
 package genetic.ga.cellular.lifecycle
 
 import genetic.ga.cellular.builder.CellularGABuilder
+import genetic.ga.lifecycle.GALifecycle
+import genetic.ga.lifecycle.LifecycleStartOption
 
-interface CellularGALifecycle<V, F> : CellularGABuilder<V, F>
+interface CellularGALifecycle<V, F> : CellularGABuilder<V, F>, GALifecycle
 
 internal class CellularGALifecycleInstance<V, F>(
-    builder: CellularGABuilder<V, F>
+    builder: CellularGABuilder<V, F>,
+    override var lifecycleStartOption: LifecycleStartOption,
 ) : CellularGALifecycle<V, F>, CellularGABuilder<V, F> by builder

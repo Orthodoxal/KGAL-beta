@@ -1,4 +1,4 @@
-package genetic.utils
+package genetic.utils.clusters
 
 import genetic.clusters.Cluster
 import genetic.clusters.ClusterBuilder

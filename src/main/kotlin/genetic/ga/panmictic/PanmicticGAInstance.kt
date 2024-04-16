@@ -3,41 +3,35 @@ package genetic.ga.panmictic
 import genetic.chromosome.Chromosome
 import genetic.clusters.Cluster
 import genetic.ga.AbstractGA
+import genetic.ga.lifecycle.LifecycleStartOption
 import genetic.ga.panmictic.builder.PanmicticGABuilder
 import genetic.ga.panmictic.lifecycle.PanmicticGALifecycle
 import genetic.ga.panmictic.lifecycle.PanmicticGALifecycleInstance
-import genetic.ga.state.GAState
-import genetic.utils.checkClusterNameOrTrySetDefaultName
-import kotlinx.coroutines.coroutineScope
+import genetic.utils.clusters.checkClusterNameOrTrySetDefaultName
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.job
-import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
 
 internal class PanmicticGAInstance<V, F> : AbstractGA<V, F>(), PanmicticGABuilder<V, F> {
-    private val lifecycleScope: PanmicticGALifecycle<V, F> by lazy { PanmicticGALifecycleInstance(builder = this) }
     private var beforeLifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit = { }
     private var lifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit = BASE_LIFECYCLE
     private var afterLifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit = { }
     override var random: Random = Random
 
-    override suspend fun start(coroutineContext: CoroutineContext) {
-        state = GAState.STARTED
-        coroutineScope {
-            gaJob = launch(coroutineContext) { startGA() }
-        }
-        state = GAState.FINISHED
-    }
+    override fun CoroutineScope.startByOption(
+        startOption: LifecycleStartOption,
+        iterationFrom: Int,
+        coroutineContext: CoroutineContext
+    ) {
+        val lifecycleScope = PanmicticGALifecycleInstance(
+            builder = this@PanmicticGAInstance,
+            lifecycleStartOption = startOption,
+        )
 
-    private suspend fun startGA() {
-        with(lifecycleScope) {
-            beforeLifecycle()
-            while (iteration < maxIteration) {
-                lifecycle()
-                super.iteration++
-            }
-            afterLifecycle()
+        launchGA(iterationFrom, coroutineContext) {
+            baseStartGA(lifecycleScope, beforeLifecycle, lifecycle, afterLifecycle)
         }
     }
 
@@ -66,7 +60,7 @@ internal class PanmicticGAInstance<V, F> : AbstractGA<V, F>(), PanmicticGABuilde
 
     companion object {
         private val BASE_LIFECYCLE: suspend PanmicticGALifecycle<*, *>.() -> Unit = {
-            clusters.forEach { it.start() }
+            launchClusters(clusters)
             coroutineContext.job.children.forEach { it.join() }
         }
     }

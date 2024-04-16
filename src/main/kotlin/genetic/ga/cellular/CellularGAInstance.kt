@@ -17,33 +17,34 @@ import genetic.ga.cellular.neighborhood.toroidalShapeIndicesFilter
 import genetic.ga.cellular.neighborhood.von_neumann.VonNeumann
 import genetic.ga.cellular.type.CellularType
 import genetic.ga.cellular.type.UpdatePolicy
-import genetic.ga.state.GAState
-import genetic.utils.checkClusterNameOrTrySetDefaultName
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.job
-import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.launch
+import genetic.ga.lifecycle.LifecycleStartOption
+import genetic.utils.clusters.checkClusterNameOrTrySetDefaultName
+import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
 
 internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<V, F> {
-    private val lifecycleScope: CellularGALifecycle<V, F> by lazy { CellularGALifecycleInstance(builder = this) }
     private var beforeLifecycle: suspend CellularGALifecycle<V, F>.() -> Unit = { }
     private var lifecycle: suspend CellularGALifecycle<V, F>.() -> Unit = BASE_LIFECYCLE
     private var afterLifecycle: suspend CellularGALifecycle<V, F>.() -> Unit = { }
     override var random: Random = Random
     private var neighborhoodChanged = true
 
-    override suspend fun start(coroutineContext: CoroutineContext) {
-        state = GAState.STARTED
-        coroutineScope {
-            gaJob = launch(coroutineContext) { startGA() }
-        }
-        state = GAState.FINISHED
+    override fun CoroutineScope.startByOption(
+        startOption: LifecycleStartOption,
+        iterationFrom: Int,
+        coroutineContext: CoroutineContext
+    ) {
+        val lifecycleScope = CellularGALifecycleInstance(
+            builder = this@CellularGAInstance,
+            lifecycleStartOption = startOption,
+        )
+
+        launchGA(iterationFrom, coroutineContext) { startGA(lifecycleScope) }
     }
 
-    private suspend fun startGA() {
+    private suspend fun startGA(lifecycleScope: CellularGALifecycle<V, F>) {
         if (neighborhoodChanged) {
             val (indicesOneArray, indicesNArray) = neighborhood.neighboursIndicesMatrix(dimensions)
             val size = dimensions.fold(1) { acc, i -> acc * i }
@@ -54,14 +55,7 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
 
         for (config in customClusterConfigs) reEvaluateIfNeedByConfig(config)
 
-        with(lifecycleScope) {
-            beforeLifecycle()
-            while (iteration < maxIteration) {
-                lifecycle()
-                super.iteration++
-            }
-            afterLifecycle()
-        }
+        baseStartGA(lifecycleScope, beforeLifecycle, lifecycle, afterLifecycle)
     }
 
     override fun addCluster(cluster: Cluster<V, F>): Cluster<V, F> = cluster.apply {
@@ -246,7 +240,7 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
 
     companion object {
         private val BASE_LIFECYCLE: suspend CellularGALifecycle<*, *>.() -> Unit = {
-            clusters.forEach { it.start() }
+            launchClusters(clusters)
             coroutineContext.job.children.forEach { it.join() }
         }
     }

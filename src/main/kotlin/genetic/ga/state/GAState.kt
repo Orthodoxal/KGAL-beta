@@ -1,5 +1,7 @@
 package genetic.ga.state
 
+import genetic.clusters.state.ClusterState
+
 enum class GAState {
     INITIALIZE,
     CREATED,
@@ -8,3 +10,12 @@ enum class GAState {
     FINISHED,
     CLEARED,
 }
+
+fun gaStateMachine(previous: GAState, new: GAState): GAState =
+    when (previous) {
+        GAState.STOPPED -> when (new) {
+            GAState.FINISHED -> previous
+            else -> new
+        }
+        else -> new
+    }

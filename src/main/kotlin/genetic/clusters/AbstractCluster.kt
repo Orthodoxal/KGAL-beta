@@ -3,6 +3,7 @@ package genetic.clusters
 import genetic.chromosome.Chromosome
 import genetic.clusters.state.ClusterState
 import genetic.clusters.state.ClusterStopPolicy
+import genetic.clusters.state.clusterStateMachine
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withTimeout
 import kotlin.coroutines.cancellation.CancellationException
@@ -11,6 +12,9 @@ import kotlin.random.Random
 abstract class AbstractCluster<V, F> : Cluster<V, F> {
     protected var stopSignal: Boolean = false
     protected var state: ClusterState = ClusterState.INITIALIZE
+        set(value) {
+            field = clusterStateMachine(field, value)
+        }
     protected var clusterJob: Job? = null
 
     var random: Random = Random
@@ -20,9 +24,19 @@ abstract class AbstractCluster<V, F> : Cluster<V, F> {
     override var generation: Int = 0
     override var maxGeneration: Int = 0
 
+    protected abstract suspend fun startByOption(generationFrom: Int)
+
+    override suspend fun start(generationFrom: Int) {
+        if (state == ClusterState.STARTED) return
+
+        startByOption(generationFrom)
+    }
+
     override suspend fun resume() {
-        if (state == ClusterState.STOPPED) throw IllegalStateException("Cluster $name state $state incorrect for resuming: State must be STOPPED or FINISHED")
-        start()
+        if (state != ClusterState.STOPPED)
+            throw IllegalStateException("Cluster $name state $state incorrect for resuming: State must be STOPPED")
+
+        startByOption(generationFrom = generation)
     }
 
     override suspend fun stop(stopPolicy: ClusterStopPolicy) {
@@ -44,24 +58,15 @@ abstract class AbstractCluster<V, F> : Cluster<V, F> {
                     if (state != ClusterState.STOPPED) {
                         clusterJob?.cancel(
                             cause = CancellationException(
-                                message = "Cluster $name stop cause force $stopPolicy policy",
+                                message = "Cluster $name stop cause $stopPolicy policy",
                                 cause = null
                             )
                         )
+                        stopSignal = false
+                        state = ClusterState.STOPPED
                     }
                 }
             }
         }
-    }
-
-    override suspend fun restart() {
-        try {
-            clusterJob?.cancel()
-        } catch (_: CancellationException) {
-            // nothing to do
-        }
-
-        generation = 0
-        start()
     }
 }

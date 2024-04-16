@@ -6,40 +6,34 @@ import genetic.ga.AbstractGA
 import genetic.ga.distributed.builder.DistributedGABuilder
 import genetic.ga.distributed.lifecycle.DistributedGALifecycle
 import genetic.ga.distributed.lifecycle.DistributedGALifecycleInstance
+import genetic.ga.lifecycle.LifecycleStartOption
 import genetic.ga.panmictic.builder.PanmicticGABuilder
 import genetic.ga.panmictic.lifecycle.PanmicticGALifecycle
-import genetic.ga.state.GAState
-import genetic.utils.checkClusterNameOrTrySetDefaultName
-import kotlinx.coroutines.coroutineScope
+import genetic.utils.clusters.checkClusterNameOrTrySetDefaultName
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.job
-import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
 
 internal class DistributedGAInstance<V, F> : AbstractGA<V, F>(), DistributedGABuilder<V, F> {
-    private val lifecycleScope: DistributedGALifecycle<V, F> by lazy { DistributedGALifecycleInstance(builder = this) }
     private var beforeLifecycle: suspend DistributedGALifecycle<V, F>.() -> Unit = { }
     private var lifecycle: suspend DistributedGALifecycle<V, F>.() -> Unit = BASE_LIFECYCLE
     private var afterLifecycle: suspend DistributedGALifecycle<V, F>.() -> Unit = { }
     override var random: Random = Random
 
-    override suspend fun start(coroutineContext: CoroutineContext) {
-        state = GAState.STARTED
-        coroutineScope {
-            gaJob = launch(coroutineContext) { startGA() }
-        }
-        state = GAState.FINISHED
-    }
+    override fun CoroutineScope.startByOption(
+        startOption: LifecycleStartOption,
+        iterationFrom: Int,
+        coroutineContext: CoroutineContext
+    ) {
+        val lifecycleScope = DistributedGALifecycleInstance(
+            builder = this@DistributedGAInstance,
+            lifecycleStartOption = startOption,
+        )
 
-    private suspend fun startGA() {
-        with(lifecycleScope) {
-            beforeLifecycle()
-            while (iteration < maxIteration) {
-                lifecycle()
-                super.iteration++
-            }
-            afterLifecycle()
+        launchGA(iterationFrom, coroutineContext) {
+            baseStartGA(lifecycleScope, beforeLifecycle, lifecycle, afterLifecycle)
         }
     }
 
@@ -80,7 +74,7 @@ internal class DistributedGAInstance<V, F> : AbstractGA<V, F>(), DistributedGABu
 
     companion object {
         private val BASE_LIFECYCLE: suspend DistributedGALifecycle<*, *>.() -> Unit = {
-            for (cluster in clusters) cluster.start()
+            launchClusters(clusters)
             coroutineContext.job.children.forEach { it.join() }
         }
     }
