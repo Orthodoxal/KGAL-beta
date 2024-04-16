@@ -39,9 +39,7 @@ internal class SimpleClusterInstance<V, F> : AbstractCluster<V, F>(), SimpleClus
         this@SimpleClusterInstance.lifecycle = lifecycle
     }
 
-    override suspend fun start(generationFrom: Int) {
-        if (state == ClusterState.STARTED) return
-
+    override suspend fun startByOption(generationFrom: Int) {
         super.generation = generationFrom
         state = ClusterState.STARTED
         val dispatcher = mainDispatcher
@@ -61,17 +59,27 @@ internal class SimpleClusterInstance<V, F> : AbstractCluster<V, F>(), SimpleClus
 
     private suspend fun startCluster() {
         with(lifecycleScope) {
-            beforeLifecycle()
+            if (generation == 0) {
+                beforeLifecycle()
+            }
             while (generation < maxGeneration) {
                 lifecycle()
                 super.generation++
                 if (stopSignal) {
                     state = ClusterState.STOPPED
+                    stopSignal = false
                     return
                 }
             }
-            afterLifecycle()
+            if (generation == maxGeneration) {
+                afterLifecycle()
+            }
         }
+    }
+
+    override suspend fun restart() {
+        population = Array(populationSize) { populationFactory(it, random) }
+        startByOption(generationFrom = 0)
     }
 
     private companion object {

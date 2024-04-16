@@ -1,6 +1,7 @@
 package genetic.chromosome.base_instances
 
 import genetic.chromosome.Chromosome
+import kotlin.random.Random
 
 data class ChromosomeBooleanArray<F : Comparable<F>>(
     override var value: BooleanArray,
@@ -27,3 +28,10 @@ data class ChromosomeBooleanArray<F : Comparable<F>>(
 
     override fun clone(): Chromosome<BooleanArray, F> = clone?.let { it() } ?: copy(value = value.copyOf())
 }
+
+fun <F : Comparable<F>> ChromosomeBooleanArray(
+    valueSize: Int,
+    random: Random = Random,
+    fitness: F? = null,
+    clone: (ChromosomeBooleanArray<F>.() -> ChromosomeBooleanArray<F>)? = null,
+) = ChromosomeBooleanArray(value = BooleanArray(valueSize) { random.nextBoolean() }, fitness, clone)
