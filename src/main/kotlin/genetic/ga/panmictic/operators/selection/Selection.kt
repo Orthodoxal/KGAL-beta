@@ -3,9 +3,7 @@ package genetic.ga.panmictic.operators.selection
 import genetic.chromosome.Chromosome
 import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
 import genetic.ga.panmictic.builder.PanmicticGABuilder
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.launch
+import genetic.utils.clusters.runWithExtraDispatchersIterative
 
 suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.selection(
     panmicticGABuilder: PanmicticGABuilder<V, F>,
@@ -33,19 +31,6 @@ suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.multiRunSelection(
     panmicticGABuilder: PanmicticGABuilder<V, F>,
     tempPopulation: Array<Chromosome<V, F>>,
     crossinline selection: (source: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
-) {
-    maxIteration = populationSize
-    currentIteration.set(0)
-
-    coroutineScope {
-        extraDispatchers?.map {
-            launch(it) {
-                var iteration = currentIteration.getAndIncrement()
-                while (iteration < maxIteration) {
-                    tempPopulation[iteration] = selection(population)
-                    iteration = currentIteration.getAndIncrement()
-                }
-            }
-        }
-    }?.joinAll()
+) = runWithExtraDispatchersIterative(iterationStart = 0, maxIterationEnd = populationSize) { iteration ->
+    tempPopulation[iteration] = selection(population)
 }
