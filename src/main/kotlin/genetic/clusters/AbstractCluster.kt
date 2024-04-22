@@ -4,6 +4,8 @@ import genetic.chromosome.Chromosome
 import genetic.clusters.state.ClusterState
 import genetic.clusters.state.ClusterStopPolicy
 import genetic.clusters.state.clusterStateMachine
+import genetic.stat.Statistics
+import genetic.stat.StatisticsInstance
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withTimeout
 import kotlin.coroutines.cancellation.CancellationException
@@ -23,6 +25,9 @@ abstract class AbstractCluster<V, F> : Cluster<V, F> {
     override var populationSize: Int = 0
     override var generation: Int = 0
     override var maxGeneration: Int = 0
+
+    protected var statisticsInstance: StatisticsInstance? = null
+    override val stat: Statistics? get() = statisticsInstance
 
     protected abstract suspend fun startByOption(generationFrom: Int)
 

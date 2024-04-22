@@ -7,6 +7,10 @@ import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
 import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycleInstance
 import genetic.clusters.simple_cluster.lifecycle.utils.fitnessAll
 import genetic.clusters.state.ClusterState
+import genetic.stat.StatisticsInstance
+import genetic.utils.statAfter
+import genetic.utils.statBefore
+import genetic.utils.statOnLifecycleIteration
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.job
@@ -51,7 +55,9 @@ internal class SimpleClusterInstance<V, F> : AbstractCluster<V, F>(), SimpleClus
             with(CoroutineScope(coroutineContext)) {
                 clusterJob = launch(dispatcher) {
                     startCluster()
-                    state = ClusterState.FINISHED
+                    if (generation == maxGeneration) {
+                        state = ClusterState.FINISHED
+                    }
                 }
             }
         }
@@ -61,9 +67,11 @@ internal class SimpleClusterInstance<V, F> : AbstractCluster<V, F>(), SimpleClus
         with(lifecycleScope) {
             if (generation == 0) {
                 beforeLifecycle()
+                statisticsInstance?.let { statBefore(it) }
             }
             while (generation < maxGeneration) {
                 lifecycle()
+                statisticsInstance?.let { statOnLifecycleIteration(it) }
                 super.generation++
                 if (stopSignal) {
                     state = ClusterState.STOPPED
@@ -72,6 +80,7 @@ internal class SimpleClusterInstance<V, F> : AbstractCluster<V, F>(), SimpleClus
                 }
             }
             if (generation == maxGeneration) {
+                statisticsInstance?.let { statAfter(it) }
                 afterLifecycle()
             }
         }
@@ -80,6 +89,10 @@ internal class SimpleClusterInstance<V, F> : AbstractCluster<V, F>(), SimpleClus
     override suspend fun restart() {
         population = Array(populationSize) { populationFactory(it, random) }
         startByOption(generationFrom = 0)
+    }
+
+    override fun setStatInstance(statisticsInstance: StatisticsInstance) {
+        this.statisticsInstance = statisticsInstance
     }
 
     private companion object {

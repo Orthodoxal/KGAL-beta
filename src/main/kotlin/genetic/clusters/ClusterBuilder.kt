@@ -1,6 +1,7 @@
 package genetic.clusters
 
 import genetic.chromosome.Chromosome
+import genetic.stat.StatisticsInstance
 import kotlin.random.Random
 
 interface ClusterBuilder<V, F> {
@@ -12,4 +13,6 @@ interface ClusterBuilder<V, F> {
     var randomSeed: Int
     var fitnessFunction: (V) -> F
     var maxGeneration: Int
+
+    fun setStatInstance(statisticsInstance: StatisticsInstance)
 }

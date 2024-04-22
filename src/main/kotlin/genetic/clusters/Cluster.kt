@@ -2,6 +2,7 @@ package genetic.clusters
 
 import genetic.chromosome.Chromosome
 import genetic.clusters.state.ClusterStopPolicy
+import genetic.stat.Statistics
 
 interface Cluster<V, F> {
     val name: String?
@@ -9,6 +10,7 @@ interface Cluster<V, F> {
     val generation: Int
     val maxGeneration: Int
     val populationSize: Int
+    val stat: Statistics?
 
     suspend fun start(generationFrom: Int = 0)
     suspend fun resume()
