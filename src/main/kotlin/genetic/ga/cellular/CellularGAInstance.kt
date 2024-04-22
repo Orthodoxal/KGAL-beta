@@ -18,6 +18,7 @@ import genetic.ga.cellular.neighborhood.von_neumann.VonNeumann
 import genetic.ga.cellular.type.CellularType
 import genetic.ga.cellular.type.UpdatePolicy
 import genetic.ga.lifecycle.LifecycleStartOption
+import genetic.stat.StatisticsInstance
 import genetic.utils.clusters.checkClusterNameOrTrySetDefaultName
 import genetic.utils.clusters.runWithExtraDispatchersIterative
 import kotlinx.coroutines.CoroutineScope
@@ -91,6 +92,11 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
     override lateinit var neighboursIndicesCache: Array<IntArray>
     override val customClusterConfigs = mutableListOf<CellularClusterConfig>()
 
+
+    override fun setStatInstance(statisticsInstance: StatisticsInstance, coroutineContext: CoroutineContext) {
+        gaStatisticsCoroutineContext = coroutineContext
+        this.statisticsInstance = statisticsInstance
+    }
 
     override fun applyCustomClusterConfig(cellularClusterConfig: CellularClusterConfig) {
         val index = customClusterConfigs.indexOfFirst { it.clusterName == cellularClusterConfig.clusterName }

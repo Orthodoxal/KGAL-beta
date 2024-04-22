@@ -9,6 +9,7 @@ import genetic.ga.distributed.lifecycle.DistributedGALifecycleInstance
 import genetic.ga.lifecycle.LifecycleStartOption
 import genetic.ga.panmictic.builder.PanmicticGABuilder
 import genetic.ga.panmictic.lifecycle.PanmicticGALifecycle
+import genetic.stat.StatisticsInstance
 import genetic.utils.clusters.checkClusterNameOrTrySetDefaultName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.job
@@ -71,6 +72,11 @@ internal class DistributedGAInstance<V, F> : AbstractGA<V, F>(), DistributedGABu
 
     override lateinit var populationFactory: (index: Int, random: Random) -> Chromosome<V, F>
     override lateinit var fitnessFunction: (V) -> F
+
+    override fun setStatInstance(statisticsInstance: StatisticsInstance, coroutineContext: CoroutineContext) {
+        gaStatisticsCoroutineContext = coroutineContext
+        this.statisticsInstance = statisticsInstance
+    }
 
     companion object {
         private val BASE_LIFECYCLE: suspend DistributedGALifecycle<*, *>.() -> Unit = {

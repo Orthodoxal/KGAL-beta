@@ -7,6 +7,7 @@ import genetic.ga.lifecycle.LifecycleStartOption
 import genetic.ga.panmictic.builder.PanmicticGABuilder
 import genetic.ga.panmictic.lifecycle.PanmicticGALifecycle
 import genetic.ga.panmictic.lifecycle.PanmicticGALifecycleInstance
+import genetic.stat.StatisticsInstance
 import genetic.utils.clusters.checkClusterNameOrTrySetDefaultName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.job
@@ -57,6 +58,11 @@ internal class PanmicticGAInstance<V, F> : AbstractGA<V, F>(), PanmicticGABuilde
         }
     override lateinit var populationFactory: (index: Int, random: Random) -> Chromosome<V, F>
     override lateinit var fitnessFunction: (V) -> F
+
+    override fun setStatInstance(statisticsInstance: StatisticsInstance, coroutineContext: CoroutineContext) {
+        gaStatisticsCoroutineContext = coroutineContext
+        this.statisticsInstance = statisticsInstance
+    }
 
     companion object {
         private val BASE_LIFECYCLE: suspend PanmicticGALifecycle<*, *>.() -> Unit = {
