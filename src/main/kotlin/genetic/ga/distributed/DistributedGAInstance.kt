@@ -6,6 +6,8 @@ import genetic.ga.AbstractGA
 import genetic.ga.distributed.builder.DistributedGABuilder
 import genetic.ga.distributed.lifecycle.DistributedGALifecycle
 import genetic.ga.distributed.lifecycle.DistributedGALifecycleInstance
+import genetic.ga.lifecycle.GALifecycle.Companion.BASE_AFTER_LIFECYCLE
+import genetic.ga.lifecycle.GALifecycle.Companion.BASE_BEFORE_LIFECYCLE
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_LIFECYCLE
 import genetic.ga.lifecycle.LifecycleStartOption
 import genetic.ga.panmictic.builder.PanmicticGABuilder
@@ -17,9 +19,9 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.random.Random
 
 internal class DistributedGAInstance<V, F> : AbstractGA<V, F>(), DistributedGABuilder<V, F> {
-    private var beforeLifecycle: suspend DistributedGALifecycle<V, F>.() -> Unit = { }
+    private var beforeLifecycle: suspend DistributedGALifecycle<V, F>.() -> Unit = BASE_BEFORE_LIFECYCLE
     private var lifecycle: suspend DistributedGALifecycle<V, F>.() -> Unit = BASE_LIFECYCLE
-    private var afterLifecycle: suspend DistributedGALifecycle<V, F>.() -> Unit = { }
+    private var afterLifecycle: suspend DistributedGALifecycle<V, F>.() -> Unit = BASE_AFTER_LIFECYCLE
     override var random: Random = Random
 
     override fun CoroutineScope.startByOption(

@@ -9,4 +9,5 @@ interface DistributedGALifecycle<V, F> : DistributedGABuilder<V, F>, GALifecycle
 internal class DistributedGALifecycleInstance<V, F>(
     builder: DistributedGABuilder<V, F>,
     override var lifecycleStartOption: LifecycleStartOption,
+    override var stopSignal: Boolean = false,
 ) : DistributedGALifecycle<V, F>, DistributedGABuilder<V, F> by builder

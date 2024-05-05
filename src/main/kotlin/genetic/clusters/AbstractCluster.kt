@@ -13,8 +13,8 @@ import kotlin.random.Random
 
 abstract class AbstractCluster<V, F> : Cluster<V, F> {
     protected var stopSignal: Boolean = false
-    protected var state: ClusterState = ClusterState.INITIALIZE
-        set(value) {
+    override var state: ClusterState = ClusterState.INITIALIZE
+        protected set(value) {
             field = clusterStateMachine(field, value)
         }
     protected var clusterJob: Job? = null

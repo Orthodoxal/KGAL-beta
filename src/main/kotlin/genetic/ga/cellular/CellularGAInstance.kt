@@ -4,7 +4,7 @@ import genetic.chromosome.Chromosome
 import genetic.clusters.Cluster
 import genetic.clusters.simple_cluster.builder.SimpleClusterBuilder
 import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
-import genetic.clusters.simple_cluster.lifecycle.utils.fitnessAll
+import genetic.clusters.simple_cluster.lifecycle.operators.fitnessAll
 import genetic.ga.AbstractGA
 import genetic.ga.cellular.builder.CellularClusterConfig
 import genetic.ga.cellular.builder.CellularGABuilder
@@ -17,6 +17,8 @@ import genetic.ga.cellular.neighborhood.toroidalShapeIndicesFilter
 import genetic.ga.cellular.neighborhood.von_neumann.VonNeumann
 import genetic.ga.cellular.type.CellularType
 import genetic.ga.cellular.type.UpdatePolicy
+import genetic.ga.lifecycle.GALifecycle.Companion.BASE_AFTER_LIFECYCLE
+import genetic.ga.lifecycle.GALifecycle.Companion.BASE_BEFORE_LIFECYCLE
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_LIFECYCLE
 import genetic.ga.lifecycle.LifecycleStartOption
 import genetic.stat.StatisticsInstance
@@ -27,9 +29,9 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.random.Random
 
 internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<V, F> {
-    private var beforeLifecycle: suspend CellularGALifecycle<V, F>.() -> Unit = { }
+    private var beforeLifecycle: suspend CellularGALifecycle<V, F>.() -> Unit = BASE_BEFORE_LIFECYCLE
     private var lifecycle: suspend CellularGALifecycle<V, F>.() -> Unit = BASE_LIFECYCLE
-    private var afterLifecycle: suspend CellularGALifecycle<V, F>.() -> Unit = { }
+    private var afterLifecycle: suspend CellularGALifecycle<V, F>.() -> Unit = BASE_AFTER_LIFECYCLE
     override var random: Random = Random
     private var neighborhoodChanged = true
 

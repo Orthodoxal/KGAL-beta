@@ -1,7 +1,9 @@
 package genetic.ga
 
 import genetic.clusters.Cluster
+import genetic.clusters.state.ClusterState
 import genetic.clusters.state.ClusterStopPolicy
+import genetic.ga.lifecycle.GALifecycle
 import genetic.ga.lifecycle.LifecycleStartOption
 import genetic.ga.state.GAState
 import genetic.ga.state.gaStateMachine
@@ -113,38 +115,51 @@ abstract class AbstractGA<V, F> : GA<V, F> {
         state = GAState.STARTED
         gaJob = launch(coroutineContext) {
             startGA()
-            if (iteration == maxIteration) {
+            if (iteration == maxIteration || state == GAState.FINISHED) {
                 state = GAState.FINISHED
                 gaStatisticsCoroutineScope.cancel()
             }
         }
     }
 
-    protected suspend inline fun <L> baseStartGA(
+    protected suspend inline fun <L : GALifecycle<V, F>> baseStartGA(
         lifecycleScope: L,
         beforeLifecycle: suspend L.() -> Unit,
         lifecycle: suspend L.() -> Unit,
         afterLifecycle: suspend L.() -> Unit,
     ) {
         with(lifecycleScope) {
-            if (iteration == 0) {
+            if (this@AbstractGA.iteration == 0) {
                 beforeLifecycle()
                 statBefore(statisticsInstance)
             }
-            while (iteration < maxIteration) {
+            while (this@AbstractGA.iteration < maxIteration) {
                 lifecycle()
                 statOnLifecycleIteration(statisticsInstance)
-                if (clusters.all { it.generation == it.maxGeneration }) {
-                    iteration++
+
+                val allFinished = clusters.all { it.state == ClusterState.FINISHED }
+                val allFinishedExpected = clusters.all { it.generation == it.maxGeneration }
+
+                if (this.stopSignal || (allFinished && !allFinishedExpected)) {
+                    // Cluster stop by stop conditions -> stop GA
+                    state = GAState.FINISHED
+                    this.stopSignal = false
+                    break
                 }
-                if (stopSignal) {
+
+                if (allFinished) {
+                    this@AbstractGA.iteration++
+                }
+
+                if (this@AbstractGA.stopSignal) {
                     state = GAState.STOPPED
-                    stopSignal = false
+                    this@AbstractGA.stopSignal = false
                     gaStatisticsCoroutineScope.coroutineContext.cancelChildren()
                     return
                 }
             }
-            if (iteration == maxIteration) {
+            if (this@AbstractGA.iteration == maxIteration || state == GAState.FINISHED) {
+                this@AbstractGA.stopSignal = false
                 statAfter(statisticsInstance)
                 afterLifecycle()
             }

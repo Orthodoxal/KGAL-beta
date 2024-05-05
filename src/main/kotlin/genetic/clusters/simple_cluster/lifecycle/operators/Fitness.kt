@@ -1,4 +1,4 @@
-package genetic.clusters.simple_cluster.lifecycle.utils
+package genetic.clusters.simple_cluster.lifecycle.operators
 
 import genetic.chromosome.Chromosome
 import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
