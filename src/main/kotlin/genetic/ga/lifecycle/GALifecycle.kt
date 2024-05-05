@@ -1,8 +1,11 @@
 package genetic.ga.lifecycle
 
 import genetic.clusters.Cluster
+import genetic.ga.GABuilder
+import kotlinx.coroutines.job
+import kotlin.coroutines.coroutineContext
 
-interface GALifecycle {
+interface GALifecycle<V, F> : GABuilder<V, F> {
     var lifecycleStartOption: LifecycleStartOption
 
     suspend fun launchClusters(clusters: List<Cluster<*, *>>) = when (lifecycleStartOption) {
@@ -10,4 +13,11 @@ interface GALifecycle {
         LifecycleStartOption.RESTART -> clusters.forEach { it.restart() }
         LifecycleStartOption.RESUME -> clusters.forEach { it.resume() }
     }.also { lifecycleStartOption = LifecycleStartOption.START }
+
+    companion object {
+        val BASE_LIFECYCLE: suspend GALifecycle<*, *>.() -> Unit = {
+            launchClusters(clusters)
+            coroutineContext.job.children.forEach { it.join() }
+        }
+    }
 }

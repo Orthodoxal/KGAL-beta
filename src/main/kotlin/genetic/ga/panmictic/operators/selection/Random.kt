@@ -6,5 +6,6 @@ import genetic.ga.panmictic.builder.PanmicticGABuilder
 
 suspend fun <V, F> SimpleClusterLifecycle<V, F>.selectionRandom(
     panmicticGABuilder: PanmicticGABuilder<V, F>,
+    elitism: Int = 0,
     onlySingleRun: Boolean = false,
-) = selection(panmicticGABuilder, onlySingleRun) { source -> selectionRandom(source, random) }
+) = selection(panmicticGABuilder, elitism, onlySingleRun) { source -> selectionRandom(source, random) }

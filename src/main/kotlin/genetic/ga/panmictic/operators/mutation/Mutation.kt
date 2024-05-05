@@ -4,6 +4,7 @@ import genetic.chromosome.Chromosome
 import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
 import genetic.ga.panmictic.builder.PanmicticGABuilder
 import genetic.utils.clusters.runWithExtraDispatchersIterative
+import genetic.utils.forEach
 import genetic.utils.randomByChance
 
 suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.mutation(
@@ -23,12 +24,12 @@ inline fun <V, F> SimpleClusterLifecycle<V, F>.singleRunMutation(
     panmicticGABuilder: PanmicticGABuilder<V, F>,
     chance: Double,
     mutation: (chromosome: Chromosome<V, F>) -> Unit,
-) = population.forEach { randomByChance(chance) { mutation(it) } }
+) = population.forEach(elitism, populationSize) { randomByChance(chance) { mutation(it) } }
 
 suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.multiRunMutation(
     panmicticGABuilder: PanmicticGABuilder<V, F>,
     chance: Double,
     crossinline mutation: (chromosome: Chromosome<V, F>) -> Unit,
-) = runWithExtraDispatchersIterative(iterationStart = 0, maxIterationEnd = populationSize) { iteration ->
+) = runWithExtraDispatchersIterative(elitism, populationSize) { iteration ->
     randomByChance(chance) { mutation(population[iteration]) }
 }

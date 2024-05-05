@@ -6,15 +6,14 @@ import genetic.ga.AbstractGA
 import genetic.ga.distributed.builder.DistributedGABuilder
 import genetic.ga.distributed.lifecycle.DistributedGALifecycle
 import genetic.ga.distributed.lifecycle.DistributedGALifecycleInstance
+import genetic.ga.lifecycle.GALifecycle.Companion.BASE_LIFECYCLE
 import genetic.ga.lifecycle.LifecycleStartOption
 import genetic.ga.panmictic.builder.PanmicticGABuilder
 import genetic.ga.panmictic.lifecycle.PanmicticGALifecycle
 import genetic.stat.StatisticsInstance
 import genetic.utils.clusters.checkClusterNameOrTrySetDefaultName
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.job
 import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
 
 internal class DistributedGAInstance<V, F> : AbstractGA<V, F>(), DistributedGABuilder<V, F> {
@@ -44,17 +43,13 @@ internal class DistributedGAInstance<V, F> : AbstractGA<V, F>(), DistributedGABu
     }
 
     override fun DistributedGABuilder<V, F>.lifecycleDistributed(
-        defaultLifecycleRunFirst: Boolean,
         before: (suspend DistributedGALifecycle<V, F>.() -> Unit)?,
         after: (suspend DistributedGALifecycle<V, F>.() -> Unit)?,
         lifecycle: suspend DistributedGALifecycle<V, F>.() -> Unit
     ) {
         before?.let { beforeLifecycle = before }
         after?.let { afterLifecycle = after }
-        this@DistributedGAInstance.lifecycle = {
-            if (defaultLifecycleRunFirst) BASE_LIFECYCLE()
-            lifecycle()
-        }
+        this@DistributedGAInstance.lifecycle = lifecycle
     }
 
     override var randomSeed: Int = 0
@@ -76,12 +71,5 @@ internal class DistributedGAInstance<V, F> : AbstractGA<V, F>(), DistributedGABu
     override fun setStatInstance(statisticsInstance: StatisticsInstance, coroutineContext: CoroutineContext) {
         gaStatisticsCoroutineContext = coroutineContext
         this.statisticsInstance = statisticsInstance
-    }
-
-    companion object {
-        private val BASE_LIFECYCLE: suspend DistributedGALifecycle<*, *>.() -> Unit = {
-            launchClusters(clusters)
-            coroutineContext.job.children.forEach { it.join() }
-        }
     }
 }

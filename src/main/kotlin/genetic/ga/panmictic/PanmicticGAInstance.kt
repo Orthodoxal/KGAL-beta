@@ -3,6 +3,7 @@ package genetic.ga.panmictic
 import genetic.chromosome.Chromosome
 import genetic.clusters.Cluster
 import genetic.ga.AbstractGA
+import genetic.ga.lifecycle.GALifecycle.Companion.BASE_LIFECYCLE
 import genetic.ga.lifecycle.LifecycleStartOption
 import genetic.ga.panmictic.builder.PanmicticGABuilder
 import genetic.ga.panmictic.lifecycle.PanmicticGALifecycle
@@ -10,9 +11,7 @@ import genetic.ga.panmictic.lifecycle.PanmicticGALifecycleInstance
 import genetic.stat.StatisticsInstance
 import genetic.utils.clusters.checkClusterNameOrTrySetDefaultName
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.job
 import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
 
 internal class PanmicticGAInstance<V, F> : AbstractGA<V, F>(), PanmicticGABuilder<V, F> {
@@ -62,12 +61,5 @@ internal class PanmicticGAInstance<V, F> : AbstractGA<V, F>(), PanmicticGABuilde
     override fun setStatInstance(statisticsInstance: StatisticsInstance, coroutineContext: CoroutineContext) {
         gaStatisticsCoroutineContext = coroutineContext
         this.statisticsInstance = statisticsInstance
-    }
-
-    companion object {
-        private val BASE_LIFECYCLE: suspend PanmicticGALifecycle<*, *>.() -> Unit = {
-            launchClusters(clusters)
-            coroutineContext.job.children.forEach { it.join() }
-        }
     }
 }

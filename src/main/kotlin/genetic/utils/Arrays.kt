@@ -14,3 +14,23 @@ internal fun <V, F> fillArrayChromosomeBySubArray(
         }
     }
 }
+
+inline fun <T> Array<out T>.forEach(start: Int, end: Int = this.size, action: (T) -> Unit) {
+    var index = start
+    while (index < end) {
+        action(this[index])
+        index++
+    }
+}
+
+inline fun <T> Array<out T>.forEachIndexed(start: Int, end: Int = this.size, action: (index: Int, T) -> Unit) {
+    var index = start
+    while (index < end) {
+        action(index, this[index])
+        index++
+    }
+}
+
+inline fun loop(start: Int, end: Int, action: (index: Int) -> Unit) {
+    for (index in start..<end) action(index)
+}
