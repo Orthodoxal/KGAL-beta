@@ -7,6 +7,7 @@ import kotlin.coroutines.coroutineContext
 
 interface GALifecycle<V, F> : GABuilder<V, F> {
     var lifecycleStartOption: LifecycleStartOption
+    var stopSignal: Boolean
 
     suspend fun launchClusters(clusters: List<Cluster<*, *>>) = when (lifecycleStartOption) {
         LifecycleStartOption.START -> clusters.forEach { it.start() }
@@ -19,5 +20,7 @@ interface GALifecycle<V, F> : GABuilder<V, F> {
             launchClusters(clusters)
             coroutineContext.job.children.forEach { it.join() }
         }
+        val BASE_BEFORE_LIFECYCLE: suspend GALifecycle<*, *>.() -> Unit = { }
+        val BASE_AFTER_LIFECYCLE: suspend GALifecycle<*, *>.() -> Unit = { }
     }
 }

@@ -1,11 +1,13 @@
 package genetic.clusters
 
 import genetic.chromosome.Chromosome
+import genetic.clusters.state.ClusterState
 import genetic.clusters.state.ClusterStopPolicy
 import genetic.stat.Statistics
 
 interface Cluster<V, F> {
     val name: String?
+    val state: ClusterState
     val population: Array<Chromosome<V, F>>
     val generation: Int
     val maxGeneration: Int

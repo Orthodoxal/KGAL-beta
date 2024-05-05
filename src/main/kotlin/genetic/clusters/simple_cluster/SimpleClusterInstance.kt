@@ -4,8 +4,9 @@ import genetic.chromosome.Chromosome
 import genetic.clusters.AbstractCluster
 import genetic.clusters.simple_cluster.builder.SimpleClusterBuilder
 import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
+import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle.Companion.BASE_AFTER_LIFECYCLE
+import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle.Companion.BASE_BEFORE_LIFECYCLE
 import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycleInstance
-import genetic.clusters.simple_cluster.lifecycle.utils.fitnessAll
 import genetic.clusters.state.ClusterState
 import genetic.stat.StatisticsInstance
 import genetic.utils.statAfter
@@ -22,7 +23,7 @@ internal class SimpleClusterInstance<V, F> : AbstractCluster<V, F>(), SimpleClus
     private val lifecycleScope: SimpleClusterLifecycle<V, F> by lazy { SimpleClusterLifecycleInstance(this) }
     private var beforeLifecycle: suspend SimpleClusterLifecycle<V, F>.() -> Unit = BASE_BEFORE_LIFECYCLE
     private lateinit var lifecycle: suspend SimpleClusterLifecycle<V, F>.() -> Unit
-    private var afterLifecycle: suspend SimpleClusterLifecycle<V, F>.() -> Unit = { }
+    private var afterLifecycle: suspend SimpleClusterLifecycle<V, F>.() -> Unit = BASE_AFTER_LIFECYCLE
 
     override var randomSeed: Int = 0
         set(value) {
@@ -64,6 +65,8 @@ internal class SimpleClusterInstance<V, F> : AbstractCluster<V, F>(), SimpleClus
     }
 
     private suspend fun startCluster() {
+        if (generation >= maxGeneration) return
+
         with(lifecycleScope) {
             if (generation == 0) {
                 beforeLifecycle()
@@ -72,14 +75,20 @@ internal class SimpleClusterInstance<V, F> : AbstractCluster<V, F>(), SimpleClus
             while (generation < maxGeneration) {
                 lifecycle()
                 statisticsInstance?.let { statOnLifecycleIteration(it) }
+                if (this.stopSignal) {
+                    state = ClusterState.FINISHED
+                    this.stopSignal = false
+                    break
+                }
                 super.generation++
-                if (stopSignal) {
+                if (this@SimpleClusterInstance.stopSignal) {
                     state = ClusterState.STOPPED
-                    stopSignal = false
+                    this@SimpleClusterInstance.stopSignal = false
                     return
                 }
             }
-            if (generation == maxGeneration) {
+            if (generation == maxGeneration || state == ClusterState.FINISHED) {
+                this@SimpleClusterInstance.stopSignal = false
                 statisticsInstance?.let { statAfter(it) }
                 afterLifecycle()
             }
@@ -93,9 +102,5 @@ internal class SimpleClusterInstance<V, F> : AbstractCluster<V, F>(), SimpleClus
 
     override fun setStatInstance(statisticsInstance: StatisticsInstance) {
         this.statisticsInstance = statisticsInstance
-    }
-
-    private companion object {
-        val BASE_BEFORE_LIFECYCLE: suspend SimpleClusterLifecycle<*, *>.() -> Unit = { fitnessAll() }
     }
 }

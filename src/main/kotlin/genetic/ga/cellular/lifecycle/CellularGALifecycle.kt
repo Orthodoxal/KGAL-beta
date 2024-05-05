@@ -9,4 +9,5 @@ interface CellularGALifecycle<V, F> : CellularGABuilder<V, F>, GALifecycle<V, F>
 internal class CellularGALifecycleInstance<V, F>(
     builder: CellularGABuilder<V, F>,
     override var lifecycleStartOption: LifecycleStartOption,
+    override var stopSignal: Boolean = false,
 ) : CellularGALifecycle<V, F>, CellularGABuilder<V, F> by builder

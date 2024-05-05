@@ -9,4 +9,5 @@ interface PanmicticGALifecycle<V, F> : PanmicticGABuilder<V, F>, GALifecycle<V, 
 internal class PanmicticGALifecycleInstance<V, F>(
     builder: PanmicticGABuilder<V, F>,
     override var lifecycleStartOption: LifecycleStartOption,
+    override var stopSignal: Boolean = false,
 ) : PanmicticGALifecycle<V, F>, PanmicticGABuilder<V, F> by builder

@@ -3,6 +3,8 @@ package genetic.ga.panmictic
 import genetic.chromosome.Chromosome
 import genetic.clusters.Cluster
 import genetic.ga.AbstractGA
+import genetic.ga.lifecycle.GALifecycle.Companion.BASE_AFTER_LIFECYCLE
+import genetic.ga.lifecycle.GALifecycle.Companion.BASE_BEFORE_LIFECYCLE
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_LIFECYCLE
 import genetic.ga.lifecycle.LifecycleStartOption
 import genetic.ga.panmictic.builder.PanmicticGABuilder
@@ -15,9 +17,9 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.random.Random
 
 internal class PanmicticGAInstance<V, F> : AbstractGA<V, F>(), PanmicticGABuilder<V, F> {
-    private var beforeLifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit = { }
+    private var beforeLifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit = BASE_BEFORE_LIFECYCLE
     private var lifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit = BASE_LIFECYCLE
-    private var afterLifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit = { }
+    private var afterLifecycle: suspend PanmicticGALifecycle<V, F>.() -> Unit = BASE_AFTER_LIFECYCLE
     override var random: Random = Random
 
     override fun CoroutineScope.startByOption(
