@@ -8,5 +8,6 @@ import genetic.ga.panmictic.builder.PanmicticGABuilder
 suspend fun <V, F> SimpleClusterLifecycle<V, F>.selectionTournament(
     panmicticGABuilder: PanmicticGABuilder<V, F>,
     tournamentSize: Int = DEFAULT_TOURNAMENT_SIZE,
+    elitism: Int = 0,
     onlySingleRun: Boolean = false,
-) = selection(panmicticGABuilder, onlySingleRun) { source -> selectionTournament(source, tournamentSize, random) }
+) = selection(panmicticGABuilder, elitism, onlySingleRun) { source -> selectionTournament(source, tournamentSize, random) }

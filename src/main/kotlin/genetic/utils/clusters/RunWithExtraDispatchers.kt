@@ -13,12 +13,12 @@ suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.runWithExtraDispatchers(
 }
 
 suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.runWithExtraDispatchersIterative(
-    iterationStart: Int,
-    maxIterationEnd: Int,
+    start: Int,
+    end: Int,
     crossinline action: suspend (iteration: Int) -> Unit,
 ) {
-    maxIteration = maxIterationEnd
-    currentIteration.set(iterationStart)
+    maxIteration = end
+    currentIteration.set(start)
 
     runWithExtraDispatchers {
         var iteration = currentIteration.getAndIncrement()

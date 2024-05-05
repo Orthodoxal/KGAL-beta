@@ -99,8 +99,7 @@ abstract class AbstractGA<V, F> : GA<V, F> {
         prepareStatisticsAndStartByOption(LifecycleStartOption.RESTART, iterationFrom, coroutineContext)
     }
 
-    override fun collectStat(collector: FlowCollector<StatisticNote>) =
-        this.apply { statCollector = collector }
+    override fun collectStat(collector: FlowCollector<StatisticNote>) = this.apply { statCollector = collector }
 
     override fun statFlow(collector: suspend CoroutineScope.(stat: Statistics) -> Unit) =
         this.apply { statFlowCollector = collector }

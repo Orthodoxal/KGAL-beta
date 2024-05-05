@@ -17,14 +17,13 @@ import genetic.ga.cellular.neighborhood.toroidalShapeIndicesFilter
 import genetic.ga.cellular.neighborhood.von_neumann.VonNeumann
 import genetic.ga.cellular.type.CellularType
 import genetic.ga.cellular.type.UpdatePolicy
+import genetic.ga.lifecycle.GALifecycle.Companion.BASE_LIFECYCLE
 import genetic.ga.lifecycle.LifecycleStartOption
 import genetic.stat.StatisticsInstance
 import genetic.utils.clusters.checkClusterNameOrTrySetDefaultName
 import genetic.utils.clusters.runWithExtraDispatchersIterative
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.job
 import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
 
 internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<V, F> {
@@ -196,7 +195,7 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
     ) {
         val tempPopulation = population.copyOf()
 
-        runWithExtraDispatchersIterative(iterationStart = 0, maxIterationEnd = populationSize) { iteration ->
+        runWithExtraDispatchersIterative(0, populationSize) { iteration ->
             val chromosomeNeighboursIndices = populationNeighboursIndices[iteration]
             val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
                 population[chromosomeNeighboursIndices[indexNeighbour]]
@@ -216,7 +215,7 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
     ) {
         when (updatePolicy) {
             is UpdatePolicy.LineSweep -> {
-                runWithExtraDispatchersIterative(iterationStart = 0, maxIterationEnd = populationSize) { iteration ->
+                runWithExtraDispatchersIterative(0, populationSize) { iteration ->
                     val chromosomeNeighboursIndices = populationNeighboursIndices[iteration]
                     val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
                         population[chromosomeNeighboursIndices[indexNeighbour]]
@@ -228,7 +227,7 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
 
             is UpdatePolicy.FixedRandomSweep -> {
                 val indicesShuffled = IntArray(populationSize) { it }.apply { shuffle(Random(0)) }
-                runWithExtraDispatchersIterative(iterationStart = 0, maxIterationEnd = populationSize) { iteration ->
+                runWithExtraDispatchersIterative(0, populationSize) { iteration ->
                     val index = indicesShuffled[iteration]
                     val chromosomeNeighboursIndices = populationNeighboursIndices[index]
                     val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
@@ -241,7 +240,7 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
 
             is UpdatePolicy.NewRandomSweep -> {
                 val indicesShuffled = IntArray(populationSize) { it }.apply { shuffle(random) }
-                runWithExtraDispatchersIterative(iterationStart = 0, maxIterationEnd = populationSize) { iteration ->
+                runWithExtraDispatchersIterative(0, populationSize) { iteration ->
                     val index = indicesShuffled[iteration]
                     val chromosomeNeighboursIndices = populationNeighboursIndices[index]
                     val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
@@ -253,7 +252,7 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
             }
 
             is UpdatePolicy.UniformChoice -> {
-                runWithExtraDispatchersIterative(iterationStart = 0, maxIterationEnd = populationSize) { _ ->
+                runWithExtraDispatchersIterative(0, populationSize) { _ ->
                     val index = random.nextInt()
                     val chromosomeNeighboursIndices = populationNeighboursIndices[index]
                     val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
@@ -289,13 +288,6 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
             if (new > old) population[index] = new
         } else {
             population[index] = new
-        }
-    }
-
-    companion object {
-        private val BASE_LIFECYCLE: suspend CellularGALifecycle<*, *>.() -> Unit = {
-            launchClusters(clusters)
-            coroutineContext.job.children.forEach { it.join() }
         }
     }
 }
