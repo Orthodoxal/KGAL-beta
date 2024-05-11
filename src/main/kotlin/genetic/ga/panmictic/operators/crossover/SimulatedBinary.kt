@@ -1,10 +1,10 @@
 package genetic.ga.panmictic.operators.crossover
 
+import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
 import genetic.ga.base_operators.crossover.simulated_binary.crossoverSimulatedBinaryDoubleArray
-import genetic.ga.cellular.lifecycle.SimpleClusterCellLifecycle
 import genetic.ga.panmictic.builder.PanmicticGABuilder
 
-suspend fun <F> SimpleClusterCellLifecycle<DoubleArray, F>.crossoverSimulatedBinaryDoubleArray(
+suspend fun <F> SimpleClusterLifecycle<DoubleArray, F>.crossoverSimulatedBinaryDoubleArray(
     panmicticGABuilder: PanmicticGABuilder<DoubleArray, F>,
     chance: Double,
     eta: Double,
