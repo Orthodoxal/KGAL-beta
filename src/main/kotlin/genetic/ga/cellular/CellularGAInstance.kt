@@ -157,15 +157,18 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
             }
 
             is CellularType.Asynchronous -> {
-                val updatePolicy = cellularType.updatePolicy
                 if (isSingleRun) {
                     singleRunAsynchronous(
-                        elitism, updatePolicy, populationNeighboursIndices
+                        elitism, cellularType.updatePolicy, populationNeighboursIndices
                     ) { chromosome, neighbours ->
                         lifecycle(chromosome, neighbours)
                     }
                 } else {
-                    TODO("Реализовать многопоточную версию")
+                    multiRunAsynchronous(
+                        elitism, cellularType.updatePolicy, populationNeighboursIndices
+                    ) { chromosome, neighbours ->
+                        lifecycle(chromosome, neighbours)
+                    }
                 }
             }
         }
@@ -186,6 +189,7 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
             }
             val result = lifecycleWorker(chromosome.clone(), chromosomeNeighbours)
             replaceWithElitism(elitism, tempPopulation, index, chromosome, result)
+            if (stopSignal) return@forEachIndexed
         }
         population = tempPopulation
     }
@@ -209,7 +213,69 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
         population = tempPopulation
     }
 
-    private suspend inline fun SimpleClusterLifecycle<V, F>.singleRunAsynchronous(
+    private inline fun SimpleClusterLifecycle<V, F>.singleRunAsynchronous(
+        elitism: Boolean,
+        updatePolicy: UpdatePolicy,
+        populationNeighboursIndices: Array<IntArray>,
+        lifecycleWorker: (chromosome: Chromosome<V, F>, neighbours: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
+    ) {
+        when (updatePolicy) {
+            is UpdatePolicy.LineSweep -> {
+                population.forEachIndexed { index, chromosome ->
+                    val chromosomeNeighboursIndices = populationNeighboursIndices[index]
+                    val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
+                        population[chromosomeNeighboursIndices[indexNeighbour]]
+                    }
+                    val result = lifecycleWorker(chromosome.clone(), chromosomeNeighbours)
+                    replaceWithElitism(elitism, population, index, chromosome, result)
+                    if (stopSignal) return@forEachIndexed
+                }
+            }
+
+            is UpdatePolicy.FixedRandomSweep -> {
+                val indicesShuffled = IntArray(populationSize) { it }.apply { shuffle(Random(randomSeed)) }
+                population.forEachIndexed { index, _ ->
+                    val indexR = indicesShuffled[index]
+                    val chromosomeNeighboursIndices = populationNeighboursIndices[indexR]
+                    val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
+                        population[chromosomeNeighboursIndices[indexNeighbour]]
+                    }
+                    val result = lifecycleWorker(population[indexR].clone(), chromosomeNeighbours)
+                    replaceWithElitism(elitism, population, indexR, population[indexR], result)
+                    if (stopSignal) return@forEachIndexed
+                }
+            }
+
+            is UpdatePolicy.NewRandomSweep -> {
+                val indicesShuffled = IntArray(populationSize) { it }.apply { shuffle(random) }
+                population.forEachIndexed { index, _ ->
+                    val indexR = indicesShuffled[index]
+                    val chromosomeNeighboursIndices = populationNeighboursIndices[indexR]
+                    val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
+                        population[chromosomeNeighboursIndices[indexNeighbour]]
+                    }
+                    val result = lifecycleWorker(population[indexR].clone(), chromosomeNeighbours)
+                    replaceWithElitism(elitism, population, indexR, population[indexR], result)
+                    if (stopSignal) return@forEachIndexed
+                }
+            }
+
+            is UpdatePolicy.UniformChoice -> {
+                population.forEachIndexed { _, _ ->
+                    val indexR = random.nextInt(populationSize)
+                    val chromosomeNeighboursIndices = populationNeighboursIndices[indexR]
+                    val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
+                        population[chromosomeNeighboursIndices[indexNeighbour]]
+                    }
+                    val result = lifecycleWorker(population[indexR].clone(), chromosomeNeighbours)
+                    replaceWithElitism(elitism, population, indexR, population[indexR], result)
+                    if (stopSignal) return@forEachIndexed
+                }
+            }
+        }
+    }
+
+    private suspend inline fun SimpleClusterLifecycle<V, F>.multiRunAsynchronous(
         elitism: Boolean,
         updatePolicy: UpdatePolicy,
         populationNeighboursIndices: Array<IntArray>,
@@ -228,7 +294,7 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
             }
 
             is UpdatePolicy.FixedRandomSweep -> {
-                val indicesShuffled = IntArray(populationSize) { it }.apply { shuffle(Random(0)) }
+                val indicesShuffled = IntArray(populationSize) { it }.apply { shuffle(Random(randomSeed)) }
                 runWithExtraDispatchersIterative(0, populationSize) { iteration ->
                     val index = indicesShuffled[iteration]
                     val chromosomeNeighboursIndices = populationNeighboursIndices[index]
@@ -255,7 +321,7 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
 
             is UpdatePolicy.UniformChoice -> {
                 runWithExtraDispatchersIterative(0, populationSize) { _ ->
-                    val index = random.nextInt()
+                    val index = random.nextInt(populationSize)
                     val chromosomeNeighboursIndices = populationNeighboursIndices[index]
                     val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
                         population[chromosomeNeighboursIndices[indexNeighbour]]
