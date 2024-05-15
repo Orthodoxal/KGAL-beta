@@ -2,6 +2,8 @@ package genetic.utils
 
 import genetic.clusters.ClusterBuilder
 import kotlin.math.abs
+import kotlin.math.ln
+import kotlin.math.sqrt
 import kotlin.random.Random
 
 fun Double.equalsDelta(other: Double) = abs(this / other - 1) < 0.000001
@@ -65,4 +67,17 @@ inline fun <reified T> Array<out T>.random(count: Int, random: Random): Array<T>
 inline fun <reified T> Array<out T>.randomWithIndices(count: Int, random: Random): Pair<Array<T>, IntArray> {
     val indices = indicesByRandom(count, random)
     return Array(count) { get(indices[it]) } to indices
+}
+
+fun Random.nextGaussian(mean: Double, stddev: Double): Double {
+    var v1: Double
+    var v2: Double
+    var s: Double
+    do {
+        v1 = 2 * nextDouble() - 1
+        v2 = 2 * nextDouble() - 1
+        s = v1 * v1 + v2 * v2
+    } while (s >= 1 || s.equalsDelta(0.0))
+    val multiplier = sqrt(-2 * ln(s) / s)
+    return mean + stddev * (v1 * multiplier)
 }

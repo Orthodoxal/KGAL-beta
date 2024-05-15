@@ -34,3 +34,27 @@ inline fun <T> Array<out T>.forEachIndexed(start: Int, end: Int = this.size, act
 inline fun loop(start: Int, end: Int, action: (index: Int) -> Unit) {
     for (index in start..<end) action(index)
 }
+
+inline fun IntArray.forEachReverseIndexed(action: (Int, index: Int) -> Unit) {
+    var index = lastIndex
+    while (index >= 0) {
+        action(this[index], index)
+        index--
+    }
+}
+
+inline fun <T> Array<T>.forEachReverse(action: (T) -> Unit) {
+    var index = lastIndex
+    while (index >= 0) {
+        action(this[index])
+        index--
+    }
+}
+
+inline fun <T> Array<T>.forEachReverseIndexed(action: (T, index: Int) -> Unit) {
+    var index = lastIndex
+    while (index >= 0) {
+        action(this[index], index)
+        index--
+    }
+}

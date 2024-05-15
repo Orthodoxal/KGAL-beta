@@ -2,6 +2,7 @@ package genetic.ga.panmictic.operators.selection.elitism
 
 import genetic.chromosome.Chromosome
 import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
+import genetic.utils.forEachReverseIndexed
 import java.util.*
 
 private val comparator = Comparator<Pair<Int, Chromosome<*, *>>> { p1, p2 -> compareValues(p1.second, p2.second) }
@@ -27,14 +28,37 @@ fun <V, F> elitChromosomeIndices(
     if (count <= 0) error("Count must be more than zero")
     if (source.size < count) error("Count must be less or equal to source size")
     val priority = PriorityQueue<Pair<Int, Chromosome<V, F>>>(count + 1, comparator)
-    return elitChromosomeComparable(source, count, priority)
+    val r = elitChromosomeComparable(source, count, priority)
+    return r
 }
 
 fun <V, F> SimpleClusterLifecycle<V, F>.moveToStartElitChromosomes() {
     val elitIndices = elitChromosomeIndices(population, elitism)
-    repeat(elitism) { index ->
-        val temp = population[elitIndices[index]]
-        population[elitIndices[index]] = population[index]
-        population[index] = temp
+    val elitChromosomes = Array(elitism) { index -> population[elitIndices[elitism - 1 - index]] }
+    val elitOld = population.copyOf(elitism)
+    val replaceIndicesList = mutableListOf<Int>()
+    val replaceIndicesOldElitList = mutableListOf<Int>()
+    elitIndices.forEachIndexed { index, elitIndex ->
+        if (elitIndex >= elitism) {
+            replaceIndicesList.add(elitIndex)
+        }
+        if (index !in elitIndices) {
+            replaceIndicesOldElitList.add(index)
+        }
+        population[index] = elitChromosomes[index]
     }
+    replaceIndicesList.forEachIndexed { index, replaceIndex ->
+        population[replaceIndex] = elitOld[replaceIndicesOldElitList[index]]!!
+    }
+
+
+    /*repeat(elitism) { index ->
+        val temp = elitChromosomes[index]
+        elitChromosomes[index] = population[index]
+
+        val elitIndex = elitism - 1 - index
+        val temp = population[elitIndices[elitIndex]]
+        population[elitIndices[elitIndex]] = population[index]
+        population[index] = temp
+    }*/
 }
