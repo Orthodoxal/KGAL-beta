@@ -4,7 +4,7 @@ import genetic.clusters.simple_cluster.SimpleClusterInstance
 import genetic.clusters.simple_cluster.builder.SimpleClusterBuilder
 import genetic.clusters.simple_cluster.lifecycle.operators.fitnessAll
 
-interface SimpleClusterLifecycle<V, F> : SimpleClusterBuilder<V, F>, MultiRunHelper {
+interface SimpleClusterLifecycle<V, F> : SimpleClusterBuilder<V, F>, MultiRunHelper, LifecycleStore {
     val generation: Int
     val isSingleRun: Boolean
     var elitism: Int
@@ -19,8 +19,11 @@ interface SimpleClusterLifecycle<V, F> : SimpleClusterBuilder<V, F>, MultiRunHel
 internal class SimpleClusterLifecycleInstance<V, F>(
     private val simpleClusterInstance: SimpleClusterInstance<V, F>,
     multiRunHelper: MultiRunHelper = MultiRunHelperInstance(),
-) : SimpleClusterLifecycle<V, F>, SimpleClusterBuilder<V, F> by simpleClusterInstance,
-    MultiRunHelper by multiRunHelper {
+    lifecycleStore: LifecycleStore = LifecycleStoreInstance(),
+) : SimpleClusterLifecycle<V, F>,
+    SimpleClusterBuilder<V, F> by simpleClusterInstance,
+    MultiRunHelper by multiRunHelper,
+    LifecycleStore by lifecycleStore {
     override val generation get() = simpleClusterInstance.generation
     override val isSingleRun get() = this.extraDispatchers?.isEmpty() ?: true
     override var elitism: Int = 0
