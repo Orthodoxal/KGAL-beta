@@ -2,6 +2,7 @@ package genetic.clusters.simple_cluster.lifecycle.operators
 
 import genetic.chromosome.Chromosome
 import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
+import genetic.utils.forEach
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -14,13 +15,12 @@ suspend fun <V, F> SimpleClusterLifecycle<V, F>.fitnessAll(onlySingleRun: Boolea
     }
 }
 
-fun <V, F> SimpleClusterLifecycle<V, F>.singleRunFitnessAll() {
-    for (chromosome in population) chromosome.fitness = fitnessFunction(chromosome.value)
-}
+fun <V, F> SimpleClusterLifecycle<V, F>.singleRunFitnessAll() =
+    population.forEach(elitism, populationSize) { it.fitness = fitnessFunction(it.value) }
 
 suspend fun <V, F> SimpleClusterLifecycle<V, F>.multiRunSelection() {
     maxIteration = populationSize
-    currentIteration.set(0)
+    currentIteration.set(elitism)
 
     coroutineScope {
         extraDispatchers?.map {

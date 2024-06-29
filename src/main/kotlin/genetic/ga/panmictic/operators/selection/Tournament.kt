@@ -11,3 +11,17 @@ suspend fun <V, F> SimpleClusterLifecycle<V, F>.selectionTournament(
     elitism: Int = 0,
     onlySingleRun: Boolean = false,
 ) = selection(panmicticGABuilder, elitism, onlySingleRun) { source -> selectionTournament(source, tournamentSize, random) }
+
+suspend fun <V, F> SimpleClusterLifecycle<V, F>.selectionTournament(
+    panmicticGABuilder: PanmicticGABuilder<V, F>,
+    percent: Double,
+    tournamentSize: Int = DEFAULT_TOURNAMENT_SIZE,
+    elitism: Int = 0,
+    onlySingleRun: Boolean = false,
+) = selectionWithIndex(panmicticGABuilder, elitism, onlySingleRun) { index, source ->
+    if (index < (populationSize * percent).toInt()) {
+        selectionTournament(source, tournamentSize, random)
+    } else {
+        populationFactory(index, random)
+    }
+}

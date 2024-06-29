@@ -2,7 +2,6 @@ package genetic.ga.panmictic.operators.selection.elitism
 
 import genetic.chromosome.Chromosome
 import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
-import genetic.utils.forEachReverseIndexed
 import java.util.*
 
 private val comparator = Comparator<Pair<Int, Chromosome<*, *>>> { p1, p2 -> compareValues(p1.second, p2.second) }
@@ -50,15 +49,4 @@ fun <V, F> SimpleClusterLifecycle<V, F>.moveToStartElitChromosomes() {
     replaceIndicesList.forEachIndexed { index, replaceIndex ->
         population[replaceIndex] = elitOld[replaceIndicesOldElitList[index]]!!
     }
-
-
-    /*repeat(elitism) { index ->
-        val temp = elitChromosomes[index]
-        elitChromosomes[index] = population[index]
-
-        val elitIndex = elitism - 1 - index
-        val temp = population[elitIndices[elitIndex]]
-        population[elitIndices[elitIndex]] = population[index]
-        population[index] = temp
-    }*/
 }
