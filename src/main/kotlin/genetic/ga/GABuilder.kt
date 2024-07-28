@@ -1,7 +1,7 @@
 package genetic.ga
 
 import genetic.chromosome.Chromosome
-import genetic.clusters.Cluster
+import genetic.clusters.base.Cluster
 import genetic.stat.StatisticsInstance
 import kotlin.coroutines.CoroutineContext
 import kotlin.random.Random

@@ -1,6 +1,6 @@
 package genetic.ga.lifecycle
 
-import genetic.clusters.Cluster
+import genetic.clusters.base.Cluster
 import genetic.ga.GABuilder
 import kotlinx.coroutines.job
 import kotlin.coroutines.coroutineContext

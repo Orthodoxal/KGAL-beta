@@ -1,30 +1,42 @@
 package genetic.utils.clusters
 
-import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
+import genetic.clusters.base.lifecycle.ClusterLifecycle
+import genetic.clusters.cellular.lifecycle.CellularLifecycle
+import genetic.clusters.panmictic.PanmicticLifecycle
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.runWithExtraDispatchers(
-    crossinline action: suspend () -> Unit,
-) {
-    coroutineScope {
-        extraDispatchers?.map { dispatcher -> launch(dispatcher) { action() } }
+suspend inline fun ClusterLifecycle.runActionIterative(action: suspend (iteration: Int) -> Unit) {
+    var iteration = currentIteration.getAndIncrement()
+    while (iteration < maxIteration) {
+        action(iteration)
+        iteration = currentIteration.getAndIncrement()
     }
 }
 
-suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.runWithExtraDispatchersIterative(
+suspend inline fun ClusterLifecycle.runIterative(
     start: Int,
     end: Int,
-    crossinline action: suspend (iteration: Int) -> Unit,
+    crossinline action: suspend CoroutineScope.() -> Unit
 ) {
     maxIteration = end
     currentIteration.set(start)
+    coroutineScope { action() }
+}
 
-    runWithExtraDispatchers {
-        var iteration = currentIteration.getAndIncrement()
-        while (iteration < maxIteration) {
-            action(iteration)
-            iteration = currentIteration.getAndIncrement()
-        }
-    }
+suspend inline fun PanmicticLifecycle<*, *>.runWithExtraDispatchersIterative(
+    start: Int,
+    end: Int,
+    crossinline action: suspend (iteration: Int) -> Unit,
+) = runIterative(start, end) {
+    extraDispatchers?.forEach { dispatcher -> launch(dispatcher) { runActionIterative(action) } }
+}
+
+suspend inline fun CellularLifecycle<*, *>.runWithExtraDispatchersIterative(
+    start: Int,
+    end: Int,
+    crossinline action: suspend (iteration: Int) -> Unit,
+) = runIterative(start, end) {
+    extraDispatchers?.forEach { dispatcher -> launch(dispatcher) { runActionIterative(action) } }
 }

@@ -1,7 +1,7 @@
 package genetic.ga
 
-import genetic.clusters.Cluster
-import genetic.clusters.state.ClusterStopPolicy
+import genetic.clusters.base.Cluster
+import genetic.clusters.base.state.ClusterStopPolicy
 import genetic.stat.StatisticNote
 import genetic.stat.Statistics
 import kotlinx.coroutines.CoroutineScope

@@ -1,7 +1,7 @@
 package genetic.ga.cellular
 
 import genetic.chromosome.Chromosome
-import genetic.clusters.Cluster
+import genetic.clusters.base.Cluster
 import genetic.clusters.simple_cluster.builder.SimpleClusterBuilder
 import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
 import genetic.clusters.simple_cluster.lifecycle.operators.fitnessAll
@@ -12,9 +12,9 @@ import genetic.ga.cellular.lifecycle.CellularGALifecycle
 import genetic.ga.cellular.lifecycle.CellularGALifecycleInstance
 import genetic.ga.cellular.lifecycle.SimpleClusterCellLifecycle
 import genetic.ga.cellular.lifecycle.simpleClusterCellLifecycle
-import genetic.ga.cellular.neighborhood.CellularNeighborhood
-import genetic.ga.cellular.neighborhood.toroidalShapeIndicesFilter
-import genetic.ga.cellular.neighborhood.von_neumann.VonNeumann
+import genetic.clusters.cellular.neighborhood.CellularNeighborhood
+import genetic.clusters.cellular.neighborhood.toroidalShapeIndicesFilter
+import genetic.clusters.cellular.neighborhood.von_neumann.VonNeumann
 import genetic.ga.cellular.type.CellularType
 import genetic.ga.cellular.type.UpdatePolicy
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_AFTER_LIFECYCLE
@@ -181,17 +181,17 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
         populationNeighboursIndices: Array<IntArray>,
         lifecycleWorker: (chromosome: Chromosome<V, F>, neighbours: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
     ) {
-        val tempPopulation = population.copyOf()
-        population.forEachIndexed { index, chromosome ->
+        val tempPopulation = populationOld.copyOf()
+        populationOld.forEachIndexed { index, chromosome ->
             val chromosomeNeighboursIndices = populationNeighboursIndices[index]
             val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
-                population[chromosomeNeighboursIndices[indexNeighbour]]
+                populationOld[chromosomeNeighboursIndices[indexNeighbour]]
             }
             val result = lifecycleWorker(chromosome.clone(), chromosomeNeighbours)
             replaceWithElitism(elitism, tempPopulation, index, chromosome, result)
             if (stopSignal) return@forEachIndexed
         }
-        population = tempPopulation
+        populationOld = tempPopulation
     }
 
     private suspend inline fun SimpleClusterLifecycle<V, F>.multiRunSynchronous(
@@ -199,18 +199,18 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
         populationNeighboursIndices: Array<IntArray>,
         crossinline lifecycleWorker: suspend (chromosome: Chromosome<V, F>, neighbours: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
     ) {
-        val tempPopulation = population.copyOf()
+        val tempPopulation = populationOld.copyOf()
 
         runWithExtraDispatchersIterative(0, populationSize) { iteration ->
             val chromosomeNeighboursIndices = populationNeighboursIndices[iteration]
             val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
-                population[chromosomeNeighboursIndices[indexNeighbour]]
+                populationOld[chromosomeNeighboursIndices[indexNeighbour]]
             }
-            val result = lifecycleWorker(population[iteration].clone(), chromosomeNeighbours)
+            val result = lifecycleWorker(populationOld[iteration].clone(), chromosomeNeighbours)
             replaceWithElitism(elitism, tempPopulation, iteration, tempPopulation[iteration], result)
         }
 
-        population = tempPopulation
+        populationOld = tempPopulation
     }
 
     private inline fun SimpleClusterLifecycle<V, F>.singleRunAsynchronous(
@@ -221,54 +221,54 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
     ) {
         when (updatePolicy) {
             is UpdatePolicy.LineSweep -> {
-                population.forEachIndexed { index, chromosome ->
+                populationOld.forEachIndexed { index, chromosome ->
                     val chromosomeNeighboursIndices = populationNeighboursIndices[index]
                     val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
-                        population[chromosomeNeighboursIndices[indexNeighbour]]
+                        populationOld[chromosomeNeighboursIndices[indexNeighbour]]
                     }
                     val result = lifecycleWorker(chromosome.clone(), chromosomeNeighbours)
-                    replaceWithElitism(elitism, population, index, chromosome, result)
+                    replaceWithElitism(elitism, populationOld, index, chromosome, result)
                     if (stopSignal) return@forEachIndexed
                 }
             }
 
             is UpdatePolicy.FixedRandomSweep -> {
                 val indicesShuffled = IntArray(populationSize) { it }.apply { shuffle(Random(randomSeed)) }
-                population.forEachIndexed { index, _ ->
+                populationOld.forEachIndexed { index, _ ->
                     val indexR = indicesShuffled[index]
                     val chromosomeNeighboursIndices = populationNeighboursIndices[indexR]
                     val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
-                        population[chromosomeNeighboursIndices[indexNeighbour]]
+                        populationOld[chromosomeNeighboursIndices[indexNeighbour]]
                     }
-                    val result = lifecycleWorker(population[indexR].clone(), chromosomeNeighbours)
-                    replaceWithElitism(elitism, population, indexR, population[indexR], result)
+                    val result = lifecycleWorker(populationOld[indexR].clone(), chromosomeNeighbours)
+                    replaceWithElitism(elitism, populationOld, indexR, populationOld[indexR], result)
                     if (stopSignal) return@forEachIndexed
                 }
             }
 
             is UpdatePolicy.NewRandomSweep -> {
                 val indicesShuffled = IntArray(populationSize) { it }.apply { shuffle(random) }
-                population.forEachIndexed { index, _ ->
+                populationOld.forEachIndexed { index, _ ->
                     val indexR = indicesShuffled[index]
                     val chromosomeNeighboursIndices = populationNeighboursIndices[indexR]
                     val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
-                        population[chromosomeNeighboursIndices[indexNeighbour]]
+                        populationOld[chromosomeNeighboursIndices[indexNeighbour]]
                     }
-                    val result = lifecycleWorker(population[indexR].clone(), chromosomeNeighbours)
-                    replaceWithElitism(elitism, population, indexR, population[indexR], result)
+                    val result = lifecycleWorker(populationOld[indexR].clone(), chromosomeNeighbours)
+                    replaceWithElitism(elitism, populationOld, indexR, populationOld[indexR], result)
                     if (stopSignal) return@forEachIndexed
                 }
             }
 
             is UpdatePolicy.UniformChoice -> {
-                population.forEachIndexed { _, _ ->
+                populationOld.forEachIndexed { _, _ ->
                     val indexR = random.nextInt(populationSize)
                     val chromosomeNeighboursIndices = populationNeighboursIndices[indexR]
                     val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
-                        population[chromosomeNeighboursIndices[indexNeighbour]]
+                        populationOld[chromosomeNeighboursIndices[indexNeighbour]]
                     }
-                    val result = lifecycleWorker(population[indexR].clone(), chromosomeNeighbours)
-                    replaceWithElitism(elitism, population, indexR, population[indexR], result)
+                    val result = lifecycleWorker(populationOld[indexR].clone(), chromosomeNeighbours)
+                    replaceWithElitism(elitism, populationOld, indexR, populationOld[indexR], result)
                     if (stopSignal) return@forEachIndexed
                 }
             }
@@ -286,10 +286,10 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
                 runWithExtraDispatchersIterative(0, populationSize) { iteration ->
                     val chromosomeNeighboursIndices = populationNeighboursIndices[iteration]
                     val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
-                        population[chromosomeNeighboursIndices[indexNeighbour]]
+                        populationOld[chromosomeNeighboursIndices[indexNeighbour]]
                     }
-                    val result = lifecycleWorker(population[iteration].clone(), chromosomeNeighbours)
-                    replaceWithElitism(elitism, population, iteration, population[iteration], result)
+                    val result = lifecycleWorker(populationOld[iteration].clone(), chromosomeNeighbours)
+                    replaceWithElitism(elitism, populationOld, iteration, populationOld[iteration], result)
                 }
             }
 
@@ -299,10 +299,10 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
                     val index = indicesShuffled[iteration]
                     val chromosomeNeighboursIndices = populationNeighboursIndices[index]
                     val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
-                        population[chromosomeNeighboursIndices[indexNeighbour]]
+                        populationOld[chromosomeNeighboursIndices[indexNeighbour]]
                     }
-                    val result = lifecycleWorker(population[index].clone(), chromosomeNeighbours)
-                    replaceWithElitism(elitism, population, index, population[index], result)
+                    val result = lifecycleWorker(populationOld[index].clone(), chromosomeNeighbours)
+                    replaceWithElitism(elitism, populationOld, index, populationOld[index], result)
                 }
             }
 
@@ -312,10 +312,10 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
                     val index = indicesShuffled[iteration]
                     val chromosomeNeighboursIndices = populationNeighboursIndices[index]
                     val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
-                        population[chromosomeNeighboursIndices[indexNeighbour]]
+                        populationOld[chromosomeNeighboursIndices[indexNeighbour]]
                     }
-                    val result = lifecycleWorker(population[index].clone(), chromosomeNeighbours)
-                    replaceWithElitism(elitism, population, index, population[index], result)
+                    val result = lifecycleWorker(populationOld[index].clone(), chromosomeNeighbours)
+                    replaceWithElitism(elitism, populationOld, index, populationOld[index], result)
                 }
             }
 
@@ -324,10 +324,10 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
                     val index = random.nextInt(populationSize)
                     val chromosomeNeighboursIndices = populationNeighboursIndices[index]
                     val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
-                        population[chromosomeNeighboursIndices[indexNeighbour]]
+                        populationOld[chromosomeNeighboursIndices[indexNeighbour]]
                     }
-                    val result = lifecycleWorker(population[index].clone(), chromosomeNeighbours)
-                    replaceWithElitism(elitism, population, index, population[index], result)
+                    val result = lifecycleWorker(populationOld[index].clone(), chromosomeNeighbours)
+                    replaceWithElitism(elitism, populationOld, index, populationOld[index], result)
                 }
             }
         }

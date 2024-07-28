@@ -1,10 +1,11 @@
 package genetic.stat.registers
 
-import genetic.clusters.Cluster
-import genetic.clusters.ClusterBuilder
+import genetic.clusters.base.Cluster
+import genetic.clusters.base.builder.ClusterBuilder
 import genetic.ga.GABuilder
 import genetic.stat.StatisticRegister
 import genetic.stat.StatisticsBuilder
+import genetic.utils.clusters.max
 
 private const val REGISTER_NAME = "MAX"
 

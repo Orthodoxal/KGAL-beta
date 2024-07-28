@@ -1,8 +1,8 @@
-import genetic.ga.base_operators.mutation.flip_bit.mutationFlipBitBooleanArray
-import genetic.ga.base_operators.mutation.gaussian.mutationGaussian
-import genetic.ga.base_operators.mutation.polynomial_bounded.mutationPolynomialBounded
-import genetic.ga.base_operators.mutation.shuffle_indexes.mutationShuffleIndexes
-import genetic.ga.base_operators.mutation.uniform.mutationUniform
+import genetic.clusters.base.operators.mutation.flip_bit.mutationFlipBit
+import genetic.clusters.base.operators.mutation.gaussian.mutationGaussian
+import genetic.clusters.base.operators.mutation.polynomial_bounded.mutationPolynomialBounded
+import genetic.clusters.base.operators.mutation.shuffle_indexes.mutationShuffleIndexes
+import genetic.clusters.base.operators.mutation.uniform.mutationUniform
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 import kotlin.test.assertContentEquals
@@ -19,7 +19,7 @@ class MutationTest {
     fun flipBitTest() {
         val value1 = booleanArrayValue1
         val chance = 0.5
-        mutationFlipBitBooleanArray(value1, chance, random)
+        mutationFlipBit(value1, chance, random)
         val result1 = booleanArrayOf(false, false, true, true, false)
         assertContentEquals(value1, result1)
     }

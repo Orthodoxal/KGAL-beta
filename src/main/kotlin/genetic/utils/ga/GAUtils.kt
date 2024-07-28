@@ -1,6 +1,6 @@
 package genetic.utils.ga
 
-import genetic.clusters.state.ClusterStopPolicy
+import genetic.clusters.base.state.ClusterStopPolicy
 import genetic.ga.GA
 import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.CoroutineContext

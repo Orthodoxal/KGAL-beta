@@ -1,6 +1,6 @@
 package genetic.utils
 
-import genetic.clusters.Cluster
+import genetic.clusters.base.Cluster
 import genetic.ga.GA
 import genetic.stat.StatisticNote
 import genetic.stat.StatisticRegister

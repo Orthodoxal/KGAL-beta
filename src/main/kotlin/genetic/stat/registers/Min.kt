@@ -1,15 +1,15 @@
 package genetic.stat.registers
 
-import genetic.clusters.Cluster
-import genetic.clusters.ClusterBuilder
+import genetic.clusters.base.Cluster
+import genetic.clusters.base.builder.ClusterBuilder
 import genetic.ga.GABuilder
 import genetic.stat.StatisticRegister
 import genetic.stat.StatisticsBuilder
 
 private const val REGISTER_NAME = "MIN"
 
-fun <V, F> Cluster<V, F>.min() = population.min()
-fun <V, F> ClusterBuilder<V, F>.min() = population.min()
+fun <V, F> Cluster<V, F>.min() = populationOld.min()
+fun <V, F> ClusterBuilder<V, F>.min() = populationOld.min()
 
 fun <V, F> StatisticsBuilder.min(cluster: ClusterBuilder<V, F>) =
     +StatisticRegister(REGISTER_NAME) { cluster.min().fitness }

@@ -6,7 +6,7 @@ import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
 import genetic.ga.GABuilder
 import genetic.ga.cellular.lifecycle.CellularGALifecycle
 import genetic.ga.cellular.lifecycle.SimpleClusterCellLifecycle
-import genetic.ga.cellular.neighborhood.CellularNeighborhood
+import genetic.clusters.cellular.neighborhood.CellularNeighborhood
 import genetic.ga.cellular.type.CellularType
 
 interface CellularGABuilder<V, F> : GABuilder<V, F> {

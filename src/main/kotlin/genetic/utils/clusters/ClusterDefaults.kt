@@ -1,7 +1,7 @@
 package genetic.utils.clusters
 
-import genetic.clusters.Cluster
-import genetic.clusters.ClusterBuilder
+import genetic.clusters.base.Cluster
+import genetic.clusters.base.builder.ClusterBuilder
 
 fun <V, F> checkClusterNameOrTrySetDefaultName(cluster: Cluster<V, F>, clusters: List<Cluster<V, F>>) {
     cluster.name?.let { name ->

@@ -1,7 +1,7 @@
 package genetic.ga.panmictic
 
 import genetic.chromosome.Chromosome
-import genetic.clusters.Cluster
+import genetic.clusters.base.Cluster
 import genetic.ga.AbstractGA
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_AFTER_LIFECYCLE
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_BEFORE_LIFECYCLE

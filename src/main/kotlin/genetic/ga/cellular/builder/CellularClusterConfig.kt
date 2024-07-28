@@ -1,7 +1,7 @@
 package genetic.ga.cellular.builder
 
-import genetic.clusters.ClusterBuilder
-import genetic.ga.cellular.neighborhood.CellularNeighborhood
+import genetic.clusters.base.builder.ClusterBuilder
+import genetic.clusters.cellular.neighborhood.CellularNeighborhood
 import genetic.ga.cellular.type.CellularType
 
 class CellularClusterConfig(

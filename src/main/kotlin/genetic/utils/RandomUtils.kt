@@ -1,6 +1,6 @@
 package genetic.utils
 
-import genetic.clusters.ClusterBuilder
+import genetic.clusters.base.builder.ClusterBuilder
 import kotlin.math.abs
 import kotlin.math.ln
 import kotlin.math.sqrt

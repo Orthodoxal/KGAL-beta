@@ -1,8 +1,8 @@
 package genetic.ga
 
-import genetic.clusters.Cluster
-import genetic.clusters.state.ClusterState
-import genetic.clusters.state.ClusterStopPolicy
+import genetic.clusters.base.Cluster
+import genetic.clusters.base.state.ClusterState
+import genetic.clusters.base.state.ClusterStopPolicy
 import genetic.ga.lifecycle.GALifecycle
 import genetic.ga.lifecycle.LifecycleStartOption
 import genetic.ga.state.GAState

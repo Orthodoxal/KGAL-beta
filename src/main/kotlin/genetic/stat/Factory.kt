@@ -1,6 +1,6 @@
 package genetic.stat
 
-import genetic.clusters.ClusterBuilder
+import genetic.clusters.base.builder.ClusterBuilder
 import genetic.ga.GABuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
@@ -71,5 +71,5 @@ fun <V, F> ClusterBuilder<V, F>.statCluster(
         afterLifecycle,
         onLifecycleIteration,
     )
-    setStatInstance(statisticsInstance)
+    stat = statisticsInstance
 }

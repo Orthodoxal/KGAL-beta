@@ -1,6 +1,6 @@
 package genetic.ga.state
 
-import genetic.clusters.state.ClusterState
+import genetic.clusters.base.state.ClusterState
 
 enum class GAState {
     INITIALIZE,

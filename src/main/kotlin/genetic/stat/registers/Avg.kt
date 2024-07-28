@@ -1,8 +1,7 @@
 package genetic.stat.registers
 
 import genetic.chromosome.Chromosome
-import genetic.clusters.Cluster
-import genetic.clusters.ClusterBuilder
+import genetic.clusters.base.builder.ClusterBuilder
 import genetic.ga.GABuilder
 import genetic.stat.StatisticRegister
 import genetic.stat.StatisticsBuilder
@@ -21,31 +20,31 @@ fun avgLong(source: Array<out Chromosome<*, Long>>, size: Int) =
 fun avgResult(sum: Double, size: Int) = if (size != 0) sum / size else null
 
 fun StatisticsBuilder.avgInt(clusterBuilder: ClusterBuilder<*, Int>) =
-    +StatisticRegister(REGISTER_NAME) { avgInt(clusterBuilder.population, clusterBuilder.populationSize) }
+    +StatisticRegister(REGISTER_NAME) { avgInt(clusterBuilder.populationOld, clusterBuilder.populationSize) }
 
 fun StatisticsBuilder.avgDouble(clusterBuilder: ClusterBuilder<*, Double>) =
-    +StatisticRegister(REGISTER_NAME) { avgDouble(clusterBuilder.population, clusterBuilder.populationSize) }
+    +StatisticRegister(REGISTER_NAME) { avgDouble(clusterBuilder.populationOld, clusterBuilder.populationSize) }
 
 fun StatisticsBuilder.avgLong(clusterBuilder: ClusterBuilder<*, Long>) =
-    +StatisticRegister(REGISTER_NAME) { avgLong(clusterBuilder.population, clusterBuilder.populationSize) }
+    +StatisticRegister(REGISTER_NAME) { avgLong(clusterBuilder.populationOld, clusterBuilder.populationSize) }
 
 fun StatisticsBuilder.avgInt(gaBuilder: GABuilder<*, Int>) =
     +StatisticRegister(REGISTER_NAME) {
-        val sum = gaBuilder.clusters.sumOf { it.population.sumOf { it.fitness!! } }.toDouble()
+        val sum = gaBuilder.clusters.sumOf { it.populationOld.sumOf { it.fitness!! } }.toDouble()
         val size = gaBuilder.clusters.sumOf { it.populationSize }
         avgResult(sum, size)
     }
 
 fun StatisticsBuilder.avgDouble(gaBuilder: GABuilder<*, Double>) =
     +StatisticRegister(REGISTER_NAME) {
-        val sum = gaBuilder.clusters.sumOf { it.population.sumOf { it.fitness!! } }
+        val sum = gaBuilder.clusters.sumOf { it.populationOld.sumOf { it.fitness!! } }
         val size = gaBuilder.clusters.sumOf { it.populationSize }
         avgResult(sum, size)
     }
 
 fun StatisticsBuilder.avgLong(gaBuilder: GABuilder<*, Long>) =
     +StatisticRegister(REGISTER_NAME) {
-        val sum = gaBuilder.clusters.sumOf { it.population.sumOf { it.fitness!! } }.toDouble()
+        val sum = gaBuilder.clusters.sumOf { it.populationOld.sumOf { it.fitness!! } }.toDouble()
         val size = gaBuilder.clusters.sumOf { it.populationSize }
         avgResult(sum, size)
     }

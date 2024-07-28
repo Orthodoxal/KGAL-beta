@@ -1,7 +1,7 @@
 package genetic.ga.distributed
 
 import genetic.chromosome.Chromosome
-import genetic.clusters.Cluster
+import genetic.clusters.base.Cluster
 import genetic.ga.AbstractGA
 import genetic.ga.distributed.builder.DistributedGABuilder
 import genetic.ga.distributed.lifecycle.DistributedGALifecycle

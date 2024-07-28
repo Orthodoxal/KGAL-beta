@@ -1,6 +1,6 @@
 package genetic.stat.registers
 
-import genetic.clusters.ClusterBuilder
+import genetic.clusters.base.builder.ClusterBuilder
 import genetic.ga.GABuilder
 import genetic.stat.StatisticRegister
 import genetic.stat.StatisticsBuilder
