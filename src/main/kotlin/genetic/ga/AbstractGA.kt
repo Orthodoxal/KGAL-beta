@@ -1,10 +1,10 @@
 package genetic.ga
 
-import genetic.clusters.base.Cluster
 import genetic.clusters.base.state.ClusterState
-import genetic.clusters.base.state.ClusterStopPolicy
+import genetic.clusters.base.state.StopPolicy
 import genetic.ga.lifecycle.GALifecycle
 import genetic.ga.lifecycle.LifecycleStartOption
+import genetic.ga.panmictic.lifecycle.PanmicticGALifecycleInstance
 import genetic.ga.state.GAState
 import genetic.ga.state.gaStateMachine
 import genetic.stat.StatisticNote
@@ -20,16 +20,18 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.cancellation.CancellationException
 
-abstract class AbstractGA<V, F> : GA<V, F> {
+abstract class AbstractGA<V, F, L : GALifecycle<V, F>> : GA<V, F> {
+    protected abstract val lifecycleScope: L
+    protected abstract var lifecycle: suspend L.() -> Unit
+    protected abstract var beforeLifecycle: suspend L.() -> Unit
+    protected abstract var afterLifecycle: suspend L.() -> Unit
+
     protected var stopSignal: Boolean = false
     protected var state: GAState = GAState.INITIALIZE
         set(value) {
             field = gaStateMachine(field, value)
         }
-    override var clusters: MutableList<Cluster<V, F>> = mutableListOf()
-    private var gaJob: Job? = null
-    override var iteration: Int = 0
-    override var maxIteration: Int = 1
+    protected var gaJob: Job? = null
 
     protected var gaStatisticsCoroutineContext: CoroutineContext = Dispatchers.IO
         set(value) {
@@ -40,19 +42,24 @@ abstract class AbstractGA<V, F> : GA<V, F> {
     private var statFlowCollector: (suspend CoroutineScope.(stat: Statistics) -> Unit)? = null
     private var statCollector: FlowCollector<StatisticNote>? = null
 
-    protected abstract fun CoroutineScope.startByOption(
-        startOption: LifecycleStartOption,
-        iterationFrom: Int,
-        coroutineContext: CoroutineContext,
-    )
-
-    private fun CoroutineScope.prepareStatisticsAndStartByOption(
-        startOption: LifecycleStartOption,
-        iterationFrom: Int,
-        coroutineContext: CoroutineContext,
+    protected fun prepareStatistics(
+        clusterStat: Statistics,
     ) {
-        val clusterStats = clusters.mapNotNull { it.stat }
-        if (clusterStats.isEmpty()) return startByOption(startOption, iterationFrom, coroutineContext)
+        if (gaStatisticsCoroutineScope.coroutineContext.job.isCancelled) {
+            gaStatisticsCoroutineScope = CoroutineScope(gaStatisticsCoroutineContext)
+        }
+
+        with(gaStatisticsCoroutineScope) {
+            launch { clusterStat.collect { statisticsInstance.emit(it) } }
+            statFlowCollector?.let { launch { it(statisticsInstance) } }
+            statCollector?.let { launch { statisticsInstance.collect(it) } }
+        }
+    }
+
+    protected fun prepareStatistics(
+        clusterStats: List<Statistics>,
+    ) {
+        if (clusterStats.isEmpty()) return
         if (gaStatisticsCoroutineScope.coroutineContext.job.isCancelled) {
             gaStatisticsCoroutineScope = CoroutineScope(gaStatisticsCoroutineContext)
         }
@@ -61,36 +68,48 @@ abstract class AbstractGA<V, F> : GA<V, F> {
             clusterStats.forEach { clusterStat ->
                 launch { clusterStat.collect { statisticsInstance.emit(it) } }
             }
-
             statFlowCollector?.let { launch { it(statisticsInstance) } }
             statCollector?.let { launch { statisticsInstance.collect(it) } }
         }
-
-        startByOption(startOption, iterationFrom, coroutineContext)
     }
 
-    override fun CoroutineScope.start(iterationFrom: Int, coroutineContext: CoroutineContext) {
+    protected abstract fun applyStatistics()
+    protected abstract fun CoroutineScope.stopGA(coroutineContext: CoroutineContext, stopPolicy: StopPolicy)
+    protected abstract suspend fun L.execute()
+
+    private fun CoroutineScope.startByOption(
+        coroutineContext: CoroutineContext,
+        startOption: LifecycleStartOption,
+    ) {
+        lifecycleScope.lifecycleStartOption = startOption
+        state = GAState.STARTED
+
+        launchGA(coroutineContext = coroutineContext)
+    }
+
+    override fun CoroutineScope.start(coroutineContext: CoroutineContext) {
         if (state == GAState.STARTED) return
-        prepareStatisticsAndStartByOption(LifecycleStartOption.START, iterationFrom, coroutineContext)
+
+        applyStatistics()
+        startByOption(coroutineContext, LifecycleStartOption.START)
     }
 
 
     override fun CoroutineScope.resume(coroutineContext: CoroutineContext) {
         if (state != GAState.STOPPED) throw IllegalStateException("GA state $state incorrect for resuming: State must be STOPPED")
 
-        prepareStatisticsAndStartByOption(LifecycleStartOption.RESUME, iteration, coroutineContext)
+        applyStatistics()
+        startByOption(coroutineContext, LifecycleStartOption.RESUME)
     }
 
-    override fun CoroutineScope.stop(stopPolicy: ClusterStopPolicy, coroutineContext: CoroutineContext) {
+    override fun CoroutineScope.stop(coroutineContext: CoroutineContext, stopPolicy: StopPolicy) {
         if (stopSignal) return
         stopSignal = true
 
-        clusters.forEach {
-            launch(coroutineContext) { it.stop(stopPolicy) }
-        }
+        stopGA(coroutineContext, stopPolicy)
     }
 
-    override fun CoroutineScope.restart(iterationFrom: Int, coroutineContext: CoroutineContext) {
+    override fun CoroutineScope.restart(coroutineContext: CoroutineContext) {
         try {
             gaStatisticsCoroutineScope.coroutineContext.cancelChildren()
             gaJob?.cancel()
@@ -98,7 +117,8 @@ abstract class AbstractGA<V, F> : GA<V, F> {
             // nothing to do
         }
 
-        prepareStatisticsAndStartByOption(LifecycleStartOption.RESTART, iterationFrom, coroutineContext)
+        applyStatistics()
+        startByOption(coroutineContext, LifecycleStartOption.RESTART)
     }
 
     override fun collectStat(collector: FlowCollector<StatisticNote>) = this.apply { statCollector = collector }
@@ -106,34 +126,25 @@ abstract class AbstractGA<V, F> : GA<V, F> {
     override fun statFlow(collector: suspend CoroutineScope.(stat: Statistics) -> Unit) =
         this.apply { statFlowCollector = collector }
 
-    protected fun CoroutineScope.launchGA(
-        iterationFrom: Int,
+    protected open fun CoroutineScope.launchGA(
         coroutineContext: CoroutineContext,
-        startGA: suspend () -> Unit,
     ) {
-        iteration = iterationFrom
-        state = GAState.STARTED
         gaJob = launch(coroutineContext) {
-            startGA()
-            if (iteration == maxIteration || state == GAState.FINISHED) {
-                state = GAState.FINISHED
+            baseStartGA()
+            if (state == GAState.FINISHED) {
                 gaStatisticsCoroutineScope.cancel()
             }
         }
     }
 
-    protected suspend inline fun <L : GALifecycle<V, F>> baseStartGA(
-        lifecycleScope: L,
-        beforeLifecycle: suspend L.() -> Unit,
-        lifecycle: suspend L.() -> Unit,
-        afterLifecycle: suspend L.() -> Unit,
-    ) {
+    protected open suspend fun baseStartGA() {
         with(lifecycleScope) {
-            if (this@AbstractGA.iteration == 0) {
+            if (lifecycleStartOption == LifecycleStartOption.START) {
                 beforeLifecycle()
                 statBefore(statisticsInstance)
             }
-            while (this@AbstractGA.iteration < maxIteration) {
+            execute()
+            /*while (this@AbstractGA.iteration < maxIteration) {
                 lifecycle()
                 statOnLifecycleIteration(statisticsInstance)
 
@@ -157,8 +168,8 @@ abstract class AbstractGA<V, F> : GA<V, F> {
                     gaStatisticsCoroutineScope.coroutineContext.cancelChildren()
                     return
                 }
-            }
-            if (this@AbstractGA.iteration == maxIteration || state == GAState.FINISHED) {
+            }*/
+            if (state == GAState.FINISHED) {
                 this@AbstractGA.stopSignal = false
                 statAfter(statisticsInstance)
                 afterLifecycle()

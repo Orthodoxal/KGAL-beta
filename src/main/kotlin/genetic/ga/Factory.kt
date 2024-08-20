@@ -6,11 +6,11 @@ import genetic.ga.cellular.CellularGAInstance
 import genetic.ga.cellular.builder.CellularGABuilder
 import genetic.ga.distributed.DistributedGAInstance
 import genetic.ga.distributed.builder.DistributedGABuilder
-import genetic.ga.panmictic.PanmicticGAInstance
+import genetic.ga.panmictic.PanmicticGA
 import genetic.ga.panmictic.builder.PanmicticGABuilder
 
 fun <V, F> panmicticGA(): Pair<GA<V, F>, PanmicticGABuilder<V, F>> =
-    PanmicticGAInstance<V, F>().let { it to it }
+    PanmicticGA<V, F>().let { it to it }
 
 inline fun <V, F> panmicticGA(builder: PanmicticGABuilder<V, F>.() -> Unit): GA<V, F> {
     val (ga, gaBuilder) = panmicticGA<V, F>()

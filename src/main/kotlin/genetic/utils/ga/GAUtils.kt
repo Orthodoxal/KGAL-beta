@@ -1,6 +1,6 @@
 package genetic.utils.ga
 
-import genetic.clusters.base.state.ClusterStopPolicy
+import genetic.clusters.base.state.StopPolicy
 import genetic.ga.GA
 import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.CoroutineContext
@@ -25,6 +25,6 @@ fun CoroutineScope.restart(
 
 fun CoroutineScope.stop(
     ga: GA<*, *>,
-    stopPolicy: ClusterStopPolicy = ClusterStopPolicy.Default,
+    stopPolicy: StopPolicy = StopPolicy.Default,
     coroutineContext: CoroutineContext = EmptyCoroutineContext,
 ) = with(ga) { stop(stopPolicy, coroutineContext) }

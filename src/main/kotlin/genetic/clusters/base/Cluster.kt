@@ -2,7 +2,7 @@ package genetic.clusters.base
 
 import genetic.clusters.base.population.Population
 import genetic.clusters.base.state.ClusterState
-import genetic.clusters.base.state.ClusterStopPolicy
+import genetic.clusters.base.state.StopPolicy
 import genetic.stat.Statistics
 
 interface Cluster<V, F> {
@@ -18,5 +18,5 @@ interface Cluster<V, F> {
     suspend fun start(generationFrom: Int = 0)
     suspend fun resume()
     suspend fun restart()
-    suspend fun stop(stopPolicy: ClusterStopPolicy = ClusterStopPolicy.Default)
+    suspend fun stop(stopPolicy: StopPolicy = StopPolicy.Default)
 }

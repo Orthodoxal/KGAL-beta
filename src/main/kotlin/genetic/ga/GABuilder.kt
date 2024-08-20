@@ -1,19 +1,20 @@
 package genetic.ga
 
-import genetic.chromosome.Chromosome
 import genetic.clusters.base.Cluster
+import genetic.ga.lifecycle.GALifecycle
 import genetic.stat.StatisticsInstance
 import kotlin.coroutines.CoroutineContext
 import kotlin.random.Random
 
-interface GABuilder<V, F> {
+interface GABuilder<V, F, L : GALifecycle<V, F>> {
     val random: Random
-    val iteration: Int
-    var maxIteration: Int
-    val clusters: List<Cluster<V, F>>
-    var populationFactory: (index: Int, random: Random) -> Chromosome<V, F>
     var randomSeed: Int
-    var fitnessFunction: (V) -> F
+
+    fun L.lifecycle(
+        before: (suspend L.() -> Unit)? = null,
+        after: (suspend L.() -> Unit)? = null,
+        lifecycle: suspend L.() -> Unit,
+    )
 
     fun setStatInstance(statisticsInstance: StatisticsInstance, coroutineContext: CoroutineContext)
     fun addCluster(cluster: Cluster<V, F>): Cluster<V, F>

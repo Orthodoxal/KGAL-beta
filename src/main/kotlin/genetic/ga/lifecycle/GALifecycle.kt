@@ -2,25 +2,20 @@ package genetic.ga.lifecycle
 
 import genetic.clusters.base.Cluster
 import genetic.ga.GABuilder
-import kotlinx.coroutines.job
-import kotlin.coroutines.coroutineContext
 
-interface GALifecycle<V, F> : GABuilder<V, F> {
+interface GALifecycle<V, F> : GABuilder<V, F, GALifecycle<V, F>>  {
     var lifecycleStartOption: LifecycleStartOption
     var stopSignal: Boolean
-
-    suspend fun launchClusters(clusters: List<Cluster<*, *>>) = when (lifecycleStartOption) {
-        LifecycleStartOption.START -> clusters.forEach { it.start() }
-        LifecycleStartOption.RESTART -> clusters.forEach { it.restart() }
-        LifecycleStartOption.RESUME -> clusters.forEach { it.resume() }
-    }.also { lifecycleStartOption = LifecycleStartOption.START }
-
-    companion object {
-        val BASE_LIFECYCLE: suspend GALifecycle<*, *>.() -> Unit = {
-            launchClusters(clusters)
-            coroutineContext.job.children.forEach { it.join() }
-        }
-        val BASE_BEFORE_LIFECYCLE: suspend GALifecycle<*, *>.() -> Unit = { }
-        val BASE_AFTER_LIFECYCLE: suspend GALifecycle<*, *>.() -> Unit = { }
-    }
 }
+
+suspend fun GALifecycle<*, *>.launchCluster(cluster: Cluster<*, *>) = when (lifecycleStartOption) {
+    LifecycleStartOption.START -> cluster.start()
+    LifecycleStartOption.RESTART -> cluster.restart()
+    LifecycleStartOption.RESUME -> cluster.resume()
+}.also { lifecycleStartOption = LifecycleStartOption.START }
+
+suspend fun GALifecycle<*, *>.launchClusters(clusters: List<Cluster<*, *>>) = when (lifecycleStartOption) {
+    LifecycleStartOption.START -> clusters.forEach { it.start() }
+    LifecycleStartOption.RESTART -> clusters.forEach { it.restart() }
+    LifecycleStartOption.RESUME -> clusters.forEach { it.resume() }
+}.also { lifecycleStartOption = LifecycleStartOption.START }

@@ -4,7 +4,7 @@ import genetic.clusters.base.builder.ClusterBuilder
 import genetic.clusters.base.lifecycle.ClusterLifecycle
 import genetic.clusters.base.population.Population
 import genetic.clusters.base.state.ClusterState
-import genetic.clusters.base.state.ClusterStopPolicy
+import genetic.clusters.base.state.StopPolicy
 import genetic.clusters.base.state.clusterStateMachine
 import genetic.stat.StatisticsInstance
 import genetic.utils.statAfter
@@ -63,10 +63,10 @@ abstract class AbstractCluster<V, F, L : ClusterLifecycle<V, F>> : Cluster<V, F>
         startByOption(generationFrom = 0)
     }
 
-    override suspend fun stop(stopPolicy: ClusterStopPolicy) {
+    override suspend fun stop(stopPolicy: StopPolicy) {
         when (stopPolicy) {
-            is ClusterStopPolicy.Default -> stopSignal = true
-            is ClusterStopPolicy.Immediately -> {
+            is StopPolicy.Default -> stopSignal = true
+            is StopPolicy.Immediately -> {
                 clusterJob?.cancel(
                     cause = CancellationException(
                         message = "Cluster $name stop cause force $stopPolicy policy",
@@ -76,7 +76,7 @@ abstract class AbstractCluster<V, F, L : ClusterLifecycle<V, F>> : Cluster<V, F>
                 state = ClusterState.STOPPED
             }
 
-            is ClusterStopPolicy.Timeout -> {
+            is StopPolicy.Timeout -> {
                 stopSignal = true
                 withTimeout(stopPolicy.millis) {
                     if (state != ClusterState.STOPPED) {

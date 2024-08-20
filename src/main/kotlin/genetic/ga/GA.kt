@@ -1,7 +1,6 @@
 package genetic.ga
 
-import genetic.clusters.base.Cluster
-import genetic.clusters.base.state.ClusterStopPolicy
+import genetic.clusters.base.state.StopPolicy
 import genetic.stat.StatisticNote
 import genetic.stat.Statistics
 import kotlinx.coroutines.CoroutineScope
@@ -10,18 +9,14 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 interface GA<V, F> {
-    fun CoroutineScope.start(iterationFrom: Int = 0, coroutineContext: CoroutineContext = EmptyCoroutineContext)
+    fun CoroutineScope.start(coroutineContext: CoroutineContext = EmptyCoroutineContext)
     fun CoroutineScope.resume(coroutineContext: CoroutineContext = EmptyCoroutineContext)
-    fun CoroutineScope.restart(iterationFrom: Int = 0, coroutineContext: CoroutineContext = EmptyCoroutineContext)
+    fun CoroutineScope.restart(coroutineContext: CoroutineContext = EmptyCoroutineContext)
     fun CoroutineScope.stop(
-        stopPolicy: ClusterStopPolicy = ClusterStopPolicy.Default,
         coroutineContext: CoroutineContext = EmptyCoroutineContext,
+        stopPolicy: StopPolicy = StopPolicy.Default,
     )
 
     fun collectStat(collector: FlowCollector<StatisticNote>): GA<V, F>
     fun statFlow(collector: suspend CoroutineScope.(stat: Statistics) -> Unit): GA<V, F>
-
-    val iteration: Int
-    val maxIteration: Int
-    val clusters: List<Cluster<V, F>>
 }
