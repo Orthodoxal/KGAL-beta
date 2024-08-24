@@ -1,9 +1,10 @@
 package genetic.clusters.cellular.lifecycle
 
 import genetic.chromosome.Chromosome
+import genetic.clusters.base.lifecycle.isSingleRun
 import genetic.clusters.base.population.Population
-import genetic.ga.cellular.type.CellularType
-import genetic.ga.cellular.type.UpdatePolicy
+import genetic.clusters.cellular.type.CellularType
+import genetic.clusters.cellular.type.UpdatePolicy
 import genetic.utils.clusters.*
 import kotlin.random.Random
 

@@ -1,18 +1,18 @@
 package genetic.stat.registers
 
 import genetic.clusters.base.builder.ClusterBuilder
-import genetic.ga.GABuilder
+import genetic.clusters.base.lifecycle.ClusterLifecycle
 import genetic.stat.StatisticRegister
 import genetic.stat.StatisticsBuilder
 
-inline fun <V, F> StatisticsBuilder.register(
-    owner: ClusterBuilder<V, F>,
+inline fun <V, F, L : ClusterLifecycle<V, F>> StatisticsBuilder.register(
+    owner: ClusterBuilder<V, F, L>,
     name: String,
-    crossinline registrar: ClusterBuilder<V, F>.() -> Any?,
+    crossinline registrar: ClusterBuilder<V, F, L>.() -> Any?,
 ) = +StatisticRegister(name) { owner.registrar() }
 
-inline fun <V, F> StatisticsBuilder.register(
+/*inline fun <V, F> StatisticsBuilder.register(
     owner: GABuilder<V, F>,
     name: String,
     crossinline registrar: GABuilder<V, F>.() -> Any?,
-) = +StatisticRegister(name) { owner.registrar() }
+) = +StatisticRegister(name) { owner.registrar() }*/

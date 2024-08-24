@@ -3,7 +3,8 @@ package genetic.clusters.panmictic.operators.crossover
 import genetic.clusters.base.operators.crossover.simulated_binary_bounded.crossoverSimulatedBinaryBounded
 import genetic.clusters.panmictic.PanmicticLifecycle
 
-suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxSimulatedBinaryBoundedDoubleArray(
+@JvmName("cxSimulatedBinaryBoundedDoubleArray")
+suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxSimulatedBinaryBounded(
     chance: Double,
     eta: Double,
     low: Double,

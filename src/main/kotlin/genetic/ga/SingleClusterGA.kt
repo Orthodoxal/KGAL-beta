@@ -1,6 +1,6 @@
 package genetic.ga
 
-import genetic.clusters.base.Cluster
+/*import genetic.clusters.base.Cluster
 import genetic.clusters.base.builder.ClusterBuilder
 import genetic.clusters.base.state.ClusterState
 import genetic.clusters.base.state.StopPolicy
@@ -90,4 +90,4 @@ internal class SingleClusterGA<V, F, L : GALifecycle<V, F>>(
             launchCluster(cluster)
             coroutineContext.job.children.forEach { it.join() }
         }
-}
+}*/

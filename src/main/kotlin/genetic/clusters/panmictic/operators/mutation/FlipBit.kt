@@ -3,7 +3,8 @@ package genetic.clusters.panmictic.operators.mutation
 import genetic.clusters.base.operators.mutation.flip_bit.mutationFlipBit
 import genetic.clusters.panmictic.PanmicticLifecycle
 
-suspend fun <F> PanmicticLifecycle<BooleanArray, F>.mutFlipBitBooleanArray(
+@JvmName("mutFlipBitBooleanArray")
+suspend fun <F> PanmicticLifecycle<BooleanArray, F>.mutFlipBit(
     mutationChance: Double,
     mutationFlipBitChance: Double,
     onlySingleRun: Boolean = false,
@@ -11,7 +12,8 @@ suspend fun <F> PanmicticLifecycle<BooleanArray, F>.mutFlipBitBooleanArray(
     mutationFlipBit(chromosome.value, mutationFlipBitChance, random)
 }
 
-suspend fun <F> PanmicticLifecycle<IntArray, F>.mutFlipBitIntArray(
+@JvmName("mutFlipBitIntArray")
+suspend fun <F> PanmicticLifecycle<IntArray, F>.mutFlipBit(
     mutationChance: Double,
     mutationFlipBitChance: Double,
     onlySingleRun: Boolean = false,

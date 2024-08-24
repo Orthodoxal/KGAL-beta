@@ -6,6 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
+/*
 fun CoroutineScope.start(
     ga: GA<*, *>,
     iterationFrom: Int = 0,
@@ -28,3 +29,4 @@ fun CoroutineScope.stop(
     stopPolicy: StopPolicy = StopPolicy.Default,
     coroutineContext: CoroutineContext = EmptyCoroutineContext,
 ) = with(ga) { stop(stopPolicy, coroutineContext) }
+*/

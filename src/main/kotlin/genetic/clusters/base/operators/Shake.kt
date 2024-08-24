@@ -10,7 +10,7 @@ import kotlin.random.Random
 const val SHAKE_BY_REPEATABLE_MAX_FITNESS = "ShakeByRepeatableMaxFitness"
 const val SHAKE_BY_REPEATABLE_EQUALS_ITERATION = "ShakeByRepeatableEqualsIteration"
 
-inline fun <V, F, L : ClusterLifecycle> L.shakeBy(
+inline fun <V, F, L : ClusterLifecycle<V, F>> L.shakeBy(
     percent: Double,
     random: Random,
     population: Population<V, F>,
@@ -26,7 +26,7 @@ inline fun <V, F, L : ClusterLifecycle> L.shakeBy(
     }
 }
 
-inline fun <V, reified F, L : ClusterLifecycle> L.shakeByRepeatableForMax(
+inline fun <V, reified F, L : ClusterLifecycle<V, F>> L.shakeByRepeatableForMax(
     percent: Double,
     maxEqualsIteration: Int,
     random: Random,

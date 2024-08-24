@@ -3,20 +3,13 @@ package genetic.clusters.cellular.lifecycle
 import genetic.clusters.base.lifecycle.AbstractClusterLifecycle
 import genetic.clusters.base.lifecycle.ClusterLifecycle
 import genetic.clusters.cellular.CellularCluster
-import genetic.clusters.cellular.isSingleRun
-import genetic.ga.cellular.type.CellularType
+import genetic.clusters.cellular.type.CellularType
+import kotlinx.coroutines.CoroutineDispatcher
 
 interface CellularLifecycle<V, F> : ClusterLifecycle<V, F> {
     var elitism: Boolean
     var cellularType: CellularType
     var neighboursIndicesCache: Array<IntArray>
-    val isSingleRun: Boolean
-
-    companion object {
-        // FIXME добавить evaluation
-        val BASE_BEFORE_LIFECYCLE: suspend CellularLifecycle<*, *>.() -> Unit = { }
-        val BASE_AFTER_LIFECYCLE: suspend CellularLifecycle<*, *>.() -> Unit = { }
-    }
 }
 
 internal class CellularLifecycleInstance<V, F>(
@@ -41,5 +34,5 @@ internal class CellularLifecycleInstance<V, F>(
             cellularCluster.neighboursIndicesCache = value
         }
 
-    override val isSingleRun: Boolean get() = cellularCluster.isSingleRun
+    override val extraDispatchers: Array<CoroutineDispatcher>? get() = cellularCluster.extraDispatchers
 }

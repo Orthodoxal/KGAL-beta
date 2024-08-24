@@ -3,7 +3,8 @@ package genetic.clusters.panmictic.operators.crossover
 import genetic.clusters.base.operators.crossover.k_point.*
 import genetic.clusters.panmictic.PanmicticLifecycle
 
-suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.cxKPointArray(
+@JvmName("cxKPointArray")
+suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.cxKPoint(
     chance: Double,
     count: Int,
     onlySingleRun: Boolean = false,
@@ -11,7 +12,8 @@ suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.cxKPointArray(
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> PanmicticLifecycle<BooleanArray, F>.cxKPointBooleanArray(
+@JvmName("cxKPointBooleanArray")
+suspend fun <F> PanmicticLifecycle<BooleanArray, F>.cxKPoint(
     chance: Double,
     count: Int,
     onlySingleRun: Boolean = false,
@@ -19,7 +21,8 @@ suspend fun <F> PanmicticLifecycle<BooleanArray, F>.cxKPointBooleanArray(
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> PanmicticLifecycle<ByteArray, F>.cxKPointByteArray(
+@JvmName("cxKPointByteArray")
+suspend fun <F> PanmicticLifecycle<ByteArray, F>.cxKPoint(
     chance: Double,
     count: Int,
     onlySingleRun: Boolean = false,
@@ -27,7 +30,8 @@ suspend fun <F> PanmicticLifecycle<ByteArray, F>.cxKPointByteArray(
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> PanmicticLifecycle<CharArray, F>.cxKPointCharArray(
+@JvmName("cxKPointCharArray")
+suspend fun <F> PanmicticLifecycle<CharArray, F>.cxKPoint(
     chance: Double,
     count: Int,
     onlySingleRun: Boolean = false,
@@ -35,7 +39,8 @@ suspend fun <F> PanmicticLifecycle<CharArray, F>.cxKPointCharArray(
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxKPointDoubleArray(
+@JvmName("cxKPointDoubleArray")
+suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxKPoint(
     chance: Double = 0.9,
     count: Int,
     onlySingleRun: Boolean = false,
@@ -43,7 +48,8 @@ suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxKPointDoubleArray(
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxKPointFloatArray(
+@JvmName("cxKPointFloatArray")
+suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxKPoint(
     chance: Double,
     count: Int,
     onlySingleRun: Boolean = false,
@@ -51,7 +57,8 @@ suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxKPointFloatArray(
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> PanmicticLifecycle<IntArray, F>.cxKPointIntArray(
+@JvmName("cxKPointIntArray")
+suspend fun <F> PanmicticLifecycle<IntArray, F>.cxKPoint(
     chance: Double,
     count: Int,
     onlySingleRun: Boolean = false,
@@ -59,7 +66,8 @@ suspend fun <F> PanmicticLifecycle<IntArray, F>.cxKPointIntArray(
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> PanmicticLifecycle<LongArray, F>.cxKPointLongArray(
+@JvmName("cxKPointLongArray")
+suspend fun <F> PanmicticLifecycle<LongArray, F>.cxKPoint(
     chance: Double,
     count: Int,
     onlySingleRun: Boolean = false,
@@ -67,7 +75,8 @@ suspend fun <F> PanmicticLifecycle<LongArray, F>.cxKPointLongArray(
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.cxKPointMutableList(
+@JvmName("cxKPointMutableList")
+suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.cxKPoint(
     chance: Double,
     count: Int,
     onlySingleRun: Boolean = false,
@@ -75,7 +84,8 @@ suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.cxKPointMutableList(
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> PanmicticLifecycle<ShortArray, F>.cxKPointShortArray(
+@JvmName("cxKPointShortArray")
+suspend fun <F> PanmicticLifecycle<ShortArray, F>.cxKPoint(
     chance: Double,
     count: Int,
     onlySingleRun: Boolean = false,

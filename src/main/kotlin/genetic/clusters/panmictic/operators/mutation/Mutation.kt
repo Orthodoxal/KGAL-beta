@@ -1,6 +1,7 @@
 package genetic.clusters.panmictic.operators.mutation
 
 import genetic.chromosome.Chromosome
+import genetic.clusters.base.lifecycle.isSingleRun
 import genetic.clusters.panmictic.PanmicticLifecycle
 import genetic.utils.clusters.forEach
 import genetic.utils.clusters.get

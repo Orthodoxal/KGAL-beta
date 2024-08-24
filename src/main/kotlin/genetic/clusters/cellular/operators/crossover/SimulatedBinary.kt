@@ -3,7 +3,8 @@ package genetic.clusters.cellular.operators.crossover
 import genetic.clusters.base.operators.crossover.simulated_binary.crossoverSimulatedBinary
 import genetic.clusters.cellular.lifecycle.CellLifecycle
 
-fun <F> CellLifecycle<DoubleArray, F>.cxSimulatedBinaryDoubleArray(
+@JvmName("cxSimulatedBinaryDoubleArray")
+fun <F> CellLifecycle<DoubleArray, F>.cxSimulatedBinary(
     chance: Double,
     eta: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->

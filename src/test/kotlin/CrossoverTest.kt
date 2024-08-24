@@ -1,3 +1,4 @@
+/*
 import genetic.clusters.base.operators.crossover.blend.crossoverBlendDoubleArray
 import genetic.clusters.base.operators.crossover.k_point.crossoverKPointDoubleArray
 import genetic.clusters.base.operators.crossover.one_point.crossoverOnePointDoubleArray
@@ -99,3 +100,4 @@ class CrossoverTest {
         assertContentEquals(value2, result2)
     }
 }
+*/

@@ -1,5 +1,6 @@
 package genetic.ga.panmictic
 
+/*
 import genetic.chromosome.Chromosome
 import genetic.clusters.base.builder.ClusterBuilder
 import genetic.clusters.base.state.ClusterState
@@ -9,7 +10,7 @@ import genetic.ga.AbstractGA
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_AFTER_LIFECYCLE
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_BEFORE_LIFECYCLE
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_LIFECYCLE
-import genetic.ga.lifecycle.LifecycleStartOption
+import genetic.clusters.distributed.lifecycle.LifecycleStartOption
 import genetic.ga.panmictic.builder.PanmicticGABuilder
 import genetic.ga.panmictic.lifecycle.PanmicticGALifecycle
 import genetic.ga.panmictic.lifecycle.PanmicticGALifecycleInstance
@@ -97,3 +98,4 @@ internal class PanmicticGA<V, F> : AbstractGA<V, F, PanmicticGALifecycle<V, F>>(
         this.statisticsInstance = statisticsInstance
     }
 }
+*/

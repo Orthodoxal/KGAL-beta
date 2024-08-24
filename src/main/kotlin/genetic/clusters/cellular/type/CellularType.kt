@@ -1,4 +1,4 @@
-package genetic.ga.cellular.type
+package genetic.clusters.cellular.type
 
 sealed interface CellularType {
     data object Synchronous : CellularType

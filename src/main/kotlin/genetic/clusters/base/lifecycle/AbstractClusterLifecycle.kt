@@ -12,7 +12,7 @@ abstract class AbstractClusterLifecycle<V, F>(
     override val random: Random get() = abstractCluster.random
     override val randomSeed: Int get() = abstractCluster.randomSeed
 
-    override val generation: Int get() = abstractCluster.generation
+    override val iteration: Int get() = abstractCluster.iteration
 
     override var population: Population<V, F>
         get() = abstractCluster.population
@@ -21,13 +21,14 @@ abstract class AbstractClusterLifecycle<V, F>(
         }
 
     override var maxGeneration: Int
-        get() = abstractCluster.maxGeneration
+        get() = abstractCluster.maxIteration
         set(value) {
-            abstractCluster.maxGeneration = value
+            abstractCluster.maxIteration = value
         }
 
     override var fitnessFunction: (V) -> F
         get() = abstractCluster.fitnessFunction
+            ?: throw IllegalStateException("Fitness function is null for cluster: ${abstractCluster.name}")
         set(value) {
             abstractCluster.fitnessFunction = value
         }

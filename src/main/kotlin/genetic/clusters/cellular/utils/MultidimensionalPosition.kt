@@ -1,4 +1,4 @@
-package genetic.ga.cellular.utils
+package genetic.clusters.cellular.utils
 
 fun positionByCoordinatesInNArray(
     coordinates: IntArray,

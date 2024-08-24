@@ -1,7 +1,7 @@
 package genetic.clusters.cellular.neighborhood
 
-import genetic.ga.cellular.utils.coordinatesInNArrayByPosition
-import genetic.ga.cellular.utils.positionByCoordinatesInNArray
+import genetic.clusters.cellular.utils.coordinatesInNArrayByPosition
+import genetic.clusters.cellular.utils.positionByCoordinatesInNArray
 
 /**
  * Toroidal filter for indices

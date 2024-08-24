@@ -3,7 +3,8 @@ package genetic.clusters.panmictic.operators.crossover
 import genetic.clusters.base.operators.crossover.uniform.*
 import genetic.clusters.panmictic.PanmicticLifecycle
 
-suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.cxUniformArray(
+@JvmName("cxUniformArray")
+suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
@@ -11,7 +12,8 @@ suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.cxUniformArray(
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> PanmicticLifecycle<BooleanArray, F>.cxUniformBooleanArray(
+@JvmName("cxUniformBooleanArray")
+suspend fun <F> PanmicticLifecycle<BooleanArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
@@ -19,7 +21,8 @@ suspend fun <F> PanmicticLifecycle<BooleanArray, F>.cxUniformBooleanArray(
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> PanmicticLifecycle<ByteArray, F>.cxUniformByteArray(
+@JvmName("cxUniformByteArray")
+suspend fun <F> PanmicticLifecycle<ByteArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
@@ -27,7 +30,8 @@ suspend fun <F> PanmicticLifecycle<ByteArray, F>.cxUniformByteArray(
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> PanmicticLifecycle<CharArray, F>.cxUniformCharArray(
+@JvmName("cxUniformCharArray")
+suspend fun <F> PanmicticLifecycle<CharArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
@@ -35,7 +39,8 @@ suspend fun <F> PanmicticLifecycle<CharArray, F>.cxUniformCharArray(
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxUniformDoubleArray(
+@JvmName("cxUniformDoubleArray")
+suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxUniform(
     chance: Double = 0.9,
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
@@ -43,7 +48,8 @@ suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxUniformDoubleArray(
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxUniformFloatArray(
+@JvmName("cxUniformFloatArray")
+suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
@@ -51,7 +57,8 @@ suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxUniformFloatArray(
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> PanmicticLifecycle<IntArray, F>.cxUniformIntArray(
+@JvmName("cxUniformIntArray")
+suspend fun <F> PanmicticLifecycle<IntArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
@@ -59,7 +66,8 @@ suspend fun <F> PanmicticLifecycle<IntArray, F>.cxUniformIntArray(
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> PanmicticLifecycle<LongArray, F>.cxUniformLongArray(
+@JvmName("cxUniformLongArray")
+suspend fun <F> PanmicticLifecycle<LongArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
@@ -67,7 +75,8 @@ suspend fun <F> PanmicticLifecycle<LongArray, F>.cxUniformLongArray(
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.cxUniformMutableList(
+@JvmName("cxUniformMutableList")
+suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
     onlySingleRun: Boolean = false,
@@ -75,7 +84,8 @@ suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.cxUniformMutableList(
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> PanmicticLifecycle<ShortArray, F>.cxUniformShortArray(
+@JvmName("cxUniformShortArray")
+suspend fun <F> PanmicticLifecycle<ShortArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
     onlySingleRun: Boolean = false,

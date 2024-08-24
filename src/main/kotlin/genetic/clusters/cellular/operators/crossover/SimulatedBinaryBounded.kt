@@ -3,7 +3,8 @@ package genetic.clusters.cellular.operators.crossover
 import genetic.clusters.base.operators.crossover.simulated_binary_bounded.crossoverSimulatedBinaryBounded
 import genetic.clusters.cellular.lifecycle.CellLifecycle
 
-fun <F> CellLifecycle<DoubleArray, F>.cxSimulatedBinaryBoundedDoubleArray(
+@JvmName("cxSimulatedBinaryBoundedDoubleArray")
+fun <F> CellLifecycle<DoubleArray, F>.cxSimulatedBinaryBounded(
     chance: Double,
     eta: Double,
     low: Double,

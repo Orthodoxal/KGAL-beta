@@ -12,7 +12,7 @@ fun <V, F> checkClusterNameOrTrySetDefaultName(cluster: Cluster<V, F>, clusters:
 }
 
 fun <V, F> trySetClusterDefaultName(cluster: Cluster<V, F>, clusters: List<Cluster<V, F>>) {
-    val asClusterBuilder = (cluster as? ClusterBuilder<*, *>) ?: throw IllegalStateException("Cluster must have a name")
+    val asClusterBuilder = (cluster as? ClusterBuilder<*, *, *>) ?: throw IllegalStateException("Cluster must have a name")
     val defaultName = "Population ${clusters.size}"
     if (clusters.any { it.name == defaultName }) {
         throw RuntimeException("Set default cluster name FAILED, cluster with $defaultName has already exist")

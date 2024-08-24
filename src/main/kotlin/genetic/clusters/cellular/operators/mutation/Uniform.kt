@@ -3,6 +3,7 @@ package genetic.clusters.cellular.operators.mutation
 import genetic.clusters.base.operators.mutation.uniform.mutationUniform
 import genetic.clusters.cellular.lifecycle.CellLifecycle
 
+@JvmName("mutUniformDoubleArray")
 fun <F> CellLifecycle<DoubleArray, F>.mutUniform(
     low: Double,
     up: Double,
@@ -12,6 +13,7 @@ fun <F> CellLifecycle<DoubleArray, F>.mutUniform(
     mutationUniform(chromosome.value, low, up, mutationUniformChance, random)
 }
 
+@JvmName("mutUniformIntArray")
 fun <F> CellLifecycle<IntArray, F>.mutUniform(
     low: Int,
     up: Int,
@@ -21,6 +23,7 @@ fun <F> CellLifecycle<IntArray, F>.mutUniform(
     mutationUniform(chromosome.value, low, up, mutationUniformChance, random)
 }
 
+@JvmName("mutUniformLongArray")
 fun <F> CellLifecycle<LongArray, F>.mutUniform(
     low: Long,
     up: Long,

@@ -5,7 +5,7 @@ import genetic.clusters.base.population.Population
 import genetic.clusters.base.builder.ClusterBuilder
 import kotlin.random.Random
 
-fun <V, F> ClusterBuilder<V, F>.populationFactory(
+fun <V, F> ClusterBuilder<V, F, *>.populationFactory(
     size: Int,
     factory: (index: Int, random: Random) -> Chromosome<V, F>,
 ) {

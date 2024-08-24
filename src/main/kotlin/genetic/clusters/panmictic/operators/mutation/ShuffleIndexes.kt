@@ -3,7 +3,8 @@ package genetic.clusters.panmictic.operators.mutation
 import genetic.clusters.base.operators.mutation.shuffle_indexes.mutationShuffleIndexes
 import genetic.clusters.panmictic.PanmicticLifecycle
 
-suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.mutShuffleIndexesArray(
+@JvmName("mutShuffleIndexesArray")
+suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
     onlySingleRun: Boolean = false,
@@ -11,7 +12,8 @@ suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.mutShuffleIndexesArray(
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-suspend fun <F> PanmicticLifecycle<BooleanArray, F>.mutShuffleIndexesBooleanArray(
+@JvmName("mutShuffleIndexesBooleanArray")
+suspend fun <F> PanmicticLifecycle<BooleanArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
     onlySingleRun: Boolean = false,
@@ -19,7 +21,8 @@ suspend fun <F> PanmicticLifecycle<BooleanArray, F>.mutShuffleIndexesBooleanArra
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-suspend fun <F> PanmicticLifecycle<ByteArray, F>.mutShuffleIndexesByteArray(
+@JvmName("mutShuffleIndexesByteArray")
+suspend fun <F> PanmicticLifecycle<ByteArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
     onlySingleRun: Boolean = false,
@@ -27,7 +30,8 @@ suspend fun <F> PanmicticLifecycle<ByteArray, F>.mutShuffleIndexesByteArray(
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-suspend fun <F> PanmicticLifecycle<CharArray, F>.mutShuffleIndexesCharArray(
+@JvmName("mutShuffleIndexesCharArray")
+suspend fun <F> PanmicticLifecycle<CharArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
     onlySingleRun: Boolean = false,
@@ -35,7 +39,8 @@ suspend fun <F> PanmicticLifecycle<CharArray, F>.mutShuffleIndexesCharArray(
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-suspend fun <F> PanmicticLifecycle<DoubleArray, F>.mutShuffleIndexesDoubleArray(
+@JvmName("mutShuffleIndexesDoubleArray")
+suspend fun <F> PanmicticLifecycle<DoubleArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
     onlySingleRun: Boolean = false,
@@ -43,7 +48,8 @@ suspend fun <F> PanmicticLifecycle<DoubleArray, F>.mutShuffleIndexesDoubleArray(
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-suspend fun <F> PanmicticLifecycle<FloatArray, F>.mutShuffleIndexesFloatArray(
+@JvmName("mutShuffleIndexesFloatArray")
+suspend fun <F> PanmicticLifecycle<FloatArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
     onlySingleRun: Boolean = false,
@@ -51,7 +57,8 @@ suspend fun <F> PanmicticLifecycle<FloatArray, F>.mutShuffleIndexesFloatArray(
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-suspend fun <F> PanmicticLifecycle<IntArray, F>.mutShuffleIndexesIntArray(
+@JvmName("mutShuffleIndexesIntArray")
+suspend fun <F> PanmicticLifecycle<IntArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
     onlySingleRun: Boolean = false,
@@ -59,7 +66,8 @@ suspend fun <F> PanmicticLifecycle<IntArray, F>.mutShuffleIndexesIntArray(
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-suspend fun <F> PanmicticLifecycle<LongArray, F>.mutShuffleIndexesLongArray(
+@JvmName("mutShuffleIndexesLongArray")
+suspend fun <F> PanmicticLifecycle<LongArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
     onlySingleRun: Boolean = false,
@@ -67,7 +75,8 @@ suspend fun <F> PanmicticLifecycle<LongArray, F>.mutShuffleIndexesLongArray(
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.mutShuffleIndexesBooleanMutableList(
+@JvmName("mutShuffleIndexesMutableList")
+suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
     onlySingleRun: Boolean = false,
@@ -75,7 +84,8 @@ suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.mutShuffleIndexesBoolea
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-suspend fun <F> PanmicticLifecycle<ShortArray, F>.mutShuffleIndexesShortArray(
+@JvmName("mutShuffleIndexesShortArray")
+suspend fun <F> PanmicticLifecycle<ShortArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
     onlySingleRun: Boolean = false,

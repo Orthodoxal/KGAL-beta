@@ -3,70 +3,80 @@ package genetic.clusters.cellular.operators.crossover
 import genetic.clusters.base.operators.crossover.k_point.crossoverKPoint
 import genetic.clusters.cellular.lifecycle.CellLifecycle
 
-fun <T, F> CellLifecycle<Array<T>, F>.cxKPointArray(
+@JvmName("cxKPointArray")
+fun <T, F> CellLifecycle<Array<T>, F>.cxKPoint(
     count: Int,
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-fun <F> CellLifecycle<BooleanArray, F>.cxKPointBooleanArray(
+@JvmName("cxKPointBooleanArray")
+fun <F> CellLifecycle<BooleanArray, F>.cxKPoint(
     count: Int,
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-fun <F> CellLifecycle<ByteArray, F>.cxKPointByteArray(
+@JvmName("cxKPointByteArray")
+fun <F> CellLifecycle<ByteArray, F>.cxKPoint(
     count: Int,
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-fun <F> CellLifecycle<CharArray, F>.cxKPointCharArray(
+@JvmName("cxKPointCharArray")
+fun <F> CellLifecycle<CharArray, F>.cxKPoint(
     count: Int,
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-fun <F> CellLifecycle<DoubleArray, F>.cxKPointDoubleArray(
+@JvmName("cxKPointDoubleArray")
+fun <F> CellLifecycle<DoubleArray, F>.cxKPoint(
     count: Int,
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-fun <F> CellLifecycle<FloatArray, F>.cxKPointFloatArray(
+@JvmName("cxKPointFloatArray")
+fun <F> CellLifecycle<FloatArray, F>.cxKPoint(
     count: Int,
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-fun <F> CellLifecycle<IntArray, F>.cxKPointIntArray(
+@JvmName("cxKPointIntArray")
+fun <F> CellLifecycle<IntArray, F>.cxKPoint(
     count: Int,
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-fun <F> CellLifecycle<LongArray, F>.cxKPointLongArray(
+@JvmName("cxKPointLongArray")
+fun <F> CellLifecycle<LongArray, F>.cxKPoint(
     count: Int,
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-fun <T, F> CellLifecycle<MutableList<T>, F>.cxKPointMutableList(
+@JvmName("cxKPointMutableList")
+fun <T, F> CellLifecycle<MutableList<T>, F>.cxKPoint(
     count: Int,
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-fun <F> CellLifecycle<ShortArray, F>.cxKPointShortArray(
+@JvmName("cxKPointShortArray")
+fun <F> CellLifecycle<ShortArray, F>.cxKPoint(
     count: Int,
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->

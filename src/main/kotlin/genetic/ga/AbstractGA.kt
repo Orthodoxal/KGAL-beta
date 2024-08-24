@@ -1,10 +1,8 @@
 package genetic.ga
 
-import genetic.clusters.base.state.ClusterState
-import genetic.clusters.base.state.StopPolicy
+/*import genetic.clusters.base.state.StopPolicy
 import genetic.ga.lifecycle.GALifecycle
-import genetic.ga.lifecycle.LifecycleStartOption
-import genetic.ga.panmictic.lifecycle.PanmicticGALifecycleInstance
+import genetic.clusters.distributed.lifecycle.LifecycleStartOption
 import genetic.ga.state.GAState
 import genetic.ga.state.gaStateMachine
 import genetic.stat.StatisticNote
@@ -12,8 +10,6 @@ import genetic.stat.Statistics
 import genetic.stat.StatisticsInstance
 import genetic.stat.stat
 import genetic.utils.statAfter
-import genetic.utils.statBefore
-import genetic.utils.statOnLifecycleIteration
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.FlowCollector
@@ -139,12 +135,12 @@ abstract class AbstractGA<V, F, L : GALifecycle<V, F>> : GA<V, F> {
 
     protected open suspend fun baseStartGA() {
         with(lifecycleScope) {
-            if (lifecycleStartOption == LifecycleStartOption.START) {
+            *//*if (lifecycleStartOption == LifecycleStartOption.START) {
                 beforeLifecycle()
                 statBefore(statisticsInstance)
-            }
+            }*//*
             execute()
-            /*while (this@AbstractGA.iteration < maxIteration) {
+            *//*while (this@AbstractGA.iteration < maxIteration) {
                 lifecycle()
                 statOnLifecycleIteration(statisticsInstance)
 
@@ -168,7 +164,7 @@ abstract class AbstractGA<V, F, L : GALifecycle<V, F>> : GA<V, F> {
                     gaStatisticsCoroutineScope.coroutineContext.cancelChildren()
                     return
                 }
-            }*/
+            }*//*
             if (state == GAState.FINISHED) {
                 this@AbstractGA.stopSignal = false
                 statAfter(statisticsInstance)
@@ -176,4 +172,4 @@ abstract class AbstractGA<V, F, L : GALifecycle<V, F>> : GA<V, F> {
             }
         }
     }
-}
+}*/

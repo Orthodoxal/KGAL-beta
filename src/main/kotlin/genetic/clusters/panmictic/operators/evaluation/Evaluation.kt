@@ -1,5 +1,6 @@
 package genetic.clusters.panmictic.operators.evaluation
 
+import genetic.clusters.base.lifecycle.isSingleRun
 import genetic.clusters.panmictic.PanmicticLifecycle
 import genetic.utils.clusters.forEach
 import genetic.utils.clusters.get

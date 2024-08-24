@@ -1,6 +1,6 @@
 package genetic.ga
 
-import genetic.clusters.base.Cluster
+/*import genetic.clusters.base.Cluster
 import genetic.ga.lifecycle.GALifecycle
 import genetic.stat.StatisticsInstance
 import kotlin.coroutines.CoroutineContext
@@ -19,4 +19,4 @@ interface GABuilder<V, F, L : GALifecycle<V, F>> {
     fun setStatInstance(statisticsInstance: StatisticsInstance, coroutineContext: CoroutineContext)
     fun addCluster(cluster: Cluster<V, F>): Cluster<V, F>
     operator fun Cluster<V, F>.unaryPlus(): Cluster<V, F> = addCluster(this)
-}
+}*/

@@ -1,6 +1,6 @@
 package genetic.ga.cellular
 
-import genetic.chromosome.Chromosome
+/*import genetic.chromosome.Chromosome
 import genetic.clusters.base.Cluster
 import genetic.clusters.simple_cluster.builder.SimpleClusterBuilder
 import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
@@ -20,7 +20,7 @@ import genetic.ga.cellular.type.UpdatePolicy
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_AFTER_LIFECYCLE
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_BEFORE_LIFECYCLE
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_LIFECYCLE
-import genetic.ga.lifecycle.LifecycleStartOption
+import genetic.clusters.distributed.lifecycle.LifecycleStartOption
 import genetic.stat.StatisticsInstance
 import genetic.utils.clusters.checkClusterNameOrTrySetDefaultName
 import genetic.utils.clusters.runWithExtraDispatchersIterative
@@ -358,4 +358,4 @@ internal class CellularGAInstance<V, F> : AbstractGA<V, F>(), CellularGABuilder<
             population[index] = new
         }
     }
-}
+}*/

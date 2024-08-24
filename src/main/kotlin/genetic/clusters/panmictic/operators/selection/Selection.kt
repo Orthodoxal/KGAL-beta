@@ -1,6 +1,7 @@
 package genetic.clusters.panmictic.operators.selection
 
 import genetic.chromosome.Chromosome
+import genetic.clusters.base.lifecycle.isSingleRun
 import genetic.clusters.panmictic.PanmicticLifecycle
 import genetic.clusters.panmictic.operators.selection.elitism.moveToStartElitChromosomes
 import genetic.utils.clusters.*

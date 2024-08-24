@@ -1,6 +1,6 @@
 package genetic.utils
 
-import genetic.clusters.base.builder.ClusterBuilder
+import genetic.clusters.base.lifecycle.ClusterLifecycle
 import kotlin.math.abs
 import kotlin.math.ln
 import kotlin.math.sqrt
@@ -13,10 +13,10 @@ infix fun Double.lessOrEquals(other: Double) = this < other || this.equalsDelta(
 fun randomByChance(chance: Double, random: Random) =
     chance lessOrEquals 0.0 || chance moreOrEquals 1.0 || chance > random.nextDouble(0.0, 1.0)
 
-inline fun randomByChance(chance: Double, random: Random = Random, action: () -> Unit) =
+inline fun randomByChance(chance: Double, random: Random, action: () -> Unit) =
     if (randomByChance(chance, random)) action() else Unit
 
-inline fun <V, F> ClusterBuilder<V, F>.randomByChance(chance: Double, action: () -> Unit) =
+inline fun ClusterLifecycle<*, *>.randomByChance(chance: Double, action: () -> Unit) =
     randomByChance(chance, random, action)
 
 fun IntArray.inUntil(elem: Int, subSize: Int): Boolean {

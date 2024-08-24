@@ -1,6 +1,6 @@
 package genetic.ga.distributed
 
-import genetic.chromosome.Chromosome
+/*import genetic.chromosome.Chromosome
 import genetic.clusters.base.Cluster
 import genetic.ga.AbstractGA
 import genetic.ga.distributed.builder.DistributedGABuilder
@@ -9,7 +9,7 @@ import genetic.ga.distributed.lifecycle.DistributedGALifecycleInstance
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_AFTER_LIFECYCLE
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_BEFORE_LIFECYCLE
 import genetic.ga.lifecycle.GALifecycle.Companion.BASE_LIFECYCLE
-import genetic.ga.lifecycle.LifecycleStartOption
+import genetic.clusters.distributed.lifecycle.LifecycleStartOption
 import genetic.ga.panmictic.builder.PanmicticGABuilder
 import genetic.ga.panmictic.lifecycle.PanmicticGALifecycle
 import genetic.stat.StatisticsInstance
@@ -74,4 +74,4 @@ internal class DistributedGAInstance<V, F> : AbstractGA<V, F>(), DistributedGABu
         gaStatisticsCoroutineContext = coroutineContext
         this.statisticsInstance = statisticsInstance
     }
-}
+}*/

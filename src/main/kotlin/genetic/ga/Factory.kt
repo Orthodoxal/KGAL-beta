@@ -1,5 +1,6 @@
 package genetic.ga
 
+/*
 import genetic.clusters.simpleCluster
 import genetic.clusters.simple_cluster.builder.SimpleClusterBuilder
 import genetic.ga.cellular.CellularGAInstance
@@ -41,3 +42,4 @@ inline fun <V, F> cellularGA(builder: CellularGABuilder<V, F>.() -> Unit): GA<V,
     gaBuilder.apply(builder)
     return ga
 }
+*/

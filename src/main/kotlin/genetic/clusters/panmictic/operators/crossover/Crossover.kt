@@ -1,6 +1,7 @@
 package genetic.clusters.panmictic.operators.crossover
 
 import genetic.chromosome.Chromosome
+import genetic.clusters.base.lifecycle.isSingleRun
 import genetic.clusters.panmictic.PanmicticLifecycle
 import genetic.utils.clusters.*
 import genetic.utils.randomByChance
@@ -22,7 +23,7 @@ inline fun <V, F> PanmicticLifecycle<V, F>.singleRunCrossover(
     crossover: (chromosome1: Chromosome<V, F>, chromosome2: Chromosome<V, F>) -> Unit,
 ) {
     val tempPopulation = population.copyOf()
-    for (index in (elitism)..population.lastIndex step 2) {
+    for (index in (elitism + 1)..population.lastIndex step 2) {
         randomByChance(chance) {
             var index1 = random.nextInt(0, population.lastIndex - 1)
             val index2 = random.nextInt(0, population.lastIndex)

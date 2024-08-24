@@ -1,6 +1,6 @@
 package genetic.ga.distributed.builder
 
-import genetic.ga.distributed.lifecycle.DistributedGALifecycle
+/*import genetic.ga.distributed.lifecycle.DistributedGALifecycle
 import genetic.ga.panmictic.builder.PanmicticGABuilder
 
 interface DistributedGABuilder<V, F> : PanmicticGABuilder<V, F> {
@@ -10,4 +10,4 @@ interface DistributedGABuilder<V, F> : PanmicticGABuilder<V, F> {
         after: (suspend DistributedGALifecycle<V, F>.() -> Unit)? = null,
         lifecycle: suspend DistributedGALifecycle<V, F>.() -> Unit,
     )
-}
+}*/

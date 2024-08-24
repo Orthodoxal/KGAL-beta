@@ -1,6 +1,6 @@
 package genetic.ga.cellular.lifecycle
 
-import genetic.chromosome.Chromosome
+/*import genetic.chromosome.Chromosome
 import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
 
 interface SimpleClusterCellLifecycle<V, F> : SimpleClusterLifecycle<V, F> {
@@ -18,4 +18,4 @@ fun <V, F> SimpleClusterLifecycle<V, F>.simpleClusterCellLifecycle(
     cellChromosome: Chromosome<V, F>,
     neighbours: Array<Chromosome<V, F>>,
 ): SimpleClusterCellLifecycle<V, F> =
-    SimpleClusterCellLifecycleInstance(cellChromosome, neighbours, this)
+    SimpleClusterCellLifecycleInstance(cellChromosome, neighbours, this)*/

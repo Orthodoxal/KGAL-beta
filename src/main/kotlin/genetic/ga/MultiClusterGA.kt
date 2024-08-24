@@ -1,6 +1,6 @@
 package genetic.ga
 
-import genetic.clusters.base.Cluster
+/*import genetic.clusters.base.Cluster
 import genetic.clusters.base.builder.ClusterBuilder
 import genetic.clusters.base.state.ClusterState
 import genetic.clusters.base.state.StopPolicy
@@ -56,7 +56,7 @@ internal class MultiClusterGA<V, F, L : GALifecycle<V, F>>(
         lifecycle()
         statOnLifecycleIteration(statisticsInstance)
 
-        // GA stopped by stopSignal from GALifecycle OR by Cluster FINISHED
+        *//*//*/ GA stopped by stopSignal from GALifecycle OR by Cluster FINISHED
         if (this.stopSignal || cluster.state == ClusterState.FINISHED) {
             state = GAState.FINISHED
             this.stopSignal = false
@@ -69,7 +69,7 @@ internal class MultiClusterGA<V, F, L : GALifecycle<V, F>>(
             this@MultiClusterGA.stopSignal = false
             gaStatisticsCoroutineScope.coroutineContext.cancelChildren()
             return
-        }
+        }*//*
     }
 
     override fun setStatInstance(statisticsInstance: StatisticsInstance, coroutineContext: CoroutineContext) {
@@ -87,4 +87,4 @@ internal class MultiClusterGA<V, F, L : GALifecycle<V, F>>(
             launchClusters(clusters)
             coroutineContext.job.children.forEach { it.join() }
         }
-}
+}*/

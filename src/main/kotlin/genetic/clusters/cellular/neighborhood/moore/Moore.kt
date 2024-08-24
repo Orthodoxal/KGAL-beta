@@ -1,7 +1,7 @@
 package genetic.clusters.cellular.neighborhood.moore
 
 import genetic.clusters.cellular.neighborhood.CellularNeighborhood
-import genetic.ga.cellular.utils.positionByCoordinatesInNArray
+import genetic.clusters.cellular.utils.positionByCoordinatesInNArray
 
 data class Moore(override val radius: Int) : CellularNeighborhood {
 

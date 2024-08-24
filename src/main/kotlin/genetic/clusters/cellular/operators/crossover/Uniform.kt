@@ -3,70 +3,80 @@ package genetic.clusters.cellular.operators.crossover
 import genetic.clusters.base.operators.crossover.uniform.crossoverUniform
 import genetic.clusters.cellular.lifecycle.CellLifecycle
 
-fun <T, F> CellLifecycle<Array<T>, F>.crossoverUniformArray(
+@JvmName("crossoverUniformArray")
+fun <T, F> CellLifecycle<Array<T>, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> CellLifecycle<BooleanArray, F>.crossoverUniformBooleanArray(
+@JvmName("crossoverUniformBooleanArray")
+fun <F> CellLifecycle<BooleanArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> CellLifecycle<ByteArray, F>.crossoverUniformByteArray(
+@JvmName("crossoverUniformByteArray")
+fun <F> CellLifecycle<ByteArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> CellLifecycle<CharArray, F>.crossoverUniformCharArray(
+@JvmName("crossoverUniformCharArray")
+fun <F> CellLifecycle<CharArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> CellLifecycle<DoubleArray, F>.crossoverUniformDoubleArray(
+@JvmName("crossoverUniformDoubleArray")
+fun <F> CellLifecycle<DoubleArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> CellLifecycle<FloatArray, F>.crossoverUniformFloatArray(
+@JvmName("crossoverUniformFloatArray")
+fun <F> CellLifecycle<FloatArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> CellLifecycle<IntArray, F>.crossoverUniformIntArray(
+@JvmName("crossoverUniformIntArray")
+fun <F> CellLifecycle<IntArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> CellLifecycle<LongArray, F>.crossoverUniformLongArray(
+@JvmName("crossoverUniformLongArray")
+fun <F> CellLifecycle<LongArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <T, F> CellLifecycle<MutableList<T>, F>.crossoverUniformMutableList(
+@JvmName("crossoverUniformMutableList")
+fun <T, F> CellLifecycle<MutableList<T>, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> CellLifecycle<ShortArray, F>.crossoverUniformShortArray(
+@JvmName("crossoverUniformShortArray")
+fun <F> CellLifecycle<ShortArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->

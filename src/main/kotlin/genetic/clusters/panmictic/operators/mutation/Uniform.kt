@@ -3,6 +3,7 @@ package genetic.clusters.panmictic.operators.mutation
 import genetic.clusters.base.operators.mutation.uniform.mutationUniform
 import genetic.clusters.panmictic.PanmicticLifecycle
 
+@JvmName("DoubleArray")
 suspend fun <F> PanmicticLifecycle<DoubleArray, F>.mutUniform(
     low: Double,
     up: Double,
@@ -13,6 +14,7 @@ suspend fun <F> PanmicticLifecycle<DoubleArray, F>.mutUniform(
     mutationUniform(chromosome.value, low, up, mutationUniformChance, random)
 }
 
+@JvmName("IntArray")
 suspend fun <F> PanmicticLifecycle<IntArray, F>.mutUniform(
     low: Int,
     up: Int,
@@ -23,6 +25,7 @@ suspend fun <F> PanmicticLifecycle<IntArray, F>.mutUniform(
     mutationUniform(chromosome.value, low, up, mutationUniformChance, random)
 }
 
+@JvmName("LongArray")
 suspend fun <F> PanmicticLifecycle<LongArray, F>.mutUniform(
     low: Long,
     up: Long,

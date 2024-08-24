@@ -1,7 +1,7 @@
 package genetic.clusters.cellular.neighborhood.von_neumann
 
 import genetic.clusters.cellular.neighborhood.CellularNeighborhood
-import genetic.ga.cellular.utils.positionByCoordinatesInNArray
+import genetic.clusters.cellular.utils.positionByCoordinatesInNArray
 import kotlin.math.abs
 
 data class VonNeumann(override val radius: Int) : CellularNeighborhood {

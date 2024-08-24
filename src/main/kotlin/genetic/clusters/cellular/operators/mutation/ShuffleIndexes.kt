@@ -3,70 +3,80 @@ package genetic.clusters.cellular.operators.mutation
 import genetic.clusters.base.operators.mutation.shuffle_indexes.mutationShuffleIndexes
 import genetic.clusters.cellular.lifecycle.CellLifecycle
 
-fun <T, F> CellLifecycle<Array<T>, F>.mutShuffleIndexesArray(
+@JvmName("mutShuffleIndexesArray")
+fun <T, F> CellLifecycle<Array<T>, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
 ) = mutation(mutationChance) { chromosome ->
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-fun <F> CellLifecycle<BooleanArray, F>.mutShuffleIndexesBooleanArray(
+@JvmName("mutShuffleIndexesBooleanArray")
+fun <F> CellLifecycle<BooleanArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
 ) = mutation(mutationChance) { chromosome ->
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-fun <F> CellLifecycle<ByteArray, F>.mutShuffleIndexesByteArray(
+@JvmName("mutShuffleIndexesByteArray")
+fun <F> CellLifecycle<ByteArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
 ) = mutation(mutationChance) { chromosome ->
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-fun <F> CellLifecycle<CharArray, F>.mutShuffleIndexesCharArray(
+@JvmName("mutShuffleIndexesCharArray")
+fun <F> CellLifecycle<CharArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
 ) = mutation(mutationChance) { chromosome ->
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-fun <F> CellLifecycle<DoubleArray, F>.mutShuffleIndexesDoubleArray(
+@JvmName("mutShuffleIndexesDoubleArray")
+fun <F> CellLifecycle<DoubleArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
 ) = mutation(mutationChance) { chromosome ->
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-fun <F> CellLifecycle<FloatArray, F>.mutShuffleIndexesFloatArray(
+@JvmName("mutShuffleIndexesFloatArray")
+fun <F> CellLifecycle<FloatArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
 ) = mutation(mutationChance) { chromosome ->
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-fun <F> CellLifecycle<IntArray, F>.mutShuffleIndexesIntArray(
+@JvmName("mutShuffleIndexesIntArray")
+fun <F> CellLifecycle<IntArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
 ) = mutation(mutationChance) { chromosome ->
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-fun <F> CellLifecycle<LongArray, F>.mutShuffleIndexesLongArray(
+@JvmName("mutShuffleIndexesLongArray")
+fun <F> CellLifecycle<LongArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
 ) = mutation(mutationChance) { chromosome ->
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-fun <T, F> CellLifecycle<MutableList<T>, F>.mutShuffleIndexesMutableList(
+@JvmName("mutShuffleIndexesMutableList")
+fun <T, F> CellLifecycle<MutableList<T>, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
 ) = mutation(mutationChance) { chromosome ->
     mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
 }
 
-fun <F> CellLifecycle<ShortArray, F>.mutShuffleIndexesShortArray(
+@JvmName("mutShuffleIndexesShortArray")
+fun <F> CellLifecycle<ShortArray, F>.mutShuffleIndexes(
     mutationChance: Double,
     mutationShuffleIndexesChance: Double,
 ) = mutation(mutationChance) { chromosome ->

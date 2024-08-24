@@ -1,6 +1,7 @@
 package genetic.clusters.base.lifecycle
 
 import genetic.clusters.base.population.Population
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlin.random.Random
 
 interface ClusterLifecycle<V, F> : MultiRunHelper, LifecycleStore {
@@ -9,8 +10,12 @@ interface ClusterLifecycle<V, F> : MultiRunHelper, LifecycleStore {
 
     var population: Population<V, F>
     var maxGeneration: Int
-    val generation: Int
+    val iteration: Int
     var fitnessFunction: (V) -> F
 
     var stopSignal: Boolean
+
+    val extraDispatchers: Array<CoroutineDispatcher>?
 }
+
+val ClusterLifecycle<*, *>.isSingleRun: Boolean get() =  extraDispatchers?.isEmpty() ?: true

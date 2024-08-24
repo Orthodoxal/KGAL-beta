@@ -3,18 +3,16 @@ package genetic.clusters.cellular
 import genetic.chromosome.Chromosome
 import genetic.clusters.base.AbstractCluster
 import genetic.clusters.cellular.lifecycle.*
-import genetic.clusters.cellular.lifecycle.CellularLifecycle.Companion.BASE_AFTER_LIFECYCLE
-import genetic.clusters.cellular.lifecycle.CellularLifecycle.Companion.BASE_BEFORE_LIFECYCLE
 import genetic.clusters.cellular.neighborhood.CellularNeighborhood
 import genetic.clusters.cellular.neighborhood.moore.Moore
 import genetic.clusters.cellular.neighborhood.toroidalShapeIndicesFilter
-import genetic.ga.cellular.type.CellularType
+import genetic.clusters.cellular.type.CellularType
 
 class CellularCluster<V, F> : AbstractCluster<V, F, CellularLifecycle<V, F>>(), CellularClusterBuilder<V, F> {
     override lateinit var lifecycle: suspend CellularLifecycle<V, F>.() -> Unit
     override val lifecycleScope: CellularLifecycle<V, F> by lazy { CellularLifecycleInstance(this) }
-    override var beforeLifecycle: suspend CellularLifecycle<V, F>.() -> Unit = BASE_BEFORE_LIFECYCLE
-    override var afterLifecycle: suspend CellularLifecycle<V, F>.() -> Unit = BASE_AFTER_LIFECYCLE
+    override var beforeLifecycle: suspend CellularLifecycle<V, F>.() -> Unit = { } // FIXME добавить evaluation
+    override var afterLifecycle: suspend CellularLifecycle<V, F>.() -> Unit = { }
     override var elitism: Boolean = true
     override var cellularType: CellularType = CellularType.Synchronous
     override var dimensions: IntArray = intArrayOf()
@@ -49,21 +47,11 @@ class CellularCluster<V, F> : AbstractCluster<V, F, CellularLifecycle<V, F>>(), 
             checkNeighborhoodChanged()
             before?.invoke(this) ?: beforeLifecycle()
         }
-        lifecycleFull(
+        lifecycle(
             before = beforeCellular,
             after = after,
             lifecycle = buildCellularLifecycle(beforeLifecycleIteration, afterLifecycleIteration, cellLifecycle),
         )
-    }
-
-    override fun CellularClusterBuilder<V, F>.lifecycleFull(
-        before: (suspend CellularLifecycle<V, F>.() -> Unit)?,
-        after: (suspend CellularLifecycle<V, F>.() -> Unit)?,
-        lifecycle: suspend CellularLifecycle<V, F>.() -> Unit,
-    ) {
-        before?.let { beforeLifecycle = before }
-        after?.let { afterLifecycle = after }
-        this@CellularCluster.lifecycle = lifecycle
     }
 
     private fun checkNeighborhoodChanged() {

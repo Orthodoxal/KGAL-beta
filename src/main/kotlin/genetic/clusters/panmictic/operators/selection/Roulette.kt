@@ -1,18 +1,12 @@
 package genetic.clusters.panmictic.operators.selection
 
 import genetic.chromosome.Chromosome
-import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
-import genetic.clusters.base.operators.selection.roulette.selectionRouletteFitByte
-import genetic.clusters.base.operators.selection.roulette.selectionRouletteFitShort
-import genetic.clusters.base.operators.selection.roulette.selectionRouletteFitLong
-import genetic.clusters.base.operators.selection.roulette.selectionRouletteFitInt
-import genetic.clusters.base.operators.selection.roulette.selectionRouletteFitFloat
-import genetic.clusters.base.operators.selection.roulette.selectionRouletteFitDouble
+import genetic.clusters.base.operators.selection.roulette.*
 import genetic.clusters.panmictic.PanmicticLifecycle
-import genetic.ga.panmictic.builder.PanmicticGABuilder
 import genetic.utils.clusters.get
 
-suspend fun <V> PanmicticLifecycle<V, Int>.selRouletteFitInt(
+@JvmName("selRouletteFitInt")
+suspend fun <V> PanmicticLifecycle<V, Int>.selRoulette(
     onlySingleRun: Boolean = false,
 ) {
     val totalFitness = population.get().fold(0L) { acc: Long, chromosome: Chromosome<V, Int> ->
@@ -21,7 +15,8 @@ suspend fun <V> PanmicticLifecycle<V, Int>.selRouletteFitInt(
     selection(onlySingleRun) { source -> selectionRouletteFitInt(source, totalFitness, random) }
 }
 
-suspend fun <V> PanmicticLifecycle<V, Long>.selRouletteFitLong(
+@JvmName("selRouletteFitLong")
+suspend fun <V> PanmicticLifecycle<V, Long>.selRoulette(
     onlySingleRun: Boolean = false,
 ) {
     val totalFitness = population.get().fold(0L) { acc: Long, chromosome: Chromosome<V, Long> ->
@@ -30,7 +25,8 @@ suspend fun <V> PanmicticLifecycle<V, Long>.selRouletteFitLong(
     selection(onlySingleRun) { source -> selectionRouletteFitLong(source, totalFitness, random) }
 }
 
-suspend fun <V> PanmicticLifecycle<V, Short>.selRouletteFitShort(
+@JvmName("selRouletteFitShort")
+suspend fun <V> PanmicticLifecycle<V, Short>.selRoulette(
     onlySingleRun: Boolean = false,
 ) {
     val totalFitness = population.get().fold(0L) { acc: Long, chromosome: Chromosome<V, Short> ->
@@ -39,7 +35,8 @@ suspend fun <V> PanmicticLifecycle<V, Short>.selRouletteFitShort(
     selection(onlySingleRun) { source -> selectionRouletteFitShort(source, totalFitness, random) }
 }
 
-suspend fun <V> PanmicticLifecycle<V, Byte>.selRouletteFitByte(
+@JvmName("selRouletteFitByte")
+suspend fun <V> PanmicticLifecycle<V, Byte>.selRoulette(
     onlySingleRun: Boolean = false,
 ) {
     val totalFitness = population.get().fold(0L) { acc: Long, chromosome: Chromosome<V, Byte> ->
@@ -48,7 +45,8 @@ suspend fun <V> PanmicticLifecycle<V, Byte>.selRouletteFitByte(
     selection(onlySingleRun) { source -> selectionRouletteFitByte(source, totalFitness, random) }
 }
 
-suspend fun <V> PanmicticLifecycle<V, Double>.selRouletteFitDouble(
+@JvmName("selRouletteFitDouble")
+suspend fun <V> PanmicticLifecycle<V, Double>.selRoulette(
     onlySingleRun: Boolean = false,
 ) {
     val totalFitness = population.get().fold(0.0) { acc: Double, chromosome: Chromosome<V, Double> ->
@@ -57,7 +55,8 @@ suspend fun <V> PanmicticLifecycle<V, Double>.selRouletteFitDouble(
     selection(onlySingleRun) { source -> selectionRouletteFitDouble(source, totalFitness, random) }
 }
 
-suspend fun <V> PanmicticLifecycle<V, Float>.selRouletteFitFloat(
+@JvmName("selRouletteFitFloat")
+suspend fun <V> PanmicticLifecycle<V, Float>.selRoulette(
     onlySingleRun: Boolean = false,
 ) {
     val totalFitness = population.get().fold(0f) { acc: Float, chromosome: Chromosome<V, Float> ->

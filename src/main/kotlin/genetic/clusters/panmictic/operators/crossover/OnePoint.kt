@@ -3,70 +3,80 @@ package genetic.clusters.panmictic.operators.crossover
 import genetic.clusters.base.operators.crossover.one_point.*
 import genetic.clusters.panmictic.PanmicticLifecycle
 
-suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.cxOnePointArray(
+@JvmName("cxOnePointArray")
+suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.cxOnePoint(
     chance: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(chance, onlySingleRun) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-suspend fun <F> PanmicticLifecycle<BooleanArray, F>.cxOnePointBooleanArray(
+@JvmName("cxOnePointBooleanArray")
+suspend fun <F> PanmicticLifecycle<BooleanArray, F>.cxOnePoint(
     chance: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(chance, onlySingleRun) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-suspend fun <F> PanmicticLifecycle<ByteArray, F>.cxOnePointByteArray(
+@JvmName("cxOnePointByteArray")
+suspend fun <F> PanmicticLifecycle<ByteArray, F>.cxOnePoint(
     chance: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(chance, onlySingleRun) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-suspend fun <F> PanmicticLifecycle<CharArray, F>.cxOnePointCharArray(
+@JvmName("cxOnePointCharArray")
+suspend fun <F> PanmicticLifecycle<CharArray, F>.cxOnePoint(
     chance: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(chance, onlySingleRun) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxOnePointDoubleArray(
+@JvmName("cxOnePointDoubleArray")
+suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxOnePoint(
     chance: Double = 0.9,
     onlySingleRun: Boolean = false,
 ) = crossover(chance, onlySingleRun) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxOnePointFloatArray(
+@JvmName("cxOnePointFloatArray")
+suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxOnePoint(
     chance: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(chance, onlySingleRun) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-suspend fun <F> PanmicticLifecycle<IntArray, F>.cxOnePointIntArray(
+@JvmName("cxOnePointIntArray")
+suspend fun <F> PanmicticLifecycle<IntArray, F>.cxOnePoint(
     chance: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(chance, onlySingleRun) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-suspend fun <F> PanmicticLifecycle<LongArray, F>.cxOnePointLongArray(
+@JvmName("cxOnePointLongArray")
+suspend fun <F> PanmicticLifecycle<LongArray, F>.cxOnePoint(
     chance: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(chance, onlySingleRun) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.cxOnePointMutableList(
+@JvmName("cxOnePointMutableList")
+suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.cxOnePoint(
     chance: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(chance, onlySingleRun) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-suspend fun <F> PanmicticLifecycle<ShortArray, F>.cxOnePointShortArray(
+@JvmName("cxOnePointShortArray")
+suspend fun <F> PanmicticLifecycle<ShortArray, F>.cxOnePoint(
     chance: Double,
     onlySingleRun: Boolean = false,
 ) = crossover(chance, onlySingleRun) { chromosome1, chromosome2 ->

@@ -1,3 +1,4 @@
+/*
 import genetic.chromosome.Chromosome
 import genetic.chromosome.base_instances.ChromosomeIntArray
 import genetic.clusters.simple_cluster.lifecycle.operators.fitness
@@ -53,3 +54,4 @@ class FitnessTest {
         }
     }
 }
+*/

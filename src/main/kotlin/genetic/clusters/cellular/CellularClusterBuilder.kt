@@ -5,9 +5,9 @@ import genetic.clusters.base.builder.ClusterBuilder
 import genetic.clusters.cellular.lifecycle.CellLifecycle
 import genetic.clusters.cellular.lifecycle.CellularLifecycle
 import genetic.clusters.cellular.neighborhood.CellularNeighborhood
-import genetic.ga.cellular.type.CellularType
+import genetic.clusters.cellular.type.CellularType
 
-interface CellularClusterBuilder<V, F> : ClusterBuilder<V, F> {
+interface CellularClusterBuilder<V, F> : ClusterBuilder<V, F, CellularLifecycle<V, F>> {
     var elitism: Boolean
     var cellularType: CellularType
     var dimensions: IntArray
@@ -29,12 +29,4 @@ interface CellularClusterBuilder<V, F> : ClusterBuilder<V, F> {
         afterLifecycleIteration: (suspend CellularLifecycle<V, F>.() -> Unit)?,
         cellLifecycle: suspend CellularLifecycle<V, F>.(chromosome: Chromosome<V, F>, neighbours: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
     )
-
-    fun CellularClusterBuilder<V, F>.lifecycleFull(
-        before: (suspend CellularLifecycle<V, F>.() -> Unit)? = null,
-        after: (suspend CellularLifecycle<V, F>.() -> Unit)? = null,
-        lifecycle: suspend CellularLifecycle<V, F>.() -> Unit,
-    )
 }
-
-val CellularClusterBuilder<*, *>.isSingleRun get() = extraDispatchers?.isEmpty() ?: true

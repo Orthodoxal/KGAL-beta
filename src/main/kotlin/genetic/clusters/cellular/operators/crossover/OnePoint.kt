@@ -3,61 +3,71 @@ package genetic.clusters.cellular.operators.crossover
 import genetic.clusters.base.operators.crossover.one_point.crossoverOnePoint
 import genetic.clusters.cellular.lifecycle.CellLifecycle
 
-fun <T, F> CellLifecycle<Array<T>, F>.cxOnePointArray(
+@JvmName("cxOnePointArray")
+fun <T, F> CellLifecycle<Array<T>, F>.cxOnePoint(
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> CellLifecycle<BooleanArray, F>.cxOnePointBooleanArray(
+@JvmName("cxOnePointBooleanArray")
+fun <F> CellLifecycle<BooleanArray, F>.cxOnePoint(
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> CellLifecycle<ByteArray, F>.cxOnePointByteArray(
+@JvmName("cxOnePointByteArray")
+fun <F> CellLifecycle<ByteArray, F>.cxOnePoint(
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> CellLifecycle<CharArray, F>.cxOnePointCharArray(
+@JvmName("cxOnePointCharArray")
+fun <F> CellLifecycle<CharArray, F>.cxOnePoint(
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> CellLifecycle<DoubleArray, F>.cxOnePointDoubleArray(
+@JvmName("cxOnePointDoubleArray")
+fun <F> CellLifecycle<DoubleArray, F>.cxOnePoint(
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> CellLifecycle<FloatArray, F>.cxOnePointFloatArray(
+@JvmName("cxOnePointFloatArray")
+fun <F> CellLifecycle<FloatArray, F>.cxOnePoint(
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> CellLifecycle<IntArray, F>.cxOnePointIntArray(
+@JvmName("cxOnePointIntArray")
+fun <F> CellLifecycle<IntArray, F>.cxOnePoint(
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> CellLifecycle<LongArray, F>.cxOnePointLongArray(
+@JvmName("cxOnePointLongArray")
+fun <F> CellLifecycle<LongArray, F>.cxOnePoint(
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <T, F> CellLifecycle<MutableList<T>, F>.cxOnePointMutableList(
+@JvmName("cxOnePointMutableList")
+fun <T, F> CellLifecycle<MutableList<T>, F>.cxOnePoint(
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> CellLifecycle<ShortArray, F>.cxOnePointShortArray(
+@JvmName("cxOnePointShortArray")
+fun <F> CellLifecycle<ShortArray, F>.cxOnePoint(
     chance: Double,
 ) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverOnePoint(chromosome1.value, chromosome2.value, random)
