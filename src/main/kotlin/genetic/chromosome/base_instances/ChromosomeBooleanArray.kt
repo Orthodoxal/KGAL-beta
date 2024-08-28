@@ -1,12 +1,14 @@
 package genetic.chromosome.base_instances
 
 import genetic.chromosome.Chromosome
+import genetic.ga.core.builder.DEFAULT_POPULATION_NAME
+import genetic.ga.core.builder.GABuilder
+import genetic.ga.core.builder.population
 import kotlin.random.Random
 
 data class ChromosomeBooleanArray<F : Comparable<F>>(
     override var value: BooleanArray,
     override var fitness: F? = null,
-    private val clone: (ChromosomeBooleanArray<F>.() -> ChromosomeBooleanArray<F>)? = null,
 ) : Chromosome<BooleanArray, F> {
     override fun compareTo(other: Chromosome<BooleanArray, F>): Int = compareValues(fitness, other.fitness)
 
@@ -26,12 +28,17 @@ data class ChromosomeBooleanArray<F : Comparable<F>>(
         return result
     }
 
-    override fun clone(): Chromosome<BooleanArray, F> = clone?.let { it() } ?: copy(value = value.copyOf())
+    override fun clone(): Chromosome<BooleanArray, F> = copy(value = value.copyOf())
 }
 
-fun <F : Comparable<F>> ChromosomeBooleanArray(
-    valueSize: Int,
-    random: Random = Random,
-    fitness: F? = null,
-    clone: (ChromosomeBooleanArray<F>.() -> ChromosomeBooleanArray<F>)? = null,
-) = ChromosomeBooleanArray(value = BooleanArray(valueSize) { random.nextBoolean() }, fitness, clone)
+fun <F : Comparable<F>> booleans(size: Int, random: Random) =
+    ChromosomeBooleanArray<F>(value = BooleanArray(size) { random.nextBoolean() })
+
+fun <F : Comparable<F>> GABuilder<*, F, *>.booleans(size: Int) =
+    booleans<F>(size, random)
+
+fun <F : Comparable<F>> GABuilder<BooleanArray, F, *>.population(
+    size: Int,
+    chrSize: Int,
+    name: String = DEFAULT_POPULATION_NAME,
+) = population(size, name) { booleans(chrSize) }

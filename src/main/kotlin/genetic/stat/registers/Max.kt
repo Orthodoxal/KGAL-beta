@@ -1,23 +1,18 @@
 package genetic.stat.registers
 
-import genetic.clusters.base.builder.ClusterBuilder
+import genetic.ga.core.GA
+import genetic.ga.core.builder.GABuilder
 import genetic.stat.StatisticRegister
 import genetic.stat.StatisticsBuilder
-import genetic.utils.clusters.max
+import genetic.ga.core.population.max
 
 private const val REGISTER_NAME = "MAX"
 
-//fun <V, F> Cluster<V, F>.max() = population.max()
-fun <V, F> ClusterBuilder<V, F, *>.max() = population.max()
+fun <V, F> GA<V, F>.max() = population.max()
+fun <V, F> GABuilder<V, F, *>.max() = population.max()
 
-fun StatisticsBuilder.max(cluster: ClusterBuilder<*, *, *>) =
+fun StatisticsBuilder.max(cluster: GABuilder<*, *, *>) =
     +StatisticRegister(REGISTER_NAME) { cluster.max().fitness }
 
-/*fun <V, F> StatisticsBuilder.max(ga: GABuilder<V, F>) =
-    +StatisticRegister(REGISTER_NAME) { ga.clusters.maxOfOrNull { it.max() }?.fitness }*/
-
-fun StatisticsBuilder.maxChromosome(cluster: ClusterBuilder<*, *, *>) =
+fun StatisticsBuilder.maxChromosome(cluster: GABuilder<*, *, *>) =
     +StatisticRegister(REGISTER_NAME) { cluster.max() }
-
-/*fun <V, F> StatisticsBuilder.maxChromosome(ga: GABuilder<V, F>) =
-    +StatisticRegister(REGISTER_NAME) { ga.clusters.maxOfOrNull { it.max() } }*/

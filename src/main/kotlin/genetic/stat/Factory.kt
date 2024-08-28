@@ -1,7 +1,8 @@
 package genetic.stat
 
-import genetic.clusters.base.builder.ClusterBuilder
+import genetic.ga.core.builder.GABuilder
 import kotlinx.coroutines.channels.BufferOverflow
+import kotlin.coroutines.CoroutineContext
 
 fun stat(
     replay: Int,
@@ -32,14 +33,14 @@ fun stat(
     )
 }
 
-/*fun <V, F> GABuilder<V, F>.statGA(
-    coroutineContext: CoroutineContext = Dispatchers.IO,
+fun GABuilder<*, *, *>.statCluster(
     replay: Int = 0,
     extraBufferCapacity: Int? = null,
     onBufferOverflow: BufferOverflow = BufferOverflow.SUSPEND,
     beforeLifecycle: (StatisticsBuilder.() -> Unit)? = null,
     afterLifecycle: (StatisticsBuilder.() -> Unit)? = null,
     onLifecycleIteration: (StatisticsBuilder.() -> Unit)? = null,
+    coroutineContext: CoroutineContext? = null,
 ) {
     val statisticsInstance = stat(
         replay,
@@ -49,24 +50,5 @@ fun stat(
         afterLifecycle,
         onLifecycleIteration,
     )
-    setStatInstance(statisticsInstance, coroutineContext)
-}*/
-
-fun ClusterBuilder<*, *, *>.statCluster(
-    replay: Int = 0,
-    extraBufferCapacity: Int? = null,
-    onBufferOverflow: BufferOverflow = BufferOverflow.SUSPEND,
-    beforeLifecycle: (StatisticsBuilder.() -> Unit)? = null,
-    afterLifecycle: (StatisticsBuilder.() -> Unit)? = null,
-    onLifecycleIteration: (StatisticsBuilder.() -> Unit)? = null,
-) {
-    val statisticsInstance = stat(
-        replay,
-        extraBufferCapacity,
-        onBufferOverflow,
-        beforeLifecycle,
-        afterLifecycle,
-        onLifecycleIteration,
-    )
-    stat = statisticsInstance
+    coroutineContext?.let { setStatInstance(statisticsInstance, coroutineContext) } ?: { stat = statisticsInstance }
 }

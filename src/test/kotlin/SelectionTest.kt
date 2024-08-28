@@ -1,9 +1,9 @@
 import genetic.chromosome.Chromosome
-import genetic.clusters.base.operators.selection.comparable.selectionBest
-import genetic.clusters.base.operators.selection.comparable.selectionWorst
-import genetic.clusters.base.operators.selection.random.selectionRandom
-import genetic.clusters.base.operators.selection.roulette.selectionRouletteFitInt
-import genetic.clusters.base.operators.selection.tournament.selectionTournament
+import genetic.ga.core.operators.selection.comparable.selectionBest
+import genetic.ga.core.operators.selection.comparable.selectionWorst
+import genetic.ga.core.operators.selection.random.selectionRandom
+import genetic.ga.core.operators.selection.roulette.selectionRouletteFitInt
+import genetic.ga.core.operators.selection.tournament.selectionTournament
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 import kotlin.test.assertContentEquals

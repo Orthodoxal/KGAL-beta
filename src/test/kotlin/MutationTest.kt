@@ -1,8 +1,8 @@
-import genetic.clusters.base.operators.mutation.flip_bit.mutationFlipBit
-import genetic.clusters.base.operators.mutation.gaussian.mutationGaussian
-import genetic.clusters.base.operators.mutation.polynomial_bounded.mutationPolynomialBounded
-import genetic.clusters.base.operators.mutation.shuffle_indexes.mutationShuffleIndexes
-import genetic.clusters.base.operators.mutation.uniform.mutationUniform
+import genetic.ga.core.operators.mutation.flip_bit.mutationFlipBit
+import genetic.ga.core.operators.mutation.gaussian.mutationGaussian
+import genetic.ga.core.operators.mutation.polynomial_bounded.mutationPolynomialBounded
+import genetic.ga.core.operators.mutation.shuffle_indexes.mutationShuffleIndexes
+import genetic.ga.core.operators.mutation.uniform.mutationUniform
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 import kotlin.test.assertContentEquals

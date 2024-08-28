@@ -1,6 +1,6 @@
 package genetic.utils
 
-import genetic.clusters.base.lifecycle.ClusterLifecycle
+import genetic.ga.core.lifecycle.GALifecycle
 import kotlin.math.abs
 import kotlin.math.ln
 import kotlin.math.sqrt
@@ -16,7 +16,7 @@ fun randomByChance(chance: Double, random: Random) =
 inline fun randomByChance(chance: Double, random: Random, action: () -> Unit) =
     if (randomByChance(chance, random)) action() else Unit
 
-inline fun ClusterLifecycle<*, *>.randomByChance(chance: Double, action: () -> Unit) =
+inline fun GALifecycle<*, *>.randomByChance(chance: Double, action: () -> Unit) =
     randomByChance(chance, random, action)
 
 fun IntArray.inUntil(elem: Int, subSize: Int): Boolean {

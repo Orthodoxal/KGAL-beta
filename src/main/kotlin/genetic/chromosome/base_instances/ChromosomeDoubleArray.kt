@@ -1,12 +1,14 @@
 package genetic.chromosome.base_instances
 
 import genetic.chromosome.Chromosome
+import genetic.ga.core.builder.DEFAULT_POPULATION_NAME
+import genetic.ga.core.builder.GABuilder
+import genetic.ga.core.builder.population
 import kotlin.random.Random
 
 data class ChromosomeDoubleArray<F : Comparable<F>>(
     override var value: DoubleArray,
     override var fitness: F? = null,
-    private val clone: (ChromosomeDoubleArray<F>.() -> ChromosomeDoubleArray<F>)? = null,
 ) : Chromosome<DoubleArray, F> {
     override fun compareTo(other: Chromosome<DoubleArray, F>): Int = compareValues(fitness, other.fitness)
 
@@ -26,25 +28,33 @@ data class ChromosomeDoubleArray<F : Comparable<F>>(
         return result
     }
 
-    override fun clone(): Chromosome<DoubleArray, F> = clone?.let { it() } ?: copy(value = value.copyOf())
+    override fun clone(): Chromosome<DoubleArray, F> = copy(value = value.copyOf())
 }
 
-fun <F : Comparable<F>> ChromosomeDoubleArray(
-    valueSize: Int,
+fun <F : Comparable<F>> doubles(
+    size: Int,
+    random: Random,
     from: Double? = null,
     until: Double? = null,
-    random: Random = Random,
-    fitness: F? = null,
-    clone: (ChromosomeDoubleArray<F>.() -> ChromosomeDoubleArray<F>)? = null,
-) = ChromosomeDoubleArray(
-    value = DoubleArray(valueSize) {
-        when {
-            from != null && until != null -> random.nextDouble(from, until)
-            from != null -> random.nextDouble(from, Double.MAX_VALUE)
-            until != null -> random.nextDouble(Double.MIN_VALUE, until)
-            else -> random.nextDouble()
-        }
+) = ChromosomeDoubleArray<F>(
+    value = when {
+        from != null && until != null -> DoubleArray(size) { random.nextDouble(from, until) }
+        from != null -> DoubleArray(size) { random.nextDouble(from, Double.MAX_VALUE) }
+        until != null -> DoubleArray(size) { random.nextDouble(until) }
+        else -> DoubleArray(size) { random.nextDouble() }
     },
-    fitness,
-    clone,
 )
+
+fun <F : Comparable<F>> GABuilder<DoubleArray, F, *>.doubles(
+    size: Int,
+    from: Double? = null,
+    until: Double? = null,
+) = doubles<F>(size, random, from, until)
+
+fun <F : Comparable<F>> GABuilder<DoubleArray, F, *>.population(
+    size: Int,
+    chrSize: Int,
+    from: Double? = null,
+    until: Double? = null,
+    name: String = DEFAULT_POPULATION_NAME,
+) = population(size, name) { doubles(chrSize, from, until) }
