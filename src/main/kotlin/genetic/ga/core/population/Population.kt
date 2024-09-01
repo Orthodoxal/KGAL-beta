@@ -25,12 +25,14 @@ fun <V, F> Population<V, F>.copyOf() = population.copyOf()
 fun <V, F> Population<V, F>.copyOfRange(fromIndex: Int = 0, toIndex: Int = currentSize) =
     population.copyOfRange(0, currentSize)
 
-fun <V, F> Population<V, F>.max() = population.max()
-fun <V, F> Population<V, F>.min() = population.min()
+fun Population<*, *>.isEmpty() = population.isEmpty()
+
+val <V, F> Population<V, F>.best get() = fold { acc, candidate -> acc < candidate }
+val <V, F> Population<V, F>.worst get() = fold { acc, candidate -> acc > candidate }
 
 inline fun <V, F> Population<V, F>.forEach(
-    start: Int = 0,
-    end: Int = currentSize,
+    start: Int,
+    end: Int,
     action: (chromosome: Chromosome<V, F>) -> Unit,
 ) = population.forEach(start, end, action)
 
@@ -39,6 +41,27 @@ inline fun <V, F> Population<V, F>.forEachIndexed(
     end: Int = currentSize,
     action: (index: Int, chromosome: Chromosome<V, F>) -> Unit,
 ) = population.forEachIndexed(start, end, action)
+
+private inline fun <V, F> Population<V, F>.fold(
+    operation: (acc: Chromosome<V, F>, candidate: Chromosome<V, F>) -> Boolean,
+): Chromosome<V, F> {
+    var accumulator = population.first()
+    forEach(1, currentSize) {
+        if (operation(accumulator, it)) {
+            accumulator = it
+        }
+    }
+    return accumulator
+}
+
+inline fun <V, F, R> Population<V, F>.fold(initial: R, operation: (acc: R, Chromosome<V, F>) -> R): R {
+    var accumulator = initial
+    this.forEach(0, currentSize) { accumulator = operation(accumulator, it) }
+    return accumulator
+}
+
+inline fun <V, F> Population<V, F>.sort() = population.sort()
+inline fun <V, F> Population<V, F>.sort(start: Int, end: Int) = population.sort(start, end)
 
 operator fun <V, F> Population<V, F>.get(index: Int) = population[index]
 

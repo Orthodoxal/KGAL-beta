@@ -53,7 +53,7 @@ class DistributedGA<V, F>(
         super.prepareStatistics()
         with(statisticsCoroutineScope) {
             gas.forEach {
-                launch { it.stat?.collect { stat?.emit(it) } }
+                launch { it.collectStat { stat.emit(it) } }
             }
         }
     }

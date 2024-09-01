@@ -2,6 +2,7 @@ package genetic.ga.core.operators
 
 import genetic.ga.core.lifecycle.GALifecycle
 import genetic.ga.core.population.*
+import genetic.stat.registers.bestFitness
 import genetic.utils.moreOrEquals
 import kotlin.collections.set
 import kotlin.random.Random
@@ -32,7 +33,7 @@ inline fun <V, reified F, L : GALifecycle<V, F>> L.shakeByRepeatableForMax(
     population: Population<V, F>,
     equalsPredicate: (max: F, prevMax: F) -> Boolean,
 ) = shakeBy(percent, random, population) {
-    val maxFitness = population.max().fitness!!
+    val maxFitness = bestFitness!!
     val storeMaxFitness = store[SHAKE_BY_REPEATABLE_MAX_FITNESS] as? F
     var equalsIteration = store[SHAKE_BY_REPEATABLE_EQUALS_ITERATION] as? Int
 

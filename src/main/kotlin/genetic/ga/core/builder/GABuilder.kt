@@ -3,9 +3,8 @@ package genetic.ga.core.builder
 import genetic.chromosome.Chromosome
 import genetic.ga.core.lifecycle.GALifecycle
 import genetic.ga.core.population.Population
-import genetic.stat.StatisticsInstance
+import genetic.stat.config.StatisticsConfig
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlin.coroutines.CoroutineContext
 import kotlin.random.Random
 
 internal const val DEFAULT_POPULATION_NAME = "POPULATION 1"
@@ -17,8 +16,6 @@ interface GABuilder<V, F, L : GALifecycle<V, F>> {
     var maxIteration: Int
     var fitnessFunction: ((V) -> F)?
 
-    var stat: StatisticsInstance?
-
     var mainDispatcher: CoroutineDispatcher?
     var extraDispatchers: Array<CoroutineDispatcher>?
 
@@ -26,7 +23,7 @@ interface GABuilder<V, F, L : GALifecycle<V, F>> {
     fun GABuilder<V, F, L>.evolve(evolution: suspend L.() -> Unit)
     fun GABuilder<V, F, L>.after(useDefault: Boolean = true, afterEvolution: suspend L.() -> Unit)
 
-    fun setStatInstance(statisticsInstance: StatisticsInstance, coroutineContext: CoroutineContext)
+    fun StatisticsConfig.applyToGA()
 }
 
 val GABuilder<*, *, *>.name get() = population.name

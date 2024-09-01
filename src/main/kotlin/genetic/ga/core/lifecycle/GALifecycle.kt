@@ -1,6 +1,7 @@
 package genetic.ga.core.lifecycle
 
 import genetic.ga.core.population.Population
+import genetic.stat.note.StatisticNote
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlin.random.Random
 
@@ -15,6 +16,8 @@ interface GALifecycle<V, F> : MultiRunHelper, LifecycleStore {
     var stopSignal: Boolean
 
     val extraDispatchers: Array<CoroutineDispatcher>?
+
+    suspend fun emitStat(value: StatisticNote<Any?>)
 }
 
 val GALifecycle<*, *>.isSingleRun: Boolean get() = extraDispatchers?.isEmpty() ?: true

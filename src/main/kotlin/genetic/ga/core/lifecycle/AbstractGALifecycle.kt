@@ -2,6 +2,7 @@ package genetic.ga.core.lifecycle
 
 import genetic.ga.core.AbstractGA
 import genetic.ga.core.population.Population
+import genetic.stat.note.StatisticNote
 import kotlin.random.Random
 
 abstract class AbstractGALifecycle<V, F>(
@@ -37,4 +38,6 @@ abstract class AbstractGALifecycle<V, F>(
         }
 
     override var stopSignal: Boolean = false
+
+    override suspend fun emitStat(value: StatisticNote<Any?>) = abstractCluster.emitStat(value)
 }
