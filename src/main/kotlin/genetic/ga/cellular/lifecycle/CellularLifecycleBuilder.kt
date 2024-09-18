@@ -3,11 +3,10 @@ package genetic.ga.cellular.lifecycle
 import genetic.chromosome.Chromosome
 import genetic.ga.cellular.type.CellularType
 import genetic.ga.cellular.type.UpdatePolicy
-import genetic.ga.core.lifecycle.currentSize
 import genetic.ga.core.lifecycle.isSingleRun
 import genetic.ga.core.lifecycle.runWithExtraDispatchersIterative
+import genetic.ga.core.lifecycle.size
 import genetic.ga.core.population.*
-import kotlin.random.Random
 
 fun <V, F> buildCellularLifecycle(
     beforeLifecycleIteration: (suspend CellularLifecycle<V, F>.() -> Unit)? = null,
@@ -59,7 +58,7 @@ private suspend inline fun <V, F> CellularLifecycle<V, F>.multiRunSynchronous(
 ) {
     val tempPopulation = population.copyOf()
 
-    runWithExtraDispatchersIterative(0, currentSize) { iteration ->
+    runWithExtraDispatchersIterative(0, size) { iteration ->
         val chromosomeNeighboursIndices = neighboursIndicesCache[iteration]
         val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
             population[chromosomeNeighboursIndices[indexNeighbour]]
@@ -88,7 +87,7 @@ private inline fun <V, F> CellularLifecycle<V, F>.singleRunAsynchronous(
     }
 
     is UpdatePolicy.FixedRandomSweep -> {
-        val indicesShuffled = IntArray(currentSize) { it }.apply { shuffle(updatePolicy.random) }
+        val indicesShuffled = IntArray(size) { it }.apply { shuffle(updatePolicy.random) }
         population.forEachIndexed { index, _ ->
             val indexR = indicesShuffled[index]
             val chromosomeNeighboursIndices = neighboursIndicesCache[indexR]
@@ -102,7 +101,7 @@ private inline fun <V, F> CellularLifecycle<V, F>.singleRunAsynchronous(
     }
 
     is UpdatePolicy.NewRandomSweep -> {
-        val indicesShuffled = IntArray(currentSize) { it }.apply { shuffle(random) }
+        val indicesShuffled = IntArray(size) { it }.apply { shuffle(random) }
         population.forEachIndexed { index, _ ->
             val indexR = indicesShuffled[index]
             val chromosomeNeighboursIndices = neighboursIndicesCache[indexR]
@@ -117,7 +116,7 @@ private inline fun <V, F> CellularLifecycle<V, F>.singleRunAsynchronous(
 
     is UpdatePolicy.UniformChoice -> {
         population.forEachIndexed { _, _ ->
-            val indexR = random.nextInt(currentSize)
+            val indexR = random.nextInt(size)
             val chromosomeNeighboursIndices = neighboursIndicesCache[indexR]
             val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
                 population[chromosomeNeighboursIndices[indexNeighbour]]
@@ -134,7 +133,7 @@ private suspend inline fun <V, F> CellularLifecycle<V, F>.multiRunAsynchronous(
     crossinline lifecycleExecutor: suspend (chromosome: Chromosome<V, F>, neighbours: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
 ) = when (updatePolicy) {
     is UpdatePolicy.LineSweep -> {
-        runWithExtraDispatchersIterative(0, currentSize) { iteration ->
+        runWithExtraDispatchersIterative(0, size) { iteration ->
             val chromosomeNeighboursIndices = neighboursIndicesCache[iteration]
             val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
                 population[chromosomeNeighboursIndices[indexNeighbour]]
@@ -145,8 +144,8 @@ private suspend inline fun <V, F> CellularLifecycle<V, F>.multiRunAsynchronous(
     }
 
     is UpdatePolicy.FixedRandomSweep -> {
-        val indicesShuffled = IntArray(currentSize) { it }.apply { shuffle(updatePolicy.random) }
-        runWithExtraDispatchersIterative(0, currentSize) { iteration ->
+        val indicesShuffled = IntArray(size) { it }.apply { shuffle(updatePolicy.random) }
+        runWithExtraDispatchersIterative(0, size) { iteration ->
             val index = indicesShuffled[iteration]
             val chromosomeNeighboursIndices = neighboursIndicesCache[index]
             val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
@@ -158,8 +157,8 @@ private suspend inline fun <V, F> CellularLifecycle<V, F>.multiRunAsynchronous(
     }
 
     is UpdatePolicy.NewRandomSweep -> {
-        val indicesShuffled = IntArray(currentSize) { it }.apply { shuffle(random) }
-        runWithExtraDispatchersIterative(0, currentSize) { iteration ->
+        val indicesShuffled = IntArray(size) { it }.apply { shuffle(random) }
+        runWithExtraDispatchersIterative(0, size) { iteration ->
             val index = indicesShuffled[iteration]
             val chromosomeNeighboursIndices = neighboursIndicesCache[index]
             val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
@@ -171,8 +170,8 @@ private suspend inline fun <V, F> CellularLifecycle<V, F>.multiRunAsynchronous(
     }
 
     is UpdatePolicy.UniformChoice -> {
-        runWithExtraDispatchersIterative(0, currentSize) { _ ->
-            val index = random.nextInt(currentSize)
+        runWithExtraDispatchersIterative(0, size) { _ ->
+            val index = random.nextInt(size)
             val chromosomeNeighboursIndices = neighboursIndicesCache[index]
             val chromosomeNeighbours = Array(chromosomeNeighboursIndices.size) { indexNeighbour ->
                 population[chromosomeNeighboursIndices[indexNeighbour]]

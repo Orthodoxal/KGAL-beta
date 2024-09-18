@@ -2,8 +2,8 @@ package genetic.stat.registers
 
 import genetic.ga.core.GA
 import genetic.ga.core.currentSize
-import genetic.ga.core.lifecycle.GALifecycle
-import genetic.ga.core.lifecycle.currentSize
+import genetic.ga.core.lifecycle.Lifecycle
+import genetic.ga.core.lifecycle.size
 import genetic.ga.core.population.fold
 import genetic.stat.note.Statistic
 
@@ -23,23 +23,23 @@ val GA<*, Long>.mean
 
 
 @get:JvmName("getMeanInt")
-val GALifecycle<*, Int>.mean
-    get() = population.fold(0.0) { acc, chromosome -> acc + chromosome.fitness!! } / currentSize
+val Lifecycle<*, Int>.mean
+    get() = population.fold(0.0) { acc, chromosome -> acc + chromosome.fitness!! } / size
 
 @get:JvmName("getMeanDouble")
-val GALifecycle<*, Double>.mean
-    get() = population.fold(0.0) { acc, chromosome -> acc + chromosome.fitness!! } / currentSize
+val Lifecycle<*, Double>.mean
+    get() = population.fold(0.0) { acc, chromosome -> acc + chromosome.fitness!! } / size
 
 @get:JvmName("getMeanLong")
-val GALifecycle<*, Long>.mean
-    get() = population.fold(0.0) { acc, chromosome -> acc + chromosome.fitness!! } / currentSize
+val Lifecycle<*, Long>.mean
+    get() = population.fold(0.0) { acc, chromosome -> acc + chromosome.fitness!! } / size
 
 
 @JvmName("meanInt")
-fun GALifecycle<*, Int>.mean() = Statistic(NAME, mean)
+fun Lifecycle<*, Int>.mean() = Statistic(NAME, mean)
 
 @JvmName("meanDouble")
-fun GALifecycle<*, Double>.mean() = Statistic(NAME, mean)
+fun Lifecycle<*, Double>.mean() = Statistic(NAME, mean)
 
 @JvmName("meanLong")
-fun GALifecycle<*, Long>.mean() = Statistic(NAME, mean)
+fun Lifecycle<*, Long>.mean() = Statistic(NAME, mean)

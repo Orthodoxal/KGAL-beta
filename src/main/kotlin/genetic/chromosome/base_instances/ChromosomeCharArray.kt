@@ -1,9 +1,6 @@
 package genetic.chromosome.base_instances
 
 import genetic.chromosome.Chromosome
-import genetic.ga.core.builder.DEFAULT_POPULATION_NAME
-import genetic.ga.core.builder.GABuilder
-import genetic.ga.core.builder.population
 import kotlin.random.Random
 
 data class ChromosomeCharArray<F : Comparable<F>>(
@@ -35,15 +32,5 @@ internal val defaultAllowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
 internal fun chars(size: Int, random: Random, allowedChars: List<Char> = defaultAllowedChars) =
     CharArray(size) { allowedChars.random(random) }
 
-fun <F : Comparable<F>> chars(size: Int, random: Random, allowedChars: List<Char> = defaultAllowedChars) =
-    ChromosomeCharArray<F>(value = chars(size, random, allowedChars))
-
-fun <F : Comparable<F>> GABuilder<CharArray, F, *>.chars(size: Int, allowedChars: List<Char> = defaultAllowedChars) =
-    chars<F>(size, random, allowedChars)
-
-fun <F : Comparable<F>> GABuilder<CharArray, F, *>.population(
-    size: Int,
-    chrSize: Int,
-    allowedChars: List<Char> = defaultAllowedChars,
-    name: String = DEFAULT_POPULATION_NAME,
-) = population(size, name) { chars(chrSize, allowedChars) }
+fun <F : Comparable<F>> Random.chars(size: Int, allowedChars: List<Char> = defaultAllowedChars) =
+    ChromosomeCharArray<F>(value = chars(size, this, allowedChars))

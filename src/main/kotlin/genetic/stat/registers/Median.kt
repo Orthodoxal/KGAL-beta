@@ -1,7 +1,7 @@
 package genetic.stat.registers
 
 import genetic.ga.core.GA
-import genetic.ga.core.lifecycle.GALifecycle
+import genetic.ga.core.lifecycle.Lifecycle
 import genetic.ga.core.population.Population
 import genetic.ga.core.population.copyOfRange
 import genetic.stat.note.Statistic
@@ -22,26 +22,26 @@ val GA<*, Long>.median
 
 
 @get:JvmName("getMedianInt")
-val GALifecycle<*, Int>.median
+val Lifecycle<*, Int>.median
     get() = population.getMedian { toDouble() }
 
 @get:JvmName("getMedianDouble")
-val GALifecycle<*, Double>.median
+val Lifecycle<*, Double>.median
     get() = population.getMedian { this }
 
 @get:JvmName("getMedianLong")
-val GALifecycle<*, Long>.median
+val Lifecycle<*, Long>.median
     get() = population.getMedian { toDouble() }
 
 
 @JvmName("medianInt")
-fun GALifecycle<*, Int>.median() = Statistic(NAME, median)
+fun Lifecycle<*, Int>.median() = Statistic(NAME, median)
 
 @JvmName("medianDouble")
-fun GALifecycle<*, Double>.median() = Statistic(NAME, median)
+fun Lifecycle<*, Double>.median() = Statistic(NAME, median)
 
 @JvmName("medianLong")
-fun GALifecycle<*, Long>.median() = Statistic(NAME, median)
+fun Lifecycle<*, Long>.median() = Statistic(NAME, median)
 
 
 private inline fun <F> Population<*, F>.getMedian(

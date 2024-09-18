@@ -1,6 +1,6 @@
 package genetic.stat.note
 
-import genetic.ga.core.lifecycle.GALifecycle
+import genetic.ga.core.lifecycle.Lifecycle
 import genetic.ga.core.lifecycle.name
 
 data class SingleStatisticNote<V>(
@@ -11,7 +11,7 @@ data class SingleStatisticNote<V>(
     override fun toString(): String = "$ownerName\t $iteration\t ${statistic.name}\t ${statistic.value}"
 }
 
-suspend fun GALifecycle<*, *>.stat(
+suspend fun Lifecycle<*, *>.stat(
     name: String,
     value: Any?,
 ) = emitStat(
@@ -23,7 +23,7 @@ suspend fun GALifecycle<*, *>.stat(
 )
 
 @JvmName("statValue")
-suspend fun GALifecycle<*, *>.stat(
+suspend fun Lifecycle<*, *>.stat(
     pair: Pair<String, Any?>,
 ) = emitStat(
     SingleStatisticNote(
@@ -33,7 +33,7 @@ suspend fun GALifecycle<*, *>.stat(
     )
 )
 
-suspend inline fun GALifecycle<*, *>.stat(
+suspend inline fun Lifecycle<*, *>.stat(
     name: String,
     registrar: () -> Any?,
 ) = emitStat(
@@ -45,7 +45,7 @@ suspend inline fun GALifecycle<*, *>.stat(
 )
 
 @JvmName("statRegister")
-suspend fun GALifecycle<*, *>.stat(
+suspend fun Lifecycle<*, *>.stat(
     pair: Pair<String, () -> Any?>,
 ) = emitStat(
     SingleStatisticNote(
@@ -55,7 +55,7 @@ suspend fun GALifecycle<*, *>.stat(
     )
 )
 
-suspend fun GALifecycle<*, *>.stat(
+suspend fun Lifecycle<*, *>.stat(
     statistic: Statistic<Any?>,
 ) = emitStat(
     SingleStatisticNote(

@@ -1,38 +1,44 @@
 package genetic.ga.cellular.lifecycle
 
-import genetic.ga.core.lifecycle.AbstractGALifecycle
-import genetic.ga.core.lifecycle.GALifecycle
 import genetic.ga.cellular.CellularGA
+import genetic.ga.cellular.neighborhood.CellularNeighborhood
 import genetic.ga.cellular.type.CellularType
-import kotlinx.coroutines.CoroutineDispatcher
+import genetic.ga.cellular.utils.Dimens
+import genetic.ga.core.lifecycle.BaseLifecycle
+import genetic.ga.core.lifecycle.Lifecycle
 
-interface CellularLifecycle<V, F> : GALifecycle<V, F> {
+interface CellularLifecycle<V, F> : Lifecycle<V, F> {
     var elitism: Boolean
     var cellularType: CellularType
+    var neighborhood: CellularNeighborhood
+    val dimens: Dimens
     var neighboursIndicesCache: Array<IntArray>
 }
 
 internal class CellularLifecycleInstance<V, F>(
-    private val cellularCluster: CellularGA<V, F>,
-) : AbstractGALifecycle<V, F>(cellularCluster), CellularLifecycle<V, F> {
+    private val cellularGA: CellularGA<V, F>,
+) : CellularLifecycle<V, F>, Lifecycle<V, F> by BaseLifecycle(cellularGA) {
 
     override var elitism: Boolean
-        get() = cellularCluster.elitism
+        get() = cellularGA.elitism
         set(value) {
-            cellularCluster.elitism = value
+            cellularGA.elitism = value
         }
 
     override var cellularType: CellularType
-        get() = cellularCluster.cellularType
+        get() = cellularGA.cellularType
         set(value) {
-            cellularCluster.cellularType = value
+            cellularGA.cellularType = value
         }
 
-    override var neighboursIndicesCache: Array<IntArray>
-        get() = cellularCluster.neighboursIndicesCache
+    override var neighborhood: CellularNeighborhood
+        get() = cellularGA.neighborhood
         set(value) {
-            cellularCluster.neighboursIndicesCache = value
+            cellularGA.neighborhood = value
         }
 
-    override val extraDispatchers: Array<CoroutineDispatcher>? get() = cellularCluster.extraDispatchers
+    override val dimens: Dimens
+        get() = cellularGA.population.dimens
+
+    override var neighboursIndicesCache: Array<IntArray> = emptyArray()
 }

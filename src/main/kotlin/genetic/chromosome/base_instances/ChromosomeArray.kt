@@ -1,8 +1,6 @@
 package genetic.chromosome.base_instances
 
 import genetic.chromosome.Chromosome
-import genetic.ga.core.builder.GABuilder
-import genetic.ga.core.builder.population
 import kotlin.random.Random
 
 data class ChromosomeArray<T, F : Comparable<F>>(
@@ -31,23 +29,8 @@ data class ChromosomeArray<T, F : Comparable<F>>(
     }
 }
 
-inline fun <reified T, F : Comparable<F>> array(
+inline fun <reified T, F : Comparable<F>> Random.array(
     size: Int,
-    random: Random,
     factory: (index: Int, random: Random) -> T,
     noinline clone: (ChromosomeArray<T, F>.() -> ChromosomeArray<T, F>)?,
-) = ChromosomeArray(Array(size) { factory(it, random) }, clone = clone)
-
-inline fun <reified T, F : Comparable<F>> GABuilder<Array<T>, F, *>.array(
-    size: Int,
-    factory: (index: Int, random: Random) -> T,
-    noinline clone: (ChromosomeArray<T, F>.() -> ChromosomeArray<T, F>)? = null,
-) = array<T, F>(size, random, factory, clone)
-
-inline fun <reified T, F : Comparable<F>> GABuilder<Array<T>, F, *>.population(
-    size: Int,
-    chrSize: Int,
-    crossinline factory: (index: Int, random: Random) -> T,
-    name: String? = null,
-) = name?.let { population(size, name) { array(chrSize, factory) } }
-    ?: population(size) { array(chrSize, factory) }
+) = ChromosomeArray(Array(size) { factory(it, this) }, clone = clone)

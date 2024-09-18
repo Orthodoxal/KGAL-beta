@@ -1,9 +1,6 @@
 package genetic.chromosome.base_instances
 
 import genetic.chromosome.Chromosome
-import genetic.ga.core.builder.DEFAULT_POPULATION_NAME
-import genetic.ga.core.builder.GABuilder
-import genetic.ga.core.builder.population
 import kotlin.random.Random
 
 data class ChromosomeFloatArray<F : Comparable<F>>(
@@ -31,13 +28,5 @@ data class ChromosomeFloatArray<F : Comparable<F>>(
     override fun clone(): Chromosome<FloatArray, F> = copy(value = value.copyOf())
 }
 
-fun <F : Comparable<F>> floats(size: Int, random: Random) =
-    ChromosomeFloatArray<F>(value = FloatArray(size) { random.nextFloat() })
-
-fun <F : Comparable<F>> GABuilder<FloatArray, F, *>.floats(size: Int) = floats<F>(size, random)
-
-fun <F : Comparable<F>> GABuilder<FloatArray, F, *>.population(
-    size: Int,
-    chrSize: Int,
-    name: String = DEFAULT_POPULATION_NAME,
-) = population(size, name) { floats(chrSize) }
+fun <F : Comparable<F>> Random.floats(size: Int) =
+    ChromosomeFloatArray<F>(value = FloatArray(size) { nextFloat() })

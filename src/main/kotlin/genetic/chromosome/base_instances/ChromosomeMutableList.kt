@@ -1,8 +1,6 @@
 package genetic.chromosome.base_instances
 
 import genetic.chromosome.Chromosome
-import genetic.ga.core.builder.GABuilder
-import genetic.ga.core.builder.population
 import kotlin.random.Random
 
 data class ChromosomeMutableList<T, F : Comparable<F>>(
@@ -15,23 +13,8 @@ data class ChromosomeMutableList<T, F : Comparable<F>>(
     override fun clone(): Chromosome<MutableList<T>, F> = clone?.let { it() } ?: copy(value = value.toMutableList())
 }
 
-inline fun <reified T, F : Comparable<F>> mutableList(
-    size: Int,
-    random: Random,
-    factory: (index: Int, random: Random) -> T,
-    noinline clone: (ChromosomeMutableList<T, F>.() -> ChromosomeMutableList<T, F>)? = null,
-) = ChromosomeMutableList(MutableList(size) { factory(it, random) }, clone = clone)
-
-inline fun <reified T, F : Comparable<F>> GABuilder<MutableList<T>, F, *>.mutableList(
+inline fun <reified T, F : Comparable<F>> Random.mutableList(
     size: Int,
     factory: (index: Int, random: Random) -> T,
     noinline clone: (ChromosomeMutableList<T, F>.() -> ChromosomeMutableList<T, F>)? = null,
-) = mutableList<T, F>(size, random, factory, clone)
-
-inline fun <reified T, F : Comparable<F>> GABuilder<MutableList<T>, F, *>.population(
-    size: Int,
-    chrSize: Int,
-    crossinline factory: (index: Int, random: Random) -> T,
-    name: String?,
-) = name?.let { population(size, name) { mutableList(chrSize, factory) } }
-    ?: population(size) { mutableList(chrSize, factory) }
+) = ChromosomeMutableList(MutableList(size) { factory(it, this) }, clone = clone)

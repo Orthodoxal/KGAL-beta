@@ -1,14 +1,12 @@
 package genetic.ga.core
 
-import genetic.ga.core.builder.GABuilder
-import genetic.ga.core.lifecycle.GALifecycle
-import genetic.ga.core.population.Population
+import genetic.ga.core.config.ConfigGA
+import genetic.ga.core.lifecycle.Lifecycle
 import genetic.ga.core.state.GAState
 import genetic.ga.core.state.StopPolicy
 import genetic.ga.core.state.clusterStateMachine
-import genetic.stat.note.StatisticNote
 import genetic.stat.config.StatisticsConfig
-import genetic.ga.core.builder.name
+import genetic.stat.note.StatisticNote
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,58 +15,41 @@ import kotlin.coroutines.cancellation.CancellationException
 import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
 
-abstract class AbstractGA<V, F, L : GALifecycle<V, F>>(
-    override val random: Random
-) : GA<V, F>, GABuilder<V, F, L> {
+abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
+    configuration: ConfigGA<V, F, L>,
+) : GA<V, F> {
     override var state: GAState = GAState.INITIALIZE
         protected set(value) {
             field = clusterStateMachine(field, value)
         }
 
-    override lateinit var population: Population<V, F>
+    override val random: Random = configuration.random
     override var iteration: Int = 0
-    override var maxIteration: Int = 0
-    override var fitnessFunction: ((V) -> F)? = null
+    override val maxIteration: Int = configuration.maxIteration
 
+    override var fitnessFunction: (V) -> F = configuration.fitnessFunction
+    override val mainDispatcher: CoroutineDispatcher? = configuration.mainDispatcher
+    override val extraDispatchers: Array<CoroutineDispatcher>? = configuration.extraDispatchers
 
-    override var mainDispatcher: CoroutineDispatcher? = null
-    override var extraDispatchers: Array<CoroutineDispatcher>? = null
+    protected abstract val lifecycle: L
+    protected val beforeEvolution: suspend L.() -> Unit = configuration.beforeEvolution
+    protected val evolution: suspend L.() -> Unit = configuration.evolution
+    protected val afterEvolution: suspend L.() -> Unit = configuration.afterEvolution
 
-    protected abstract val evolveScope: L
-    protected open val baseBefore: suspend L.() -> Unit = { }
-    protected open val baseEvolve: suspend L.() -> Unit = { }
-    protected open val baseAfter: suspend L.() -> Unit = { }
-
-    protected abstract var before: suspend L.() -> Unit
-    protected abstract var evolve: suspend L.() -> Unit
-    protected abstract var after: suspend L.() -> Unit
-
-    protected var statisticsConfig: StatisticsConfig = StatisticsConfig
-        set(value) {
-            field = value
-            stat = value.flow
-            statisticsCoroutineScope = StatisticsConfig.coroutineScope
+    protected val statisticsConfig: StatisticsConfig = configuration.statisticsConfig
+    protected var stat: MutableSharedFlow<StatisticNote<Any?>> = statisticsConfig.flow
+    protected var statisticsCoroutineScope: CoroutineScope = statisticsConfig.newCoroutineScope
+        get() {
+            if (field.coroutineContext.job.isCancelled) {
+                field = statisticsConfig.newCoroutineScope
+            }
+            return field
         }
-    protected var stat: MutableSharedFlow<StatisticNote<Any?>> = StatisticsConfig.flow
-    protected var statisticsCoroutineScope: CoroutineScope = StatisticsConfig.coroutineScope
-
     private var statFlowCollector: (suspend CoroutineScope.(stat: SharedFlow<StatisticNote<Any?>>) -> Unit)? = null
     private var statCollector: FlowCollector<StatisticNote<Any?>>? = null
 
     private var stopSignal: Boolean = false
     private var gaJob: Job? = null
-
-    override fun GABuilder<V, F, L>.before(useDefault: Boolean, beforeEvolution: suspend L.() -> Unit) {
-        before = beforeEvolution.takeIf { !useDefault } ?: { baseBefore(); beforeEvolution() }
-    }
-
-    override fun GABuilder<V, F, L>.evolve(evolution: suspend L.() -> Unit) {
-        evolve = evolution
-    }
-
-    override fun GABuilder<V, F, L>.after(useDefault: Boolean, afterEvolution: suspend L.() -> Unit) {
-        after = afterEvolution.takeIf { !useDefault } ?: { afterEvolution(); baseAfter() }
-    }
 
     override suspend fun start() {
         if (state == GAState.STARTED) return
@@ -84,7 +65,7 @@ abstract class AbstractGA<V, F, L : GALifecycle<V, F>>(
 
     override suspend fun restart(resetPopulation: Boolean) {
         if (resetPopulation) {
-            with(population) { population = Array(maxSize) { factory(it) } }
+            with(population) { population = Array(maxSize) { random.factory() } }
         }
         startByOption(iterationFrom = 0)
     }
@@ -126,15 +107,10 @@ abstract class AbstractGA<V, F, L : GALifecycle<V, F>>(
     override fun statFlow(collector: suspend CoroutineScope.(stat: SharedFlow<StatisticNote<Any?>>) -> Unit) =
         this.apply { statFlowCollector = collector }
 
-    override fun StatisticsConfig.applyToGA() {
-        statisticsConfig = this
-    }
+    override suspend fun emitStat(value: StatisticNote<Any?>) =
+        stat.emit(value)
 
     protected open fun prepareStatistics() {
-        if (statisticsCoroutineScope.coroutineContext.job.isCancelled) {
-            statisticsCoroutineScope = StatisticsConfig.coroutineScope
-        }
-
         with(statisticsCoroutineScope) {
             statFlowCollector?.let { launch { it(stat) } }
             statCollector?.let { launch { stat.collect(it) } }
@@ -170,12 +146,12 @@ abstract class AbstractGA<V, F, L : GALifecycle<V, F>>(
     protected open suspend fun startGA() {
         if (iteration >= maxIteration) return
 
-        with(evolveScope) {
+        with(lifecycle) {
             if (iteration == 0) {
-                before()
+                beforeEvolution()
             }
-            while (iteration < maxGeneration) {
-                evolve()
+            while (iteration < maxIteration) {
+                evolution()
                 if (this.stopSignal) {
                     state = GAState.FINISHED
                     this.stopSignal = false
@@ -188,12 +164,10 @@ abstract class AbstractGA<V, F, L : GALifecycle<V, F>>(
                     return
                 }
             }
-            if (iteration == maxGeneration || state == GAState.FINISHED) {
+            if (iteration == maxIteration || state == GAState.FINISHED) {
                 this@AbstractGA.stopSignal = false
-                after()
+                afterEvolution()
             }
         }
     }
-
-    internal suspend fun emitStat(value: StatisticNote<Any?>) = stat.emit(value)
 }

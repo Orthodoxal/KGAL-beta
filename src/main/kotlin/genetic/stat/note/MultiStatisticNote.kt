@@ -1,6 +1,6 @@
 package genetic.stat.note
 
-import genetic.ga.core.lifecycle.GALifecycle
+import genetic.ga.core.lifecycle.Lifecycle
 import genetic.ga.core.lifecycle.name
 
 data class MultiStatisticNote(
@@ -20,7 +20,7 @@ data class MultiStatisticNote(
 }
 
 @JvmName("statValue")
-suspend fun GALifecycle<*, *>.stat(
+suspend fun Lifecycle<*, *>.stat(
     vararg pairs: Pair<String, Any?>,
 ) = emitStat(
     MultiStatisticNote(
@@ -31,7 +31,7 @@ suspend fun GALifecycle<*, *>.stat(
 )
 
 @JvmName("statRegister")
-suspend fun GALifecycle<*, *>.stat(
+suspend fun Lifecycle<*, *>.stat(
     vararg pairs: Pair<String, () -> Any?>,
 ) = emitStat(
     MultiStatisticNote(
@@ -41,7 +41,7 @@ suspend fun GALifecycle<*, *>.stat(
     )
 )
 
-suspend fun GALifecycle<*, *>.stat(
+suspend fun Lifecycle<*, *>.stat(
     vararg statistics: Statistic<Any?>,
 ) = emitStat(
     MultiStatisticNote(

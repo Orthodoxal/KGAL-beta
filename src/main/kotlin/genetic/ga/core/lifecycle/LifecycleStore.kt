@@ -4,6 +4,6 @@ interface LifecycleStore {
     val store: MutableMap<Any, Any?>
 }
 
-class LifecycleStoreInstance(
+internal class LifecycleStoreInstance(
     override val store: MutableMap<Any, Any?> = mutableMapOf(),
 ) : LifecycleStore

@@ -1,15 +1,15 @@
 package genetic.stat.registers
 
 import genetic.ga.core.GA
-import genetic.ga.core.lifecycle.GALifecycle
+import genetic.ga.core.lifecycle.Lifecycle
 import genetic.stat.note.Statistic
 
 private const val NAME = "SIZE"
 
-inline val GA<*, *>.size get() = population.currentSize
+inline val GA<*, *>.size get() = population.size
 
 
-inline val GALifecycle<*, *>.size get() = population.currentSize
+inline val Lifecycle<*, *>.size get() = population.size
 
 
-fun GALifecycle<*, *>.size() = Statistic(NAME, size)
+fun Lifecycle<*, *>.size() = Statistic(NAME, size)

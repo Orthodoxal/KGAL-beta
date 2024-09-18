@@ -1,83 +1,69 @@
 package genetic.ga.distributed
 
-import genetic.ga.core.AbstractGA
 import genetic.ga.core.GA
-import genetic.ga.core.builder.GABuilder
-import genetic.ga.core.name
-import genetic.ga.core.population.Population
-import genetic.ga.core.population.getDistributedFullPopulation
-import genetic.ga.core.state.GAState
+import genetic.ga.distributed.config.ClusterFactoryScope
+import genetic.ga.distributed.config.DistributedConfig
+import genetic.ga.distributed.config.DistributedConfigScope
 import genetic.ga.distributed.lifecycle.DistributedLifecycle
-import genetic.ga.distributed.lifecycle.DistributedLifecycleInstance
-import genetic.ga.distributed.lifecycle.LifecycleStartOption
-import genetic.ga.distributed.operators.children.startChildren
-import kotlinx.coroutines.launch
+import genetic.ga.distributed.population.DistributedPopulation
+import genetic.ga.distributed.population.DistributedPopulation.Companion.DEFAULT_NAME_BUILDER
+import genetic.ga.distributed.population.population
+import genetic.stat.config.StatisticsConfigScope
+import genetic.stat.config.statConfig
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlin.random.Random
 
-class DistributedGA<V, F>(
-    random: Random,
-) : AbstractGA<V, F, DistributedLifecycle<V, F>>(random), DistributedGABuilder<V, F> {
-    override val evolveScope: DistributedLifecycle<V, F> by lazy { DistributedLifecycleInstance(this) }
+interface DistributedGA<V, F> : GA<V, F> {
+    override val population: DistributedPopulation<V, F>
+    val clusters: List<GA<V, F>>
 
-    override val baseEvolve: suspend DistributedLifecycle<V, F>.() -> Unit = { startChildren() }
+    companion object {
+        fun <V, F> create(
+            configuration: DistributedConfig<V, F>,
+            population: DistributedPopulation<V, F>,
+        ): DistributedGA<V, F> = DistributedGAInstance(configuration, population)
+    }
+}
 
-    override var before: suspend DistributedLifecycle<V, F>.() -> Unit = baseBefore
-    override var evolve: suspend DistributedLifecycle<V, F>.() -> Unit = baseEvolve
-    override var after: suspend DistributedLifecycle<V, F>.() -> Unit = baseAfter
+inline fun <V, F> dGA(
+    clusters: ClusterFactoryScope<V, F>.() -> List<GA<V, F>>,
+    noinline fitnessFunction: (V) -> F = {
+        throw IllegalStateException("Fitness function for cluster of distributed GA not implemented")
+    },
+    random: Random = Random,
+    mainDispatcher: CoroutineDispatcher? = null,
+    extraDispatchers: Array<CoroutineDispatcher>? = null,
+    skipValidation: Boolean = false, // TODO добавить валидатор конфигурации
+    statConfig: StatisticsConfigScope.() -> Unit = { },
+    noinline nameBuilder: (childNames: List<String>) -> String = DEFAULT_NAME_BUILDER,
+    noinline evolution: suspend DistributedLifecycle<V, F>.() -> Unit,
+): DistributedGA<V, F> =
+    distributedGA(fitnessFunction, random, skipValidation, nameBuilder) {
+        this.mainDispatcher = mainDispatcher
+        this.extraDispatchers = extraDispatchers
 
-    var gas: MutableList<GA<V, F>> = mutableListOf()
-    override var population: Population<V, F>
-        get() = getDistributedFullPopulation(gas.map { it.population })
-        set(_) {}
+        this.clusters.addAll(clusters())
+        evolve(useDefault = true, evolution)
 
-    override suspend fun start() {
-        if (state == GAState.STARTED) return
-        evolveScope.lifecycleStartOption = LifecycleStartOption.Start
-        startByOption(iterationFrom = 0)
+        this.statConfig(statConfig)
     }
 
-    override suspend fun resume() {
-        if (state != GAState.STOPPED)
-            throw IllegalStateException("GA $name state $state incorrect for resuming: State must be STOPPED")
-
-        evolveScope.lifecycleStartOption = LifecycleStartOption.Resume
-        startByOption(iterationFrom = iteration)
-    }
-
-    override suspend fun restart(resetPopulation: Boolean) {
-        evolveScope.lifecycleStartOption = LifecycleStartOption.Restart(resetPopulation)
-        startByOption(iterationFrom = 0)
-    }
-
-    override fun prepareStatistics() {
-        super.prepareStatistics()
-        with(statisticsCoroutineScope) {
-            gas.forEach {
-                launch { it.collectStat { stat.emit(it) } }
-            }
-        }
-    }
-
-    override suspend fun startByOption(iterationFrom: Int) {
-        prepareClusters()
-        super.startByOption(iterationFrom)
-    }
-
-    override fun addCluster(ga: GA<V, F>): GA<V, F> = ga.apply(gas::add)
-
-    private fun prepareClusters() {
-        gas
-            .mapNotNull { it as? GABuilder<V, F, *> }
-            .forEachIndexed { index, cluster ->
-
-                if (cluster.fitnessFunction == null) {
-                    cluster.fitnessFunction = fitnessFunction
-                }
-
-                if (cluster.mainDispatcher == null) {
-                    val extraDispatcher = extraDispatchers?.getOrNull(index)
-                    cluster.mainDispatcher = extraDispatcher
-                }
-            }
-    }
+inline fun <V, F> distributedGA(
+    noinline fitnessFunction: (V) -> F = {
+        throw IllegalStateException("Fitness function for cluster of distributed GA not implemented")
+    },
+    random: Random = Random,
+    skipValidation: Boolean = false, // TODO добавить валидатор конфигурации
+    noinline nameBuilder: (childNames: List<String>) -> String = DEFAULT_NAME_BUILDER,
+    config: DistributedConfigScope<V, F>.() -> Unit,
+): DistributedGA<V, F> {
+    val configuration: DistributedConfig<V, F> =
+        DistributedConfigScope(random, fitnessFunction).apply(config)
+    return DistributedGA.create(
+        configuration = configuration,
+        population = population(
+            childPopulations = configuration.clusters.map { it.population },
+            nameBuilder = nameBuilder,
+        ),
+    )
 }

@@ -1,7 +1,7 @@
 package genetic.ga.panmictic.operators.selection
 
 import genetic.chromosome.Chromosome
-import genetic.ga.core.lifecycle.currentSize
+import genetic.ga.core.lifecycle.size
 import genetic.ga.core.lifecycle.isSingleRun
 import genetic.ga.core.lifecycle.runWithExtraDispatchersIterative
 import genetic.ga.core.population.copyOf
@@ -33,14 +33,14 @@ suspend inline fun <V, F> PanmicticLifecycle<V, F>.selection(
 inline fun <V, F> PanmicticLifecycle<V, F>.singleRunSelection(
     tempPopulation: Array<Chromosome<V, F>>,
     selection: (source: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
-) = loop(elitism, currentSize) { index ->
+) = loop(elitism, size) { index ->
     tempPopulation[index] = selection(population.get())
 }
 
 suspend inline fun <V, F> PanmicticLifecycle<V, F>.multiRunSelection(
     tempPopulation: Array<Chromosome<V, F>>,
     crossinline selection: (source: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
-) = runWithExtraDispatchersIterative(elitism, currentSize) { iteration ->
+) = runWithExtraDispatchersIterative(elitism, size) { iteration ->
     tempPopulation[iteration] = selection(population.get())
 }
 
@@ -66,14 +66,14 @@ suspend inline fun <V, F> PanmicticLifecycle<V, F>.selectionWithIndex(
 inline fun <V, F> PanmicticLifecycle<V, F>.singleRunSelectionWithIndex(
     tempPopulation: Array<Chromosome<V, F>>,
     selection: (index: Int, source: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
-) = loop(elitism, currentSize) { index ->
+) = loop(elitism, size) { index ->
     tempPopulation[index] = selection(index, population.get())
 }
 
 suspend inline fun <V, F> PanmicticLifecycle<V, F>.multiRunSelectionWithIndex(
     tempPopulation: Array<Chromosome<V, F>>,
     crossinline selection: (index: Int, source: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
-) = runWithExtraDispatchersIterative(elitism, currentSize) { iteration ->
+) = runWithExtraDispatchersIterative(elitism, size) { iteration ->
     tempPopulation[iteration] = selection(iteration, population.get())
 }
 

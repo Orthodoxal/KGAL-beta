@@ -1,9 +1,9 @@
 package genetic.ga.panmictic.operators.crossover
 
 import genetic.chromosome.Chromosome
-import genetic.ga.core.lifecycle.currentSize
 import genetic.ga.core.lifecycle.isSingleRun
 import genetic.ga.core.lifecycle.runWithExtraDispatchersIterative
+import genetic.ga.core.lifecycle.size
 import genetic.ga.core.population.*
 import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 import genetic.utils.randomByChance
@@ -46,7 +46,7 @@ inline fun <V, F> PanmicticLifecycle<V, F>.singleRunCrossover(
 suspend inline fun <V, F> PanmicticLifecycle<V, F>.multiRunCrossover(
     chance: Double,
     crossinline crossover: (chromosome1: Chromosome<V, F>, chromosome2: Chromosome<V, F>) -> Unit,
-) = runWithExtraDispatchersIterative(0, currentSize / 2) { index ->
+) = runWithExtraDispatchersIterative(0, size / 2) { index ->
     randomByChance(chance) {
         val parent1 = if (index < elitism) population.cloneOf(index) else population[index]
         val parent2 = population[population.lastIndex - index]

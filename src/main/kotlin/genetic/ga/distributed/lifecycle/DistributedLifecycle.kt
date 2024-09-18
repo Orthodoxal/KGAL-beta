@@ -1,20 +1,18 @@
 package genetic.ga.distributed.lifecycle
 
 import genetic.ga.core.GA
-import genetic.ga.core.lifecycle.AbstractGALifecycle
-import genetic.ga.core.lifecycle.GALifecycle
+import genetic.ga.core.lifecycle.BaseLifecycle
+import genetic.ga.core.lifecycle.Lifecycle
 import genetic.ga.distributed.DistributedGA
-import kotlinx.coroutines.CoroutineDispatcher
 
-interface DistributedLifecycle<V, F> : GALifecycle<V, F> {
-    var lifecycleStartOption: LifecycleStartOption
-    val gas: List<GA<V, F>>
+interface DistributedLifecycle<V, F> : Lifecycle<V, F> {
+    var startOption: LifecycleStartOption
+    val clusters: List<GA<V, F>>
 }
 
 internal class DistributedLifecycleInstance<V, F>(
-    private val distributedCluster: DistributedGA<V, F>,
-) : AbstractGALifecycle<V, F>(distributedCluster), DistributedLifecycle<V, F> {
-    override val extraDispatchers: Array<CoroutineDispatcher>? get() = distributedCluster.extraDispatchers
-    override var lifecycleStartOption: LifecycleStartOption = LifecycleStartOption.Start
-    override val gas: List<GA<V, F>> = distributedCluster.gas
+    private val distributedGA: DistributedGA<V, F>,
+) : DistributedLifecycle<V, F>, Lifecycle<V, F> by BaseLifecycle(distributedGA) {
+    override var startOption: LifecycleStartOption = LifecycleStartOption.Start
+    override val clusters: List<GA<V, F>> get() = distributedGA.clusters
 }

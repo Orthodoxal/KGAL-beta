@@ -1,9 +1,6 @@
 package genetic.chromosome.base_instances
 
 import genetic.chromosome.Chromosome
-import genetic.ga.core.builder.DEFAULT_POPULATION_NAME
-import genetic.ga.core.builder.GABuilder
-import genetic.ga.core.builder.population
 import kotlin.random.Random
 
 data class ChromosomeLongArray<F : Comparable<F>>(
@@ -31,30 +28,15 @@ data class ChromosomeLongArray<F : Comparable<F>>(
     override fun clone(): Chromosome<LongArray, F> = copy(value = value.copyOf())
 }
 
-fun <F : Comparable<F>> longs(
+fun <F : Comparable<F>> Random.longs(
     size: Int,
-    random: Random,
     from: Long? = null,
     until: Long? = null,
 ) = ChromosomeLongArray<F>(
     value = when {
-        from != null && until != null -> LongArray(size) { random.nextLong(from, until) }
-        from != null -> LongArray(size) { random.nextLong(from, Long.MAX_VALUE) }
-        until != null -> LongArray(size) { random.nextLong(until) }
-        else -> LongArray(size) { random.nextLong() }
+        from != null && until != null -> LongArray(size) { nextLong(from, until) }
+        from != null -> LongArray(size) { nextLong(from, Long.MAX_VALUE) }
+        until != null -> LongArray(size) { nextLong(until) }
+        else -> LongArray(size) { nextLong() }
     },
 )
-
-fun <F : Comparable<F>> GABuilder<LongArray, F, *>.longs(
-    size: Int,
-    from: Long? = null,
-    until: Long? = null,
-) = longs<F>(size, random, from, until)
-
-fun <F : Comparable<F>> GABuilder<LongArray, F, *>.population(
-    size: Int,
-    chrSize: Int,
-    from: Long? = null,
-    until: Long? = null,
-    name: String = DEFAULT_POPULATION_NAME,
-) = population(size, name) { longs(chrSize, from, until) }

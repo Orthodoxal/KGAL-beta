@@ -1,23 +1,20 @@
 package genetic.ga.panmictic.lifecycle
 
-import genetic.ga.core.lifecycle.AbstractGALifecycle
-import genetic.ga.core.lifecycle.GALifecycle
+import genetic.ga.core.lifecycle.BaseLifecycle
+import genetic.ga.core.lifecycle.Lifecycle
 import genetic.ga.panmictic.PanmicticGA
-import kotlinx.coroutines.CoroutineDispatcher
 
-interface PanmicticLifecycle<V, F> : GALifecycle<V, F> {
+interface PanmicticLifecycle<V, F> : Lifecycle<V, F> {
     var elitism: Int
 }
 
 internal class PanmicticLifecycleInstance<V, F>(
-    private val panmicticCluster: PanmicticGA<V, F>,
-) : AbstractGALifecycle<V, F>(panmicticCluster), PanmicticLifecycle<V, F> {
+    private val panmicticGA: PanmicticGA<V, F>,
+) : PanmicticLifecycle<V, F>, Lifecycle<V, F> by BaseLifecycle(panmicticGA) {
 
     override var elitism: Int
-        get() = panmicticCluster.elitism
+        get() = panmicticGA.elitism
         set(value) {
-            panmicticCluster.elitism = value
+            panmicticGA.elitism = value
         }
-
-    override val extraDispatchers: Array<CoroutineDispatcher>? get() = panmicticCluster.extraDispatchers
 }

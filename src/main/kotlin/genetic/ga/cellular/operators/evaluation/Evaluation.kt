@@ -1,9 +1,9 @@
 package genetic.ga.cellular.operators.evaluation
 
-import genetic.ga.core.lifecycle.currentSize
-import genetic.ga.core.operators.evaluation.fitnessAll
 import genetic.ga.cellular.lifecycle.CellLifecycle
 import genetic.ga.cellular.lifecycle.CellularLifecycle
+import genetic.ga.core.lifecycle.size
+import genetic.ga.core.operators.evaluation.fitnessAll
 
 fun <V, F> CellLifecycle<V, F>.evaluation(
     compareWithSecondChild: Boolean = true,
@@ -19,4 +19,4 @@ fun <V, F> CellLifecycle<V, F>.evaluation(
 suspend fun <V, F> CellularLifecycle<V, F>.evaluation(
     onlySingleRun: Boolean = false,
     fitnessFunction: (V) -> F = this.fitnessFunction,
-) = fitnessAll(0, currentSize, onlySingleRun, fitnessFunction)
+) = fitnessAll(0, size, onlySingleRun, fitnessFunction)

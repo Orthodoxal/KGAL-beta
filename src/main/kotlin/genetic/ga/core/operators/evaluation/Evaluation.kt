@@ -1,12 +1,12 @@
 package genetic.ga.core.operators.evaluation
 
-import genetic.ga.core.lifecycle.GALifecycle
+import genetic.ga.core.lifecycle.Lifecycle
 import genetic.ga.core.lifecycle.isSingleRun
 import genetic.ga.core.population.forEach
 import genetic.ga.core.population.get
 import genetic.ga.core.lifecycle.runWithExtraDispatchersIterative
 
-suspend inline fun <V, F> GALifecycle<V, F>.fitnessAll(
+suspend inline fun <V, F> Lifecycle<V, F>.fitnessAll(
     start: Int,
     end: Int,
     onlySingleRun: Boolean,
@@ -19,7 +19,7 @@ suspend inline fun <V, F> GALifecycle<V, F>.fitnessAll(
     }
 }
 
-inline fun <V, F> GALifecycle<V, F>.singleRunFitness(
+inline fun <V, F> Lifecycle<V, F>.singleRunFitness(
     start: Int,
     end: Int,
     fitnessFunction: (V) -> F,
@@ -27,7 +27,7 @@ inline fun <V, F> GALifecycle<V, F>.singleRunFitness(
     population.forEach(start, end) { it.fitness = fitnessFunction(it.value) }
 }
 
-suspend inline fun <V, F> GALifecycle<V, F>.multiRunFitness(
+suspend inline fun <V, F> Lifecycle<V, F>.multiRunFitness(
     start: Int,
     end: Int,
     crossinline fitnessFunction: (V) -> F,

@@ -1,22 +1,54 @@
 package genetic.ga.panmictic
 
-import genetic.ga.core.AbstractGA
-import genetic.ga.distributed.lifecycle.DistributedLifecycle
+import genetic.ga.core.GA
+import genetic.ga.panmictic.config.PanmicticConfig
+import genetic.ga.panmictic.config.PanmicticConfigScope
 import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
-import genetic.ga.panmictic.lifecycle.PanmicticLifecycleInstance
-import genetic.ga.panmictic.operators.evaluation.evaluation
+import genetic.ga.panmictic.population.PanmicticPopulation
+import genetic.stat.config.StatisticsConfigScope
+import genetic.stat.config.statConfig
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlin.random.Random
 
-class PanmicticGA<V, F>(
-    random: Random,
-) : AbstractGA<V, F, PanmicticLifecycle<V, F>>(random), PanmicticGABuilder<V, F> {
-    override val evolveScope: PanmicticLifecycle<V, F> by lazy { PanmicticLifecycleInstance(this) }
+interface PanmicticGA<V, F> : GA<V, F> {
+    override val population: PanmicticPopulation<V, F>
+    var elitism: Int
 
-    override val baseBefore: suspend PanmicticLifecycle<V, F>.() -> Unit = { evaluation() }
+    companion object {
+        fun <V, F> create(
+            configuration: PanmicticConfig<V, F>,
+            population: PanmicticPopulation<V, F>,
+        ): PanmicticGA<V, F> = PanmicticGAInstance(configuration, population)
+    }
+}
 
-    override var before: suspend PanmicticLifecycle<V, F>.() -> Unit = baseBefore
-    override lateinit var evolve: suspend PanmicticLifecycle<V, F>.() -> Unit
-    override var after: suspend PanmicticLifecycle<V, F>.() -> Unit = baseAfter
+fun <V, F> pGA(
+    population: PanmicticPopulation<V, F>,
+    fitnessFunction: (V) -> F,
+    elitism: Int = 0,
+    random: Random = Random,
+    mainDispatcher: CoroutineDispatcher? = null,
+    extraDispatchers: Array<CoroutineDispatcher>? = null,
+    skipValidation: Boolean = false, // TODO добавить валидатор конфигурации
+    statConfig: StatisticsConfigScope.() -> Unit = { },
+    evolution: suspend PanmicticLifecycle<V, F>.() -> Unit,
+): GA<V, F> = panmicticGA(population, fitnessFunction, random, skipValidation) {
+    this.mainDispatcher = mainDispatcher
+    this.extraDispatchers = extraDispatchers
+    maxIteration = 50 // FIXME удалить
+    this.elitism = elitism
+    evolve(useDefault = true, evolution)
+    this.statConfig(statConfig)
+}
 
-    override var elitism: Int = 0
+inline fun <V, F> panmicticGA(
+    population: PanmicticPopulation<V, F>,
+    noinline fitnessFunction: (V) -> F,
+    random: Random = Random,
+    skipValidation: Boolean = false, // TODO добавить валидатор конфигурации
+    config: PanmicticConfigScope<V, F>.() -> Unit,
+): GA<V, F> {
+    val configuration: PanmicticConfig<V, F> =
+        PanmicticConfigScope(random, fitnessFunction).apply(config)
+    return PanmicticGA.create(configuration, population)
 }

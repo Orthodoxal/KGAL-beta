@@ -3,11 +3,11 @@ package genetic.ga.core.lifecycle
 import java.util.concurrent.atomic.AtomicInteger
 
 interface MultiRunHelper {
-    var maxIteration: Int
-    val currentIteration: AtomicInteger
+    var maxIterationMultiRun: Int
+    val currentIterationMultiRun: AtomicInteger
 }
 
-class MultiRunHelperInstance(
-    override var maxIteration: Int = 0,
-    override val currentIteration: AtomicInteger = AtomicInteger(),
+internal class MultiRunHelperInstance(
+    override var maxIterationMultiRun: Int = 0,
+    override val currentIterationMultiRun: AtomicInteger = AtomicInteger(),
 ) : MultiRunHelper

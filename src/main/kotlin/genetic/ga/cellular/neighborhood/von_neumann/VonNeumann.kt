@@ -1,14 +1,15 @@
 package genetic.ga.cellular.neighborhood.von_neumann
 
 import genetic.ga.cellular.neighborhood.CellularNeighborhood
+import genetic.ga.cellular.utils.Dimens
 import genetic.ga.cellular.utils.positionByCoordinatesInNArray
 import kotlin.math.abs
 
 data class VonNeumann(override val radius: Int) : CellularNeighborhood {
     override fun neighboursCount(dimenCount: Int): Int = delannoyNumber(dimenCount, radius) - 1
 
-    override fun neighboursIndicesMatrix(dimensionalSizes: IntArray): Pair<IntArray, Array<IntArray>> {
-        val dimenCount = dimensionalSizes.size
+    override fun neighboursIndicesMatrix(dimens: Dimens): Pair<IntArray, Array<IntArray>> {
+        val dimenCount = dimens.size
         val count = neighboursCount(dimenCount)
         val resultOneArray = IntArray(count)
         val resultNArray = Array(count) { IntArray(dimenCount) }
@@ -47,7 +48,7 @@ data class VonNeumann(override val radius: Int) : CellularNeighborhood {
                         coordinates[dimenIndex] = coordinates[dimenIndex] + 1
                         continue
                     }
-                    resultOneArray[resultIndex] = positionByCoordinatesInNArray(coordinates, dimensionalSizes)
+                    resultOneArray[resultIndex] = positionByCoordinatesInNArray(coordinates, dimens)
                     resultNArray[resultIndex] = coordinates.copyOf()
                     resultIndex++
                     coordinates[dimenIndex] = coordinates[dimenIndex] + 1

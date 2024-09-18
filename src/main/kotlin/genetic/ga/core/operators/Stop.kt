@@ -1,9 +1,13 @@
 package genetic.ga.core.operators
 
-import genetic.ga.core.lifecycle.GALifecycle
+import genetic.ga.core.lifecycle.Lifecycle
 
-inline fun <V, F> GALifecycle<V, F>.stopBy(predicate: (GALifecycle<V, F>) -> Boolean) {
+inline fun <V, F> Lifecycle<V, F>.stop() {
+    stopSignal = true
+}
+
+inline fun <V, F> Lifecycle<V, F>.stopBy(predicate: Lifecycle<V, F>.() -> Boolean) {
     if (predicate(this)) {
-        stopSignal = true
+        stop()
     }
 }
