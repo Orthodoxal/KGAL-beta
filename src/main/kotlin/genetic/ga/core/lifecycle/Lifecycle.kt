@@ -8,12 +8,12 @@ import kotlin.random.Random
 interface Lifecycle<V, F> : MultiRunHelper, LifecycleStore {
     val random: Random
     val population: Population<V, F>
-    val maxIteration: Int
     val iteration: Int
     var fitnessFunction: (V) -> F
     val extraDispatchers: Array<CoroutineDispatcher>?
 
-    var stopSignal: Boolean
+    var finishByStopConditions: Boolean
+    var finishedByMaxIteration: Boolean
 
     suspend fun emitStat(value: StatisticNote<Any?>)
 }

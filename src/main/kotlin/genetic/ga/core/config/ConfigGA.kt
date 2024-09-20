@@ -8,7 +8,6 @@ import kotlin.random.Random
 interface ConfigGA<V, F, L : Lifecycle<V, F>> {
     val random: Random
     val fitnessFunction: (V) -> F
-    val maxIteration: Int
     val mainDispatcher: CoroutineDispatcher?
     val extraDispatchers: Array<CoroutineDispatcher>?
     val statisticsConfig: StatisticsConfig

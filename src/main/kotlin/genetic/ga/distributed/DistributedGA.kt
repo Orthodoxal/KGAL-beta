@@ -27,6 +27,7 @@ interface DistributedGA<V, F> : GA<V, F> {
 
 inline fun <V, F> dGA(
     clusters: ClusterFactoryScope<V, F>.() -> List<GA<V, F>>,
+    maxIteration: Int = 1,
     noinline fitnessFunction: (V) -> F = {
         throw IllegalStateException("Fitness function for cluster of distributed GA not implemented")
     },
@@ -36,19 +37,20 @@ inline fun <V, F> dGA(
     skipValidation: Boolean = false, // TODO добавить валидатор конфигурации
     statConfig: StatisticsConfigScope.() -> Unit = { },
     noinline nameBuilder: (childNames: List<String>) -> String = DEFAULT_NAME_BUILDER,
-    noinline evolution: suspend DistributedLifecycle<V, F>.() -> Unit,
+    noinline evolution: (suspend DistributedLifecycle<V, F>.() -> Unit)? = null,
 ): DistributedGA<V, F> =
-    distributedGA(fitnessFunction, random, skipValidation, nameBuilder) {
+    distributedGA(maxIteration, fitnessFunction, random, skipValidation, nameBuilder) {
         this.mainDispatcher = mainDispatcher
         this.extraDispatchers = extraDispatchers
 
         this.clusters.addAll(clusters())
-        evolve(useDefault = true, evolution)
+        evolution?.let { evolve(useDefault = true, evolution) }
 
         this.statConfig(statConfig)
     }
 
 inline fun <V, F> distributedGA(
+    maxIteration: Int,
     noinline fitnessFunction: (V) -> F = {
         throw IllegalStateException("Fitness function for cluster of distributed GA not implemented")
     },
@@ -58,7 +60,7 @@ inline fun <V, F> distributedGA(
     config: DistributedConfigScope<V, F>.() -> Unit,
 ): DistributedGA<V, F> {
     val configuration: DistributedConfig<V, F> =
-        DistributedConfigScope(random, fitnessFunction).apply(config)
+        DistributedConfigScope(random, fitnessFunction, maxIteration).apply(config)
     return DistributedGA.create(
         configuration = configuration,
         population = population(

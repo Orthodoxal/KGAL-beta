@@ -35,7 +35,6 @@ fun <V, F> pGA(
 ): GA<V, F> = panmicticGA(population, fitnessFunction, random, skipValidation) {
     this.mainDispatcher = mainDispatcher
     this.extraDispatchers = extraDispatchers
-    maxIteration = 50 // FIXME удалить
     this.elitism = elitism
     evolve(useDefault = true, evolution)
     this.statConfig(statConfig)

@@ -3,6 +3,7 @@ package genetic.stat.config
 import genetic.stat.note.StatisticNote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,7 +28,7 @@ interface StatisticsConfig {
         get() = MutableSharedFlow(replay, extraBufferCapacity, onBufferOverflow)
 
     val newCoroutineScope: CoroutineScope
-        get() = CoroutineScope(coroutineContext)
+        get() = CoroutineScope(SupervisorJob() + coroutineContext)
 
     companion object Default : StatisticsConfig {
         override val replay = DEFAULT_REPLAY

@@ -6,6 +6,7 @@ import genetic.ga.distributed.lifecycle.DistributedLifecycle
 
 interface DistributedConfig<V, F> : ConfigGA<V, F, DistributedLifecycle<V, F>> {
     val clusters: List<GA<V, F>>
+    val maxIteration: Int
     fun addCluster(ga: GA<V, F>): GA<V, F>
     operator fun GA<V, F>.unaryPlus(): GA<V, F> = addCluster(this)
 }

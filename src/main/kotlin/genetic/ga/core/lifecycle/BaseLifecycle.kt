@@ -19,9 +19,6 @@ internal class BaseLifecycle<V, F>(
     override val population: Population<V, F>
         get() = ga.population
 
-    override val maxIteration: Int
-        get() = ga.maxIteration
-
     override var fitnessFunction: (V) -> F
         get() = ga.fitnessFunction
         set(value) {
@@ -30,7 +27,8 @@ internal class BaseLifecycle<V, F>(
 
     override val extraDispatchers: Array<CoroutineDispatcher>? get() = ga.extraDispatchers
 
-    override var stopSignal: Boolean = false
+    override var finishByStopConditions: Boolean = false
+    override var finishedByMaxIteration: Boolean = false
 
     override suspend fun emitStat(value: StatisticNote<Any?>) = ga.emitStat(value)
 }

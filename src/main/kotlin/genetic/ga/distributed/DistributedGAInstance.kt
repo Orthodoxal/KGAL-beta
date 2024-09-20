@@ -35,14 +35,14 @@ internal class DistributedGAInstance<V, F>(
 
     override suspend fun restart(resetPopulation: Boolean) {
         lifecycle.startOption = LifecycleStartOption.Restart(resetPopulation)
-        startByOption(iterationFrom = 0)
+        super.restart(resetPopulation = false)
     }
 
     override fun prepareStatistics() {
         super.prepareStatistics()
         with(statisticsCoroutineScope) {
             clusters.forEach {
-                launch { it.collectStat { stat.emit(it) } }
+                launch { it.collectStat { statistics.emit(it) } }
             }
         }
     }

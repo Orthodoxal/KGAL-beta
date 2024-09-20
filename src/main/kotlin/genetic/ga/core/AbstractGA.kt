@@ -4,13 +4,14 @@ import genetic.ga.core.config.ConfigGA
 import genetic.ga.core.lifecycle.Lifecycle
 import genetic.ga.core.state.GAState
 import genetic.ga.core.state.StopPolicy
-import genetic.ga.core.state.clusterStateMachine
 import genetic.stat.config.StatisticsConfig
 import genetic.stat.note.StatisticNote
+import genetic.stat.note.stat
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.takeWhile
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
@@ -18,14 +19,11 @@ import kotlin.random.Random
 abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
     configuration: ConfigGA<V, F, L>,
 ) : GA<V, F> {
-    override var state: GAState = GAState.INITIALIZE
-        protected set(value) {
-            field = clusterStateMachine(field, value)
-        }
+    override var state: GAState = GAState.INITIALIZED
+        protected set
 
     override val random: Random = configuration.random
     override var iteration: Int = 0
-    override val maxIteration: Int = configuration.maxIteration
 
     override var fitnessFunction: (V) -> F = configuration.fitnessFunction
     override val mainDispatcher: CoroutineDispatcher? = configuration.mainDispatcher
@@ -37,7 +35,9 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
     protected val afterEvolution: suspend L.() -> Unit = configuration.afterEvolution
 
     protected val statisticsConfig: StatisticsConfig = configuration.statisticsConfig
-    protected var stat: MutableSharedFlow<StatisticNote<Any?>> = statisticsConfig.flow
+    protected var statistics: MutableSharedFlow<StatisticNote<Any?>> = statisticsConfig.flow
+    protected val cancelableStatistics
+        get() = statistics.takeWhile { it.statistic.name != STAT_STOP_COLLECT_FLAG }
     protected var statisticsCoroutineScope: CoroutineScope = statisticsConfig.newCoroutineScope
         get() {
             if (field.coroutineContext.job.isCancelled) {
@@ -45,10 +45,10 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
             }
             return field
         }
-    private var statFlowCollector: (suspend CoroutineScope.(stat: SharedFlow<StatisticNote<Any?>>) -> Unit)? = null
+    private var statFlowCollector: (suspend CoroutineScope.(stat: Flow<StatisticNote<Any?>>) -> Unit)? = null
     private var statCollector: FlowCollector<StatisticNote<Any?>>? = null
 
-    private var stopSignal: Boolean = false
+    private var pause: Boolean = false
     private var gaJob: Job? = null
 
     override suspend fun start() {
@@ -72,7 +72,7 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
 
     override suspend fun stop(stopPolicy: StopPolicy) {
         when (stopPolicy) {
-            is StopPolicy.Default -> stopSignal = true
+            is StopPolicy.Default -> pause = true
             is StopPolicy.Immediately -> {
                 gaJob?.cancel(
                     cause = CancellationException(
@@ -80,22 +80,15 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
                         cause = null
                     )
                 )
+                statisticsCoroutineScope.cancel()
                 state = GAState.STOPPED
             }
 
             is StopPolicy.Timeout -> {
-                stopSignal = true
+                pause = true
                 withTimeout(stopPolicy.millis) {
-                    if (state != GAState.STOPPED) {
-                        gaJob?.cancel(
-                            cause = CancellationException(
-                                message = "Cluster $name stop cause $stopPolicy policy",
-                                cause = null
-                            )
-                        )
-                        stopSignal = false
-                        state = GAState.STOPPED
-                    }
+                    if (state == GAState.STOPPED || state is GAState.FINISHED) return@withTimeout
+                    stop(stopPolicy = StopPolicy.Immediately)
                 }
             }
         }
@@ -104,18 +97,18 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
     override fun collectStat(collector: FlowCollector<StatisticNote<Any?>>) =
         this.apply { statCollector = collector }
 
-    override fun statFlow(collector: suspend CoroutineScope.(stat: SharedFlow<StatisticNote<Any?>>) -> Unit) =
+    override fun statFlow(collector: suspend CoroutineScope.(stat: Flow<StatisticNote<Any?>>) -> Unit) =
         this.apply { statFlowCollector = collector }
 
     override suspend fun emitStat(value: StatisticNote<Any?>) =
-        stat.emit(value)
+        statistics.emit(value)
 
     protected open fun prepareStatistics() {
         with(statisticsCoroutineScope) {
-            statFlowCollector?.let { launch { it(stat) } }
-            statCollector?.let { launch { stat.collect(it) } }
+            statFlowCollector?.let { launch { it(cancelableStatistics) } }
+            statCollector?.let { launch { cancelableStatistics.collect(it) } }
             if (statisticsConfig.enableDefaultCollector) {
-                launch { stat.collect(statisticsConfig.defaultCollector) }
+                launch { cancelableStatistics.collect(statisticsConfig.defaultCollector) }
             }
         }
     }
@@ -123,51 +116,74 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
     protected open suspend fun startByOption(iterationFrom: Int) {
         prepareStatistics()
         this.iteration = iterationFrom
-        state = GAState.STARTED
         val dispatcher = mainDispatcher
         if (dispatcher == null) {
             gaJob = coroutineContext.job
-            startGA()
-            // FIXME Добавить аналогичную проверку? if (iteration == maxIteration)
-            state = GAState.FINISHED
+            launch()
         } else {
             with(CoroutineScope(coroutineContext)) {
-                gaJob = launch(dispatcher) {
-                    startGA()
-                    if (iteration == maxIteration) {
-                        state = GAState.FINISHED
-                        statisticsCoroutineScope.cancel()
-                    }
-                }
+                gaJob = launch(dispatcher) { launch() }
             }
         }
     }
 
-    protected open suspend fun startGA() {
-        if (iteration >= maxIteration) return
-
+    protected suspend fun launch() {
         with(lifecycle) {
-            if (iteration == 0) {
-                beforeEvolution()
+            beforeEvolve()
+            evolve()
+            afterEvolve()
+        }
+    }
+
+    protected open suspend fun L.beforeEvolve() {
+        pause = false
+        finishByStopConditions = false
+        finishedByMaxIteration = false
+
+        if (iteration == 0) {
+            beforeEvolution()
+        }
+    }
+
+    protected open suspend fun L.evolve() {
+        state = GAState.STARTED
+        while (true) {
+            this@AbstractGA.iteration++
+            evolution()
+
+            if (finishByStopConditions) {
+                state = GAState.FINISHED.ByStopConditions
+                break
             }
-            while (iteration < maxIteration) {
-                evolution()
-                if (this.stopSignal) {
-                    state = GAState.FINISHED
-                    this.stopSignal = false
-                    break
-                }
-                this@AbstractGA.iteration++
-                if (this@AbstractGA.stopSignal) {
-                    state = GAState.STOPPED
-                    this@AbstractGA.stopSignal = false
-                    return
-                }
+
+            if (finishedByMaxIteration) {
+                state = GAState.FINISHED.ByMaxIteration
+                break
             }
-            if (iteration == maxIteration || state == GAState.FINISHED) {
-                this@AbstractGA.stopSignal = false
-                afterEvolution()
+
+            if (pause) {
+                state = GAState.STOPPED
+                break
             }
         }
+    }
+
+    protected open suspend fun L.afterEvolve() {
+        if (state is GAState.FINISHED) {
+            afterEvolution()
+        }
+
+        // wait for all children coroutines of lifecycle completed
+        coroutineContext.job.children.forEach { it.join() }
+        // send STAT_STOP_COLLECT_FLAG as a terminal for all collectors
+        stat(STAT_STOP_COLLECT_FLAG, null)
+        // wait for all collectors of statistics completed
+        statisticsCoroutineScope.coroutineContext.job.children.forEach { it.join() }
+        // cancel statisticsCoroutineScope
+        statisticsCoroutineScope.cancel()
+    }
+
+    protected companion object {
+        const val STAT_STOP_COLLECT_FLAG = "STAT_STOP_COLLECT_FLAG"
     }
 }

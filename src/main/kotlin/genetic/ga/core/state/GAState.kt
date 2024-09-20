@@ -1,17 +1,12 @@
 package genetic.ga.core.state
 
-enum class GAState {
-    INITIALIZE,
-    STARTED,
-    STOPPED,
-    FINISHED,
-}
+interface GAState {
+    data object INITIALIZED : GAState
+    data object STARTED : GAState
+    data object STOPPED : GAState
 
-fun clusterStateMachine(previous: GAState, new: GAState): GAState =
-    when (previous) {
-        GAState.STOPPED -> when (new) {
-            GAState.FINISHED -> previous
-            else -> new
-        }
-        else -> new
+    sealed interface FINISHED : GAState {
+        data object ByMaxIteration : FINISHED
+        data object ByStopConditions : FINISHED
     }
+}

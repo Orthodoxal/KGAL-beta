@@ -47,7 +47,7 @@ private inline fun <V, F> CellularLifecycle<V, F>.singleRunSynchronous(
         }
         val result = lifecycleExecutor(chromosome.clone(), chromosomeNeighbours)
         replaceWithElitism(elitism, tempPopulation, index, chromosome, result)
-        if (stopSignal) return@forEachIndexed
+        if (finishByStopConditions) return@forEachIndexed
     }
 
     population.set(tempPopulation)
@@ -82,7 +82,7 @@ private inline fun <V, F> CellularLifecycle<V, F>.singleRunAsynchronous(
             }
             val result = lifecycleExecutor(chromosome.clone(), chromosomeNeighbours)
             replaceWithElitism(elitism, population, index, chromosome, result)
-            if (stopSignal) return@forEachIndexed
+            if (finishByStopConditions) return@forEachIndexed
         }
     }
 
@@ -96,7 +96,7 @@ private inline fun <V, F> CellularLifecycle<V, F>.singleRunAsynchronous(
             }
             val result = lifecycleExecutor(population[indexR].clone(), chromosomeNeighbours)
             replaceWithElitism(elitism, population, indexR, population[indexR], result)
-            if (stopSignal) return@forEachIndexed
+            if (finishByStopConditions) return@forEachIndexed
         }
     }
 
@@ -110,7 +110,7 @@ private inline fun <V, F> CellularLifecycle<V, F>.singleRunAsynchronous(
             }
             val result = lifecycleExecutor(population[indexR].clone(), chromosomeNeighbours)
             replaceWithElitism(elitism, population, indexR, population[indexR], result)
-            if (stopSignal) return@forEachIndexed
+            if (finishByStopConditions) return@forEachIndexed
         }
     }
 
@@ -123,7 +123,7 @@ private inline fun <V, F> CellularLifecycle<V, F>.singleRunAsynchronous(
             }
             val result = lifecycleExecutor(population[indexR].clone(), chromosomeNeighbours)
             replaceWithElitism(elitism, population, indexR, population[indexR], result)
-            if (stopSignal) return@forEachIndexed
+            if (finishByStopConditions) return@forEachIndexed
         }
     }
 }

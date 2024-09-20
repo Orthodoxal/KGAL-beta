@@ -6,8 +6,8 @@ import genetic.ga.core.state.StopPolicy
 import genetic.stat.note.StatisticNote
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.job
 import kotlinx.coroutines.runBlocking
 import kotlin.random.Random
@@ -19,7 +19,6 @@ interface GA<V, F> {
 
     val random: Random
     val iteration: Int
-    val maxIteration: Int
 
     val mainDispatcher: CoroutineDispatcher?
     val extraDispatchers: Array<CoroutineDispatcher>?
@@ -30,7 +29,7 @@ interface GA<V, F> {
     suspend fun stop(stopPolicy: StopPolicy = StopPolicy.Default)
 
     fun collectStat(collector: FlowCollector<StatisticNote<Any?>>): GA<V, F>
-    fun statFlow(collector: suspend CoroutineScope.(stat: SharedFlow<StatisticNote<Any?>>) -> Unit): GA<V, F>
+    fun statFlow(collector: suspend CoroutineScope.(stat: Flow<StatisticNote<Any?>>) -> Unit): GA<V, F>
     suspend fun emitStat(value: StatisticNote<Any?>)
 }
 
