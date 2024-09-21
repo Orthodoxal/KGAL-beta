@@ -2,7 +2,7 @@ package genetic.ga.core.lifecycle
 
 import genetic.ga.core.GA
 import genetic.ga.core.population.Population
-import genetic.stat.note.StatisticNote
+import genetic.statistics.note.StatisticNote
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlin.random.Random
 
@@ -30,5 +30,5 @@ internal class BaseLifecycle<V, F>(
     override var finishByStopConditions: Boolean = false
     override var finishedByMaxIteration: Boolean = false
 
-    override suspend fun emitStat(value: StatisticNote<Any?>) = ga.emitStat(value)
+    override suspend fun emitStat(value: StatisticNote<Any?>) = ga.statisticsProvider.emit(value)
 }

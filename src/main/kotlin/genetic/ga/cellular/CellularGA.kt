@@ -9,8 +9,8 @@ import genetic.ga.cellular.neighborhood.CellularNeighborhood
 import genetic.ga.cellular.population.CellularPopulation
 import genetic.ga.cellular.type.CellularType
 import genetic.ga.core.GA
-import genetic.stat.config.StatisticsConfigScope
-import genetic.stat.config.statConfig
+import genetic.statistics.config.StatisticsConfigScope
+import genetic.statistics.config.statConfig
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlin.random.Random
 

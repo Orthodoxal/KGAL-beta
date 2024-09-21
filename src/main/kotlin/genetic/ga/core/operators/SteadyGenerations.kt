@@ -1,7 +1,7 @@
 package genetic.ga.core.operators
 
 import genetic.ga.core.lifecycle.Lifecycle
-import genetic.stat.registers.bestFitness
+import genetic.statistics.registers.bestFitness
 
 const val STEADY_GENERATIONS: String = "STEADY_GENERATIONS"
 const val STEADY_GENERATIONS_CURRENT_ITERATION: String = "STEADY_GENERATIONS"

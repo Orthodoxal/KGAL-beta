@@ -1,7 +1,7 @@
-package genetic.stat.config
+package genetic.statistics.config
 
 import genetic.ga.core.config.AbstractConfigGAScope
-import genetic.stat.note.StatisticNote
+import genetic.statistics.note.StatisticNote
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlin.coroutines.CoroutineContext

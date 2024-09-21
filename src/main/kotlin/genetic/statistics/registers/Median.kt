@@ -1,10 +1,10 @@
-package genetic.stat.registers
+package genetic.statistics.registers
 
 import genetic.ga.core.GA
 import genetic.ga.core.lifecycle.Lifecycle
 import genetic.ga.core.population.Population
 import genetic.ga.core.population.copyOfRange
-import genetic.stat.note.Statistic
+import genetic.statistics.note.Statistic
 
 private const val NAME = "MEDIAN"
 

@@ -5,8 +5,8 @@ import genetic.ga.panmictic.config.PanmicticConfig
 import genetic.ga.panmictic.config.PanmicticConfigScope
 import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 import genetic.ga.panmictic.population.PanmicticPopulation
-import genetic.stat.config.StatisticsConfigScope
-import genetic.stat.config.statConfig
+import genetic.statistics.config.StatisticsConfigScope
+import genetic.statistics.config.statConfig
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlin.random.Random
 

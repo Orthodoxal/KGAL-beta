@@ -8,8 +8,8 @@ import genetic.ga.distributed.lifecycle.DistributedLifecycle
 import genetic.ga.distributed.population.DistributedPopulation
 import genetic.ga.distributed.population.DistributedPopulation.Companion.DEFAULT_NAME_BUILDER
 import genetic.ga.distributed.population.population
-import genetic.stat.config.StatisticsConfigScope
-import genetic.stat.config.statConfig
+import genetic.statistics.config.StatisticsConfigScope
+import genetic.statistics.config.statConfig
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlin.random.Random
 

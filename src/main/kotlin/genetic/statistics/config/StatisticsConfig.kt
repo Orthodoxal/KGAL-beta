@@ -1,6 +1,6 @@
-package genetic.stat.config
+package genetic.statistics.config
 
-import genetic.stat.note.StatisticNote
+import genetic.statistics.note.StatisticNote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

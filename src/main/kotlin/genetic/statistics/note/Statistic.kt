@@ -1,4 +1,4 @@
-package genetic.stat.note
+package genetic.statistics.note
 
 import kotlin.reflect.KProperty
 

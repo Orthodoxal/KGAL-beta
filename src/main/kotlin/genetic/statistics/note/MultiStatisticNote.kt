@@ -1,4 +1,4 @@
-package genetic.stat.note
+package genetic.statistics.note
 
 import genetic.ga.core.lifecycle.Lifecycle
 import genetic.ga.core.lifecycle.name

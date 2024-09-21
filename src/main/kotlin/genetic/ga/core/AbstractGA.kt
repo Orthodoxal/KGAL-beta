@@ -4,14 +4,8 @@ import genetic.ga.core.config.ConfigGA
 import genetic.ga.core.lifecycle.Lifecycle
 import genetic.ga.core.state.GAState
 import genetic.ga.core.state.StopPolicy
-import genetic.stat.config.StatisticsConfig
-import genetic.stat.note.StatisticNote
-import genetic.stat.note.stat
+import genetic.statistics.provider.StatisticsProvider
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.takeWhile
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
@@ -29,24 +23,14 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
     override val mainDispatcher: CoroutineDispatcher? = configuration.mainDispatcher
     override val extraDispatchers: Array<CoroutineDispatcher>? = configuration.extraDispatchers
 
+    override val statisticsProvider: StatisticsProvider by lazy {
+        StatisticsProvider(name, configuration.statisticsConfig)
+    }
+
     protected abstract val lifecycle: L
     protected val beforeEvolution: suspend L.() -> Unit = configuration.beforeEvolution
     protected val evolution: suspend L.() -> Unit = configuration.evolution
     protected val afterEvolution: suspend L.() -> Unit = configuration.afterEvolution
-
-    protected val statisticsConfig: StatisticsConfig = configuration.statisticsConfig
-    protected var statistics: MutableSharedFlow<StatisticNote<Any?>> = statisticsConfig.flow
-    protected val cancelableStatistics
-        get() = statistics.takeWhile { it.statistic.name != STAT_STOP_COLLECT_FLAG }
-    protected var statisticsCoroutineScope: CoroutineScope = statisticsConfig.newCoroutineScope
-        get() {
-            if (field.coroutineContext.job.isCancelled) {
-                field = statisticsConfig.newCoroutineScope
-            }
-            return field
-        }
-    private var statFlowCollector: (suspend CoroutineScope.(stat: Flow<StatisticNote<Any?>>) -> Unit)? = null
-    private var statCollector: FlowCollector<StatisticNote<Any?>>? = null
 
     private var pause: Boolean = false
     private var gaJob: Job? = null
@@ -80,7 +64,7 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
                         cause = null
                     )
                 )
-                statisticsCoroutineScope.cancel()
+                statisticsProvider.stopCollectors(force = true)
                 state = GAState.STOPPED
             }
 
@@ -94,27 +78,8 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
         }
     }
 
-    override fun collectStat(collector: FlowCollector<StatisticNote<Any?>>) =
-        this.apply { statCollector = collector }
-
-    override fun statFlow(collector: suspend CoroutineScope.(stat: Flow<StatisticNote<Any?>>) -> Unit) =
-        this.apply { statFlowCollector = collector }
-
-    override suspend fun emitStat(value: StatisticNote<Any?>) =
-        statistics.emit(value)
-
-    protected open fun prepareStatistics() {
-        with(statisticsCoroutineScope) {
-            statFlowCollector?.let { launch { it(cancelableStatistics) } }
-            statCollector?.let { launch { cancelableStatistics.collect(it) } }
-            if (statisticsConfig.enableDefaultCollector) {
-                launch { cancelableStatistics.collect(statisticsConfig.defaultCollector) }
-            }
-        }
-    }
-
     protected open suspend fun startByOption(iterationFrom: Int) {
-        prepareStatistics()
+        statisticsProvider.prepareStatistics()
         this.iteration = iterationFrom
         val dispatcher = mainDispatcher
         if (dispatcher == null) {
@@ -175,15 +140,7 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
 
         // wait for all children coroutines of lifecycle completed
         coroutineContext.job.children.forEach { it.join() }
-        // send STAT_STOP_COLLECT_FLAG as a terminal for all collectors
-        stat(STAT_STOP_COLLECT_FLAG, null)
-        // wait for all collectors of statistics completed
-        statisticsCoroutineScope.coroutineContext.job.children.forEach { it.join() }
-        // cancel statisticsCoroutineScope
-        statisticsCoroutineScope.cancel()
-    }
-
-    protected companion object {
-        const val STAT_STOP_COLLECT_FLAG = "STAT_STOP_COLLECT_FLAG"
+        // stop all statistics collectors
+        statisticsProvider.stopCollectors(force = false)
     }
 }

@@ -1,11 +1,11 @@
-package genetic.stat.registers
+package genetic.statistics.registers
 
 import genetic.ga.core.GA
 import genetic.ga.core.currentSize
 import genetic.ga.core.lifecycle.Lifecycle
 import genetic.ga.core.lifecycle.size
 import genetic.ga.core.population.fold
-import genetic.stat.note.Statistic
+import genetic.statistics.note.Statistic
 
 private const val NAME = "MEAN"
 

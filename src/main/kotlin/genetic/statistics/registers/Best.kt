@@ -1,9 +1,9 @@
-package genetic.stat.registers
+package genetic.statistics.registers
 
 import genetic.ga.core.GA
 import genetic.ga.core.lifecycle.Lifecycle
 import genetic.ga.core.population.best
-import genetic.stat.note.Statistic
+import genetic.statistics.note.Statistic
 
 private const val NAME = "BEST"
 private const val NAME_FITNESS = "BEST FITNESS"

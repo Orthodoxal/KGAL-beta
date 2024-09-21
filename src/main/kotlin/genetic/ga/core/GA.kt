@@ -3,11 +3,13 @@ package genetic.ga.core
 import genetic.ga.core.population.Population
 import genetic.ga.core.state.GAState
 import genetic.ga.core.state.StopPolicy
-import genetic.stat.note.StatisticNote
+import genetic.statistics.note.StatisticNote
+import genetic.statistics.provider.STAT_COLLECTOR
+import genetic.statistics.provider.STAT_FLOW_COLLECTOR
+import genetic.statistics.provider.StatisticsProvider
+import genetic.statistics.provider.StatisticsProvider.Companion.BASE_COLLECTOR_ID
+import genetic.statistics.provider.StatisticsProvider.Companion.BASE_FLOW_COLLECTOR_ID
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.job
 import kotlinx.coroutines.runBlocking
 import kotlin.random.Random
@@ -23,14 +25,26 @@ interface GA<V, F> {
     val mainDispatcher: CoroutineDispatcher?
     val extraDispatchers: Array<CoroutineDispatcher>?
 
+    val statisticsProvider: StatisticsProvider
+
     suspend fun start()
     suspend fun resume()
     suspend fun restart(resetPopulation: Boolean = true)
     suspend fun stop(stopPolicy: StopPolicy = StopPolicy.Default)
+}
 
-    fun collectStat(collector: FlowCollector<StatisticNote<Any?>>): GA<V, F>
-    fun statFlow(collector: suspend CoroutineScope.(stat: Flow<StatisticNote<Any?>>) -> Unit): GA<V, F>
-    suspend fun emitStat(value: StatisticNote<Any?>)
+fun <V, F> GA<V, F>.collectStat(
+    id: String = BASE_COLLECTOR_ID,
+    collector: STAT_COLLECTOR,
+): GA<V, F> = apply {
+    statisticsProvider.collect(id, collector)
+}
+
+fun <V, F> GA<V, F>.flowStat(
+    id: String = BASE_FLOW_COLLECTOR_ID,
+    collector: STAT_FLOW_COLLECTOR,
+): GA<V, F> = apply {
+    statisticsProvider.flow(id, collector)
 }
 
 fun GA<*, *>.startBlocking() = runBlocking { start() }

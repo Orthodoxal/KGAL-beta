@@ -1,8 +1,8 @@
-package genetic.stat.registers
+package genetic.statistics.registers
 
 import genetic.ga.core.GA
 import genetic.ga.core.lifecycle.Lifecycle
-import genetic.stat.note.Statistic
+import genetic.statistics.note.Statistic
 
 private const val NAME = "SIZE"
 

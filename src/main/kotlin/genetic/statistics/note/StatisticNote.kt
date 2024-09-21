@@ -1,4 +1,4 @@
-package genetic.stat.note
+package genetic.statistics.note
 
 interface StatisticNote<V> {
     val statistic: Statistic<V>

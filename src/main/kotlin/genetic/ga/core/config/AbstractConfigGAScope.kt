@@ -1,7 +1,7 @@
 package genetic.ga.core.config
 
 import genetic.ga.core.lifecycle.Lifecycle
-import genetic.stat.config.StatisticsConfig
+import genetic.statistics.config.StatisticsConfig
 import kotlinx.coroutines.CoroutineDispatcher
 
 abstract class AbstractConfigGAScope<V, F, L : Lifecycle<V, F>> : ConfigGA<V, F, L> {

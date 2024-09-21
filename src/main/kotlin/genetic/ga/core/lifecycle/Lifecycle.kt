@@ -1,7 +1,7 @@
 package genetic.ga.core.lifecycle
 
 import genetic.ga.core.population.Population
-import genetic.stat.note.StatisticNote
+import genetic.statistics.note.StatisticNote
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlin.random.Random
 
