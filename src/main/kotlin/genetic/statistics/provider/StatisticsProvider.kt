@@ -6,20 +6,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
-typealias STAT_FLOW_COLLECTOR = suspend CoroutineScope.(stat: Flow<StatisticNote<Any?>>) -> Unit
 typealias STAT_COLLECTOR = FlowCollector<StatisticNote<Any?>>
+typealias STAT_COLLECTOR_SCOPE = suspend CoroutineScope.(stat: Flow<StatisticNote<Any?>>) -> Unit
 
 interface StatisticsProvider {
 
-    fun collect(
-        id: String = BASE_COLLECTOR_ID,
-        collector: STAT_COLLECTOR,
-    )
-
-    fun flow(
-        id: String = BASE_FLOW_COLLECTOR_ID,
-        collector: STAT_FLOW_COLLECTOR,
-    )
+    fun collect(id: String, collector: STAT_COLLECTOR_SCOPE)
 
     suspend fun emit(value: StatisticNote<Any?>)
 
@@ -27,10 +19,13 @@ interface StatisticsProvider {
 
     suspend fun stopCollectors(force: Boolean)
 
+    fun removeCollector(id: String)
+
+    fun clearCollectors()
+
     companion object {
         const val DEFAULT_COLLECTOR_ID: String = "DEFAULT_COLLECTOR_ID"
         const val BASE_COLLECTOR_ID: String = "BASE_COLLECTOR_ID"
-        const val BASE_FLOW_COLLECTOR_ID: String = "BASE_FLOW_COLLECTOR_ID"
         const val STAT_STOP_COLLECT_FLAG = "STAT_STOP_COLLECT_FLAG"
     }
 }

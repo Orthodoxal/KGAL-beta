@@ -18,7 +18,7 @@ internal class DistributedGAInstance<V, F>(
 
     init {
         clusters.forEach {
-            it.collectStat { stat -> it.statisticsProvider.emit(stat) }
+            it.collect(id = DISTRIBUTED_COLLECTOR_ID) { stat -> it.statisticsProvider.emit(stat) }
         }
     }
 
@@ -39,5 +39,9 @@ internal class DistributedGAInstance<V, F>(
     override suspend fun restart(resetPopulation: Boolean) {
         lifecycle.startOption = LifecycleStartOption.Restart(resetPopulation)
         super.restart(resetPopulation = false)
+    }
+
+    private companion object {
+        const val DISTRIBUTED_COLLECTOR_ID = "DISTRIBUTED_COLLECTOR_ID"
     }
 }

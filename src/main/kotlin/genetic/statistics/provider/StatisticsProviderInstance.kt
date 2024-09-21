@@ -19,8 +19,7 @@ internal class StatisticsProviderInstance(
 ) : StatisticsProvider {
 
     private val statistics: MutableSharedFlow<StatisticNote<Any?>> = statisticsConfig.flow
-    private val cancelableStatistics
-        get() = statistics.takeWhile { it.statistic.name != STAT_STOP_COLLECT_FLAG }
+    private val collectors: MutableMap<String, STAT_COLLECTOR_SCOPE> = collectors()
     private var statisticsCoroutineScope: CoroutineScope = statisticsConfig.newCoroutineScope
         get() {
             if (field.coroutineContext.job.isCancelled) {
@@ -28,28 +27,12 @@ internal class StatisticsProviderInstance(
             }
             return field
         }
-    private var flowCollectors: MutableMap<String, STAT_FLOW_COLLECTOR> =
-        mutableMapOf()
-    private var statisticsCollectors: MutableMap<String, STAT_COLLECTOR> =
-        if (statisticsConfig.enableDefaultCollector) {
-            mutableMapOf(DEFAULT_COLLECTOR_ID to statisticsConfig.defaultCollector)
-        } else {
-            mutableMapOf()
-        }
 
-
-    override fun collect(id: String, collector: STAT_COLLECTOR) {
-        if (statisticsCollectors.contains(id))
+    override fun collect(id: String, collector: STAT_COLLECTOR_SCOPE) {
+        if (collectors.contains(id))
             throw IllegalArgumentException("Collector with id $id has been already added, try to use unique ID")
 
-        statisticsCollectors[id] = collector
-    }
-
-    override fun flow(id: String, collector: STAT_FLOW_COLLECTOR) {
-        if (flowCollectors.contains(id))
-            throw IllegalArgumentException("Flow collector with id $id has been already added, try to use unique ID")
-
-        flowCollectors[id] = collector
+        collectors[id] = collector
     }
 
     override suspend fun emit(value: StatisticNote<Any?>) =
@@ -57,8 +40,7 @@ internal class StatisticsProviderInstance(
 
     override fun prepareStatistics() {
         with(statisticsCoroutineScope) {
-            statisticsCollectors.forEach { (_, collector) -> launch { cancelableStatistics.collect(collector) } }
-            flowCollectors.forEach { (_, collector) -> launch { collector(cancelableStatistics) } }
+            collectors.forEach { (_, collector) -> launch { collector(statisticsSafeWrapper) } }
         }
     }
 
@@ -78,4 +60,22 @@ internal class StatisticsProviderInstance(
         // cancel statisticsCoroutineScope
         statisticsCoroutineScope.cancel()
     }
+
+    override fun removeCollector(id: String) {
+        collectors.remove(id)
+    }
+
+    override fun clearCollectors() {
+        collectors.clear()
+    }
+
+    private val statisticsSafeWrapper
+        get() = statistics.takeWhile { it.statistic.name != STAT_STOP_COLLECT_FLAG }
+
+    private fun collectors(): MutableMap<String, STAT_COLLECTOR_SCOPE> =
+        if (statisticsConfig.enableDefaultCollector) {
+            mutableMapOf(DEFAULT_COLLECTOR_ID to { flow -> flow.collect(statisticsConfig.defaultCollector) })
+        } else {
+            mutableMapOf()
+        }
 }

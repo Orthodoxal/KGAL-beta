@@ -3,12 +3,9 @@ package genetic.ga.core
 import genetic.ga.core.population.Population
 import genetic.ga.core.state.GAState
 import genetic.ga.core.state.StopPolicy
-import genetic.statistics.note.StatisticNote
 import genetic.statistics.provider.STAT_COLLECTOR
-import genetic.statistics.provider.STAT_FLOW_COLLECTOR
 import genetic.statistics.provider.StatisticsProvider
 import genetic.statistics.provider.StatisticsProvider.Companion.BASE_COLLECTOR_ID
-import genetic.statistics.provider.StatisticsProvider.Companion.BASE_FLOW_COLLECTOR_ID
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.job
 import kotlinx.coroutines.runBlocking
@@ -33,18 +30,11 @@ interface GA<V, F> {
     suspend fun stop(stopPolicy: StopPolicy = StopPolicy.Default)
 }
 
-fun <V, F> GA<V, F>.collectStat(
+fun <V, F> GA<V, F>.collect(
     id: String = BASE_COLLECTOR_ID,
     collector: STAT_COLLECTOR,
 ): GA<V, F> = apply {
-    statisticsProvider.collect(id, collector)
-}
-
-fun <V, F> GA<V, F>.flowStat(
-    id: String = BASE_FLOW_COLLECTOR_ID,
-    collector: STAT_FLOW_COLLECTOR,
-): GA<V, F> = apply {
-    statisticsProvider.flow(id, collector)
+    statisticsProvider.collect(id) { flow -> flow.collect(collector) }
 }
 
 fun GA<*, *>.startBlocking() = runBlocking { start() }
