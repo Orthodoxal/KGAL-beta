@@ -27,5 +27,5 @@ suspend inline fun Lifecycle<*, *>.runWithExtraDispatchersIterative(
     end: Int,
     crossinline action: suspend (iteration: Int) -> Unit,
 ) = runIterative(start, end) {
-    extraDispatchers?.forEach { dispatcher -> launch(dispatcher) { runActionIterative(action) } }
+    extraDispatchers.forEach { dispatcher -> launch(dispatcher) { runActionIterative(action) } }
 }

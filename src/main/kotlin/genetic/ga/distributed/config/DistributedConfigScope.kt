@@ -15,7 +15,7 @@ class DistributedConfigScope<V, F>(
     override val maxIteration: Int,
 ) : DistributedConfig<V, F>, ClusterFactoryScope<V, F>, AbstractConfigGAScope<V, F, DistributedLifecycle<V, F>>() {
     override var clusters: MutableList<GA<V, F>> = mutableListOf()
-    override val distributedExtraDispatchers: Array<CoroutineDispatcher>? get() = extraDispatchers
+    override val distributedExtraDispatchers: List<CoroutineDispatcher> get() = extraDispatchers
 
     override fun addCluster(ga: GA<V, F>): GA<V, F> {
         if (ga is DistributedGA<*, *>) {

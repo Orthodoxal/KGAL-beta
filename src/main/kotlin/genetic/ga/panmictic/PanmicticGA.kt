@@ -28,11 +28,10 @@ fun <V, F> pGA(
     elitism: Int = 0,
     random: Random = Random,
     mainDispatcher: CoroutineDispatcher? = null,
-    extraDispatchers: Array<CoroutineDispatcher>? = null,
-    skipValidation: Boolean = false, // TODO добавить валидатор конфигурации
+    extraDispatchers: List<CoroutineDispatcher> = emptyList(),
     statConfig: StatisticsConfigScope.() -> Unit = { },
     evolution: suspend PanmicticLifecycle<V, F>.() -> Unit,
-): GA<V, F> = panmicticGA(population, fitnessFunction, random, skipValidation) {
+): GA<V, F> = panmicticGA(population, fitnessFunction, random) {
     this.mainDispatcher = mainDispatcher
     this.extraDispatchers = extraDispatchers
     this.elitism = elitism
@@ -44,7 +43,6 @@ inline fun <V, F> panmicticGA(
     population: PanmicticPopulation<V, F>,
     noinline fitnessFunction: (V) -> F,
     random: Random = Random,
-    skipValidation: Boolean = false, // TODO добавить валидатор конфигурации
     config: PanmicticConfigScope<V, F>.() -> Unit,
 ): GA<V, F> {
     val configuration: PanmicticConfig<V, F> =

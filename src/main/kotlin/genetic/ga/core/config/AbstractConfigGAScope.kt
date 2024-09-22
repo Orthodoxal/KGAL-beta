@@ -6,7 +6,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 abstract class AbstractConfigGAScope<V, F, L : Lifecycle<V, F>> : ConfigGA<V, F, L> {
     override var mainDispatcher: CoroutineDispatcher? = null
-    override var extraDispatchers: Array<CoroutineDispatcher>? = null
+    override var extraDispatchers: List<CoroutineDispatcher> = emptyList()
     override var statisticsConfig: StatisticsConfig = StatisticsConfig
 
     override var beforeEvolution: suspend L.() -> Unit = { }

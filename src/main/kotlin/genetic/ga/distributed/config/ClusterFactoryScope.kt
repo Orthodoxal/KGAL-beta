@@ -1,6 +1,5 @@
 package genetic.ga.distributed.config
 
-import genetic.ga.cellular.cellularGA
 import genetic.ga.cellular.config.CellularConfigScope
 import genetic.ga.cellular.lifecycle.CellLifecycle
 import genetic.ga.cellular.lifecycle.CellularLifecycle
@@ -11,7 +10,6 @@ import genetic.ga.cellular.type.CellularType
 import genetic.ga.core.GA
 import genetic.ga.panmictic.config.PanmicticConfigScope
 import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
-import genetic.ga.panmictic.panmicticGA
 import genetic.ga.panmictic.population.PanmicticPopulation
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlin.random.Random
@@ -20,7 +18,7 @@ interface ClusterFactoryScope<V, F> {
     val clusters: List<GA<V, F>>
     val random: Random
     val fitnessFunction: (V) -> F
-    val distributedExtraDispatchers: Array<CoroutineDispatcher>?
+    val distributedExtraDispatchers: List<CoroutineDispatcher>
 }
 
 inline fun <V, F> ClusterFactoryScope<V, F>.panmicticGA(
@@ -28,9 +26,9 @@ inline fun <V, F> ClusterFactoryScope<V, F>.panmicticGA(
     noinline fitnessFunction: (V) -> F = this.fitnessFunction,
     random: Random = Random(this.random.nextInt()),
     panmicticConfig: PanmicticConfigScope<V, F>.() -> Unit,
-): GA<V, F> = panmicticGA(population, fitnessFunction, random, skipValidation = false) {
+): GA<V, F> = genetic.ga.panmictic.panmicticGA(population, fitnessFunction, random) {
     panmicticConfig()
-    mainDispatcher?.let { mainDispatcher = distributedExtraDispatchers?.getOrNull(clusters.size) }
+    mainDispatcher?.let { mainDispatcher = distributedExtraDispatchers.getOrNull(clusters.size) }
 }
 
 fun <V, F> ClusterFactoryScope<V, F>.pGAs(
@@ -40,7 +38,7 @@ fun <V, F> ClusterFactoryScope<V, F>.pGAs(
     elitism: Int = 0,
     random: Random = Random(this.random.nextInt()),
     mainDispatcher: CoroutineDispatcher? = null,
-    extraDispatchers: Array<CoroutineDispatcher>? = null,
+    extraDispatchers: List<CoroutineDispatcher> = emptyList(),
     evolution: suspend PanmicticLifecycle<V, F>.() -> Unit,
 ): ClusterFactoryScope<V, F>.() -> List<GA<V, F>> = {
     List(size = count) { index ->
@@ -61,7 +59,7 @@ inline fun <V, F> ClusterFactoryScope<V, F>.pGAs(
     crossinline elitism: (index: Int) -> Int = { 0 },
     crossinline random: (index: Int) -> Random = { Random(this.random.nextInt()) },
     crossinline mainDispatcher: (index: Int) -> CoroutineDispatcher? = { null },
-    crossinline extraDispatchers: (index: Int) -> Array<CoroutineDispatcher>? = { null },
+    crossinline extraDispatchers: (index: Int) -> List<CoroutineDispatcher> = { emptyList() },
     noinline evolution: suspend PanmicticLifecycle<V, F>.() -> Unit,
 ): ClusterFactoryScope<V, F>.() -> List<GA<V, F>> = {
     panmicticGAs(count, population, fitnessFunction, random) { index ->
@@ -87,9 +85,9 @@ inline fun <V, F> ClusterFactoryScope<V, F>.cellularGA(
     noinline fitnessFunction: (V) -> F = this.fitnessFunction,
     random: Random = Random(this.random.nextInt()),
     cellularConfig: CellularConfigScope<V, F>.() -> Unit,
-): GA<V, F> = cellularGA(population, fitnessFunction, random, skipValidation = false) {
+): GA<V, F> = genetic.ga.cellular.cellularGA(population, fitnessFunction, random) {
     cellularConfig()
-    mainDispatcher?.let { mainDispatcher = distributedExtraDispatchers?.getOrNull(clusters.size) }
+    mainDispatcher?.let { mainDispatcher = distributedExtraDispatchers.getOrNull(clusters.size) }
 }
 
 fun <V, F> ClusterFactoryScope<V, F>.cGAs(
@@ -101,7 +99,7 @@ fun <V, F> ClusterFactoryScope<V, F>.cGAs(
     cellularType: CellularType = CellularType.Synchronous,
     random: Random = Random(this.random.nextInt()),
     mainDispatcher: CoroutineDispatcher? = null,
-    extraDispatchers: Array<CoroutineDispatcher>? = null,
+    extraDispatchers: List<CoroutineDispatcher> = emptyList(),
     beforeLifecycleIteration: (suspend CellularLifecycle<V, F>.() -> Unit)? = null,
     afterLifecycleIteration: (suspend CellularLifecycle<V, F>.() -> Unit)? = null,
     cellLifecycle: suspend CellLifecycle<V, F>.() -> Unit,
@@ -130,7 +128,7 @@ inline fun <V, F> ClusterFactoryScope<V, F>.cGAs(
     crossinline cellularType: (index: Int) -> CellularType = { CellularType.Synchronous },
     crossinline random: (index: Int) -> Random = { Random(this.random.nextInt()) },
     crossinline mainDispatcher: (index: Int) -> CoroutineDispatcher? = { null },
-    crossinline extraDispatchers: (index: Int) -> Array<CoroutineDispatcher>? = { null },
+    crossinline extraDispatchers: (index: Int) -> List<CoroutineDispatcher> = { emptyList() },
     noinline beforeLifecycleIteration: (suspend CellularLifecycle<V, F>.() -> Unit)? = null,
     noinline afterLifecycleIteration: (suspend CellularLifecycle<V, F>.() -> Unit)? = null,
     crossinline cellLifecycle: suspend CellLifecycle<V, F>.() -> Unit,

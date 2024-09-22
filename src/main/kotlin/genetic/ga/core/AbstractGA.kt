@@ -21,7 +21,7 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
 
     override var fitnessFunction: (V) -> F = configuration.fitnessFunction
     override val mainDispatcher: CoroutineDispatcher? = configuration.mainDispatcher
-    override val extraDispatchers: Array<CoroutineDispatcher>? = configuration.extraDispatchers
+    override val extraDispatchers: List<CoroutineDispatcher> = configuration.extraDispatchers
 
     override val statisticsProvider: StatisticsProvider by lazy {
         StatisticsProvider(name, configuration.statisticsConfig)
@@ -51,6 +51,7 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
         if (resetPopulation) {
             with(population) { population = Array(maxSize) { random.factory() } }
         }
+        statisticsProvider.stopCollectors(force = true)
         startByOption(iterationFrom = 0)
     }
 
@@ -140,6 +141,7 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
 
         // wait for all children coroutines of lifecycle completed
         coroutineContext.job.children.forEach { it.join() }
+        coroutineContext.isActive
         // stop all statistics collectors
         statisticsProvider.stopCollectors(force = false)
     }

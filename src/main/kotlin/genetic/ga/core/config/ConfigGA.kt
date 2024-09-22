@@ -9,7 +9,7 @@ interface ConfigGA<V, F, L : Lifecycle<V, F>> {
     val random: Random
     val fitnessFunction: (V) -> F
     val mainDispatcher: CoroutineDispatcher?
-    val extraDispatchers: Array<CoroutineDispatcher>?
+    val extraDispatchers: List<CoroutineDispatcher>
     val statisticsConfig: StatisticsConfig
 
     val beforeEvolution: suspend L.() -> Unit

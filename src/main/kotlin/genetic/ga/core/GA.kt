@@ -20,7 +20,7 @@ interface GA<V, F> {
     val iteration: Int
 
     val mainDispatcher: CoroutineDispatcher?
-    val extraDispatchers: Array<CoroutineDispatcher>?
+    val extraDispatchers: List<CoroutineDispatcher>
 
     val statisticsProvider: StatisticsProvider
 

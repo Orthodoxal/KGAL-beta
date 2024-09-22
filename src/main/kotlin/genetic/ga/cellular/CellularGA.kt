@@ -36,13 +36,12 @@ inline fun <V, F> cGA(
     cellularType: CellularType = CellularType.Synchronous,
     random: Random = Random,
     mainDispatcher: CoroutineDispatcher? = null,
-    extraDispatchers: Array<CoroutineDispatcher>? = null,
-    skipValidation: Boolean = false, // TODO добавить валидатор конфигурации
+    extraDispatchers: List<CoroutineDispatcher> = emptyList(),
     statConfig: StatisticsConfigScope.() -> Unit = { },
     noinline beforeLifecycleIteration: (suspend CellularLifecycle<V, F>.() -> Unit)? = null,
     noinline afterLifecycleIteration: (suspend CellularLifecycle<V, F>.() -> Unit)? = null,
     crossinline cellLifecycle: suspend CellLifecycle<V, F>.() -> Unit,
-): GA<V, F> = cellularGA(population, fitnessFunction, random, skipValidation) {
+): GA<V, F> = cellularGA(population, fitnessFunction, random) {
     this.mainDispatcher = mainDispatcher
     this.extraDispatchers = extraDispatchers
     this.elitism = elitism
@@ -59,7 +58,6 @@ inline fun <V, F> cellularGA(
     population: CellularPopulation<V, F>,
     noinline fitnessFunction: (V) -> F,
     random: Random = Random,
-    skipValidation: Boolean = false, // TODO добавить валидатор конфигурации
     config: CellularConfigScope<V, F>.() -> Unit,
 ): GA<V, F> {
     val configuration: CellularConfig<V, F> =

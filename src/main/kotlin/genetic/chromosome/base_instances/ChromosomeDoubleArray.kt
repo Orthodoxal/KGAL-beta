@@ -15,8 +15,8 @@ data class ChromosomeDoubleArray<F : Comparable<F>>(
 
         other as ChromosomeDoubleArray<*>
 
-        if (!value.contentEquals(other.value)) return false
-        return fitness == other.fitness
+        if (fitness != other.fitness) return false
+        return value.contentEquals(other.value)
     }
 
     override fun hashCode(): Int {

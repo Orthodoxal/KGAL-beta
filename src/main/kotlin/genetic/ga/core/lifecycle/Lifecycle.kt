@@ -10,7 +10,7 @@ interface Lifecycle<V, F> : MultiRunHelper, LifecycleStore {
     val population: Population<V, F>
     val iteration: Int
     var fitnessFunction: (V) -> F
-    val extraDispatchers: Array<CoroutineDispatcher>?
+    val extraDispatchers: List<CoroutineDispatcher>
 
     var finishByStopConditions: Boolean
     var finishedByMaxIteration: Boolean
@@ -18,7 +18,7 @@ interface Lifecycle<V, F> : MultiRunHelper, LifecycleStore {
     suspend fun emitStat(value: StatisticNote<Any?>)
 }
 
-val Lifecycle<*, *>.isSingleRun: Boolean get() = extraDispatchers?.isEmpty() ?: true
+val Lifecycle<*, *>.isSingleRun: Boolean get() = extraDispatchers.isEmpty()
 
 val Lifecycle<*, *>.name
     get() = population.name

@@ -25,7 +25,7 @@ internal class BaseLifecycle<V, F>(
             ga.fitnessFunction = value
         }
 
-    override val extraDispatchers: Array<CoroutineDispatcher>? get() = ga.extraDispatchers
+    override val extraDispatchers: List<CoroutineDispatcher> get() = ga.extraDispatchers
 
     override var finishByStopConditions: Boolean = false
     override var finishedByMaxIteration: Boolean = false

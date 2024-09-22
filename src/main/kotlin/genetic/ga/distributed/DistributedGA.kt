@@ -33,13 +33,12 @@ inline fun <V, F> dGA(
     },
     random: Random = Random,
     mainDispatcher: CoroutineDispatcher? = null,
-    extraDispatchers: Array<CoroutineDispatcher>? = null,
-    skipValidation: Boolean = false, // TODO добавить валидатор конфигурации
+    extraDispatchers: List<CoroutineDispatcher> = emptyList(),
     statConfig: StatisticsConfigScope.() -> Unit = { },
     noinline nameBuilder: (childNames: List<String>) -> String = DEFAULT_NAME_BUILDER,
     noinline evolution: (suspend DistributedLifecycle<V, F>.() -> Unit)? = null,
 ): DistributedGA<V, F> =
-    distributedGA(maxIteration, fitnessFunction, random, skipValidation, nameBuilder) {
+    distributedGA(maxIteration, fitnessFunction, random, nameBuilder) {
         this.mainDispatcher = mainDispatcher
         this.extraDispatchers = extraDispatchers
 
@@ -55,7 +54,6 @@ inline fun <V, F> distributedGA(
         throw IllegalStateException("Fitness function for cluster of distributed GA not implemented")
     },
     random: Random = Random,
-    skipValidation: Boolean = false, // TODO добавить валидатор конфигурации
     noinline nameBuilder: (childNames: List<String>) -> String = DEFAULT_NAME_BUILDER,
     config: DistributedConfigScope<V, F>.() -> Unit,
 ): DistributedGA<V, F> {
