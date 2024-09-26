@@ -20,8 +20,6 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
     override var iteration: Int = 0
 
     override var fitnessFunction: (V) -> F = configuration.fitnessFunction
-    override val mainDispatcher: CoroutineDispatcher? = configuration.mainDispatcher
-    override val extraDispatchers: List<CoroutineDispatcher> = configuration.extraDispatchers
 
     override val statisticsProvider: StatisticsProvider by lazy {
         StatisticsProvider(name, configuration.statisticsConfig)
@@ -33,7 +31,7 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
     protected val afterEvolution: suspend L.() -> Unit = configuration.afterEvolution
 
     private var pause: Boolean = false
-    private var gaJob: Job? = null
+    private var coroutineScope: CoroutineScope? = null
 
     override suspend fun start() {
         if (state == GAState.STARTED) return
@@ -48,18 +46,20 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
     }
 
     override suspend fun restart(resetPopulation: Boolean) {
+        stop(stopPolicy = StopPolicy.Immediately) // TODO посмотреть как работает
         if (resetPopulation) {
             with(population) { population = Array(maxSize) { random.factory() } }
         }
-        statisticsProvider.stopCollectors(force = true)
         startByOption(iterationFrom = 0)
     }
 
     override suspend fun stop(stopPolicy: StopPolicy) {
+        if (state == GAState.STOPPED || state is GAState.FINISHED) return
+
         when (stopPolicy) {
             is StopPolicy.Default -> pause = true
             is StopPolicy.Immediately -> {
-                gaJob?.cancel(
+                coroutineScope?.cancel(
                     cause = CancellationException(
                         message = "Cluster $name stop cause force $stopPolicy policy",
                         cause = null
@@ -82,14 +82,10 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
     protected open suspend fun startByOption(iterationFrom: Int) {
         statisticsProvider.prepareStatistics()
         this.iteration = iterationFrom
-        val dispatcher = mainDispatcher
-        if (dispatcher == null) {
-            gaJob = coroutineContext.job
-            launch()
-        } else {
-            with(CoroutineScope(coroutineContext)) {
-                gaJob = launch(dispatcher) { launch() }
-            }
+
+        coroutineScope {
+            coroutineScope = this
+            launch { launch() }
         }
     }
 
@@ -141,7 +137,6 @@ abstract class AbstractGA<V, F, L : Lifecycle<V, F>>(
 
         // wait for all children coroutines of lifecycle completed
         coroutineContext.job.children.forEach { it.join() }
-        coroutineContext.isActive
         // stop all statistics collectors
         statisticsProvider.stopCollectors(force = false)
     }

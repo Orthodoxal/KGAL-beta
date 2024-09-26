@@ -13,7 +13,9 @@ internal class CellularGAInstance<V, F>(
     configuration: CellularConfig<V, F>,
     override val population: CellularPopulation<V, F>,
 ) : CellularGA<V, F>, AbstractGA<V, F, CellularLifecycle<V, F>>(configuration) {
-    override val lifecycle: CellularLifecycle<V, F> by lazy { CellularLifecycleInstance(this) }
+    override val lifecycle: CellularLifecycle<V, F> by lazy {
+        CellularLifecycleInstance(this, configuration.parallelismConfig)
+    }
 
     override var elitism: Boolean = configuration.elitism
     override var cellularType: CellularType = configuration.cellularType

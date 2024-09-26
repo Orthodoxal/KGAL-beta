@@ -6,7 +6,6 @@ import genetic.ga.core.operators.stopBy
 import genetic.ga.distributed.DistributedGA
 import genetic.ga.distributed.lifecycle.DistributedLifecycle
 import genetic.ga.distributed.operators.children.startChildren
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlin.random.Random
 
 class DistributedConfigScope<V, F>(
@@ -15,7 +14,6 @@ class DistributedConfigScope<V, F>(
     override val maxIteration: Int,
 ) : DistributedConfig<V, F>, ClusterFactoryScope<V, F>, AbstractConfigGAScope<V, F, DistributedLifecycle<V, F>>() {
     override var clusters: MutableList<GA<V, F>> = mutableListOf()
-    override val distributedExtraDispatchers: List<CoroutineDispatcher> get() = extraDispatchers
 
     override fun addCluster(ga: GA<V, F>): GA<V, F> {
         if (ga is DistributedGA<*, *>) {
@@ -31,6 +29,6 @@ class DistributedConfigScope<V, F>(
         this.evolution = evolution.takeIf { !useDefault } ?: { baseEvolve(); evolution(); stopBy(maxIteration) }
     }
 
-    override val baseEvolve: suspend DistributedLifecycle<V, F>.() -> Unit = { startChildren() }
+    override val baseEvolve: suspend DistributedLifecycle<V, F>.() -> Unit = { startChildren(parallelismConfig.count) }
     override var evolution: suspend DistributedLifecycle<V, F>.() -> Unit = { baseEvolve(); stopBy(maxIteration) }
 }

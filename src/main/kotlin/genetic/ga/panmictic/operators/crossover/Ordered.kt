@@ -6,7 +6,8 @@ import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 @JvmName("cxOrderedIntArray")
 suspend fun <F> PanmicticLifecycle<IntArray, F>.cxOrdered(
     chance: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(chance, onlySingleRun) { chromosome1, chromosome2 ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
     crossoverOrdered(chromosome1.value, chromosome2.value, random)
 }

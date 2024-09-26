@@ -12,7 +12,9 @@ internal class DistributedGAInstance<V, F>(
     configuration: DistributedConfig<V, F>,
     override val population: DistributedPopulation<V, F>,
 ) : DistributedGA<V, F>, AbstractGA<V, F, DistributedLifecycle<V, F>>(configuration) {
-    override val lifecycle: DistributedLifecycle<V, F> by lazy { DistributedLifecycleInstance(this) }
+    override val lifecycle: DistributedLifecycle<V, F> by lazy {
+        DistributedLifecycleInstance(this, configuration.parallelismConfig)
+    }
 
     override val clusters: List<GA<V, F>> = configuration.clusters
 

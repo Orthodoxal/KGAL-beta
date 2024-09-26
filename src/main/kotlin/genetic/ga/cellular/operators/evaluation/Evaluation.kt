@@ -3,20 +3,25 @@ package genetic.ga.cellular.operators.evaluation
 import genetic.ga.cellular.lifecycle.CellLifecycle
 import genetic.ga.cellular.lifecycle.CellularLifecycle
 import genetic.ga.core.lifecycle.size
+import genetic.ga.core.operators.evaluation.evaluate
 import genetic.ga.core.operators.evaluation.fitnessAll
 
 fun <V, F> CellLifecycle<V, F>.evaluation(
     compareWithSecondChild: Boolean = true,
     fitnessFunction: (V) -> F = this.fitnessFunction,
 ) {
-    cellChromosome.fitness = fitnessFunction(cellChromosome.value)
+    cellChromosome.evaluate(fitnessFunction)
     if (compareWithSecondChild) {
-        neighbours[0].fitness = fitnessFunction(neighbours[0].value)
-        if (neighbours[0] > cellChromosome) cellChromosome = neighbours[0]
+        val neighbour = neighbours[0]
+        neighbour.evaluate(fitnessFunction)
+        if (neighbour > cellChromosome) cellChromosome = neighbour
     }
 }
 
-suspend fun <V, F> CellularLifecycle<V, F>.evaluation(
-    onlySingleRun: Boolean = false,
+/**
+ * NOTE! DO NOT USE IT IN [CellLifecycle]! Use [evaluation]
+ */
+suspend fun <V, F> CellularLifecycle<V, F>.evaluationAll(
+    parallelWorkersLimit: Int = parallelismConfig.count,
     fitnessFunction: (V) -> F = this.fitnessFunction,
-) = fitnessAll(0, size, onlySingleRun, fitnessFunction)
+) = fitnessAll(0, size, parallelWorkersLimit, fitnessFunction)

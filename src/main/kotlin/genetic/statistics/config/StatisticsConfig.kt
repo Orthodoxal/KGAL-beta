@@ -24,18 +24,11 @@ interface StatisticsConfig {
     val enableDefaultCollector: Boolean
     val defaultCollector: FlowCollector<StatisticNote<Any?>>
 
-    val flow: MutableSharedFlow<StatisticNote<Any?>>
-        get() = MutableSharedFlow(replay, extraBufferCapacity, onBufferOverflow)
-
-    val newCoroutineScope: CoroutineScope
-        get() = CoroutineScope(SupervisorJob() + coroutineContext)
-
-    companion object Default : StatisticsConfig {
-        override val replay = DEFAULT_REPLAY
-        override val extraBufferCapacity = DEFAULT_EXTRA_BUFFER_CAPACITY
-        override val onBufferOverflow = DEFAULT_ON_BUFFER_OVERFLOW
-        override val coroutineContext = DEFAULT_COROUTINE_CONTEXT
-        override val enableDefaultCollector = DEFAULT_ENABLE_DEFAULT_COLLECTOR
-        override val defaultCollector = DEFAULT_COLLECTOR
-    }
+    companion object Default : StatisticsConfig by StatisticsConfigScope()
 }
+
+val StatisticsConfig.flow: MutableSharedFlow<StatisticNote<Any?>>
+    get() = MutableSharedFlow(replay, extraBufferCapacity, onBufferOverflow)
+
+val StatisticsConfig.newCoroutineScope: CoroutineScope
+    get() = CoroutineScope(SupervisorJob() + coroutineContext)

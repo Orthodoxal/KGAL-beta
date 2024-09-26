@@ -7,8 +7,8 @@ import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 suspend fun <F> PanmicticLifecycle<BooleanArray, F>.mutFlipBit(
     chance: Double,
     flipBitChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationFlipBit(chromosome.value, flipBitChance, random)
 }
 
@@ -16,7 +16,7 @@ suspend fun <F> PanmicticLifecycle<BooleanArray, F>.mutFlipBit(
 suspend fun <F> PanmicticLifecycle<IntArray, F>.mutFlipBit(
     chance: Double,
     flipBitChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationFlipBit(chromosome.value, flipBitChance, random)
 }

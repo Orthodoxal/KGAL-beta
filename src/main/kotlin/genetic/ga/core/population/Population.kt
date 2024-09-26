@@ -16,7 +16,7 @@ interface Population<V, F> : Iterable<Chromosome<V, F>> {
 
     override fun iterator(): Iterator<Chromosome<V, F>> = population.iterator()
 
-    fun copy(): Population<V, F>
+    fun clone(newName: String = this.name): Population<V, F>
 
     companion object {
         const val DEFAULT_POPULATION_NAME = "POPULATION 1"

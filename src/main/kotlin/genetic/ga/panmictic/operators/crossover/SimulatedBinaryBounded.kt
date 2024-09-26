@@ -9,7 +9,8 @@ suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxSimulatedBinaryBounded(
     eta: Double,
     low: Double,
     up: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(chance, onlySingleRun) { chromosome1, chromosome2 ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
     crossoverSimulatedBinaryBounded(chromosome1.value, chromosome2.value, eta, low, up, random)
 }

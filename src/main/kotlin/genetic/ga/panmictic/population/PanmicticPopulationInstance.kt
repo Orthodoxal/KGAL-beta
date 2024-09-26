@@ -21,12 +21,12 @@ internal class PanmicticPopulationInstance<V, F>(
 
     override val maxSize: Int get() = size + buffer
 
-    override fun copy(): PanmicticPopulation<V, F> =
+    override fun clone(newName: String): PanmicticPopulation<V, F> =
         PanmicticPopulationInstance(
-            name = name,
+            name = newName,
             size = size,
             buffer = buffer,
             factory = factory,
-            population = population.copyOf(),
+            population = Array(maxSize) { index -> population[index].clone() },
         )
 }

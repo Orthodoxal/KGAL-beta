@@ -9,8 +9,8 @@ suspend fun <F> PanmicticLifecycle<DoubleArray, F>.mutUniform(
     up: Double,
     chance: Double,
     uniformChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationUniform(chromosome.value, low, up, uniformChance, random)
 }
 
@@ -20,8 +20,8 @@ suspend fun <F> PanmicticLifecycle<IntArray, F>.mutUniform(
     up: Int,
     chance: Double,
     uniformChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationUniform(chromosome.value, low, up, uniformChance, random)
 }
 
@@ -31,7 +31,7 @@ suspend fun <F> PanmicticLifecycle<LongArray, F>.mutUniform(
     up: Long,
     chance: Double,
     uniformChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationUniform(chromosome.value, low, up, uniformChance, random)
 }

@@ -10,7 +10,9 @@ internal class PanmicticGAInstance<V, F>(
     configuration: PanmicticConfig<V, F>,
     override val population: PanmicticPopulation<V, F>,
 ) : PanmicticGA<V, F>, AbstractGA<V, F, PanmicticLifecycle<V, F>>(configuration) {
-    override val lifecycle: PanmicticLifecycle<V, F> by lazy { PanmicticLifecycleInstance(this) }
+    override val lifecycle: PanmicticLifecycle<V, F> by lazy {
+        PanmicticLifecycleInstance(this, configuration.parallelismConfig)
+    }
 
     override var elitism: Int = configuration.elitism
 }

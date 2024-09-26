@@ -4,8 +4,9 @@ import genetic.ga.cellular.CellularGA
 import genetic.ga.cellular.neighborhood.CellularNeighborhood
 import genetic.ga.cellular.type.CellularType
 import genetic.ga.cellular.utils.Dimens
-import genetic.ga.core.lifecycle.BaseLifecycle
+import genetic.ga.core.lifecycle.AbstractLifecycle
 import genetic.ga.core.lifecycle.Lifecycle
+import genetic.ga.core.parallelism.config.ParallelismConfig
 
 interface CellularLifecycle<V, F> : Lifecycle<V, F> {
     var elitism: Boolean
@@ -17,7 +18,8 @@ interface CellularLifecycle<V, F> : Lifecycle<V, F> {
 
 internal class CellularLifecycleInstance<V, F>(
     private val cellularGA: CellularGA<V, F>,
-) : CellularLifecycle<V, F>, Lifecycle<V, F> by BaseLifecycle(cellularGA) {
+    override val parallelismConfig: ParallelismConfig,
+) : CellularLifecycle<V, F>, AbstractLifecycle<V, F>(cellularGA) {
 
     override var elitism: Boolean
         get() = cellularGA.elitism

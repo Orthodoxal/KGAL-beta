@@ -1,6 +1,8 @@
 package genetic.ga.distributed
 
 import genetic.ga.core.GA
+import genetic.ga.core.parallelism.config.ParallelismConfigScope
+import genetic.ga.core.parallelism.config.parallelismConfig
 import genetic.ga.distributed.config.ClusterFactoryScope
 import genetic.ga.distributed.config.DistributedConfig
 import genetic.ga.distributed.config.DistributedConfigScope
@@ -10,7 +12,6 @@ import genetic.ga.distributed.population.DistributedPopulation.Companion.DEFAULT
 import genetic.ga.distributed.population.population
 import genetic.statistics.config.StatisticsConfigScope
 import genetic.statistics.config.statConfig
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlin.random.Random
 
 interface DistributedGA<V, F> : GA<V, F> {
@@ -32,15 +33,13 @@ inline fun <V, F> dGA(
         throw IllegalStateException("Fitness function for cluster of distributed GA not implemented")
     },
     random: Random = Random,
-    mainDispatcher: CoroutineDispatcher? = null,
-    extraDispatchers: List<CoroutineDispatcher> = emptyList(),
     statConfig: StatisticsConfigScope.() -> Unit = { },
+    parallelismConfig: ParallelismConfigScope.() -> Unit = { },
     noinline nameBuilder: (childNames: List<String>) -> String = DEFAULT_NAME_BUILDER,
     noinline evolution: (suspend DistributedLifecycle<V, F>.() -> Unit)? = null,
 ): DistributedGA<V, F> =
     distributedGA(maxIteration, fitnessFunction, random, nameBuilder) {
-        this.mainDispatcher = mainDispatcher
-        this.extraDispatchers = extraDispatchers
+        this.parallelismConfig(parallelismConfig)
 
         this.clusters.addAll(clusters())
         evolution?.let { evolve(useDefault = true, evolution) }

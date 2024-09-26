@@ -35,6 +35,10 @@ inline fun loop(start: Int, end: Int, action: (index: Int) -> Unit) {
     for (index in start..<end) action(index)
 }
 
+inline fun loop(start: Int, end: Int, step: Int, action: (index: Int) -> Unit) {
+    for (index in start..<end step step) action(index)
+}
+
 inline fun IntArray.forEachReverseIndexed(action: (Int, index: Int) -> Unit) {
     var index = lastIndex
     while (index >= 0) {

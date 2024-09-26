@@ -7,8 +7,8 @@ import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.mutShuffleIndexes(
     chance: Double,
     shuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
@@ -16,8 +16,8 @@ suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.mutShuffleIndexes(
 suspend fun <F> PanmicticLifecycle<BooleanArray, F>.mutShuffleIndexes(
     chance: Double,
     shuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
@@ -25,8 +25,8 @@ suspend fun <F> PanmicticLifecycle<BooleanArray, F>.mutShuffleIndexes(
 suspend fun <F> PanmicticLifecycle<ByteArray, F>.mutShuffleIndexes(
     chance: Double,
     shuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
@@ -34,8 +34,8 @@ suspend fun <F> PanmicticLifecycle<ByteArray, F>.mutShuffleIndexes(
 suspend fun <F> PanmicticLifecycle<CharArray, F>.mutShuffleIndexes(
     chance: Double,
     shuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
@@ -43,8 +43,8 @@ suspend fun <F> PanmicticLifecycle<CharArray, F>.mutShuffleIndexes(
 suspend fun <F> PanmicticLifecycle<DoubleArray, F>.mutShuffleIndexes(
     chance: Double,
     shuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
@@ -52,8 +52,8 @@ suspend fun <F> PanmicticLifecycle<DoubleArray, F>.mutShuffleIndexes(
 suspend fun <F> PanmicticLifecycle<FloatArray, F>.mutShuffleIndexes(
     chance: Double,
     shuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
@@ -61,8 +61,8 @@ suspend fun <F> PanmicticLifecycle<FloatArray, F>.mutShuffleIndexes(
 suspend fun <F> PanmicticLifecycle<IntArray, F>.mutShuffleIndexes(
     chance: Double,
     shuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
@@ -70,8 +70,8 @@ suspend fun <F> PanmicticLifecycle<IntArray, F>.mutShuffleIndexes(
 suspend fun <F> PanmicticLifecycle<LongArray, F>.mutShuffleIndexes(
     chance: Double,
     shuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
@@ -79,8 +79,8 @@ suspend fun <F> PanmicticLifecycle<LongArray, F>.mutShuffleIndexes(
 suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.mutShuffleIndexes(
     chance: Double,
     shuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
@@ -88,7 +88,7 @@ suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.mutShuffleIndexes(
 suspend fun <F> PanmicticLifecycle<ShortArray, F>.mutShuffleIndexes(
     chance: Double,
     shuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }

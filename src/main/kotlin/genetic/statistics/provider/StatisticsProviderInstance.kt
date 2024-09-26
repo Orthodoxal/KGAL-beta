@@ -1,6 +1,8 @@
 package genetic.statistics.provider
 
 import genetic.statistics.config.StatisticsConfig
+import genetic.statistics.config.flow
+import genetic.statistics.config.newCoroutineScope
 import genetic.statistics.note.SingleStatisticNote
 import genetic.statistics.note.Statistic
 import genetic.statistics.note.StatisticNote

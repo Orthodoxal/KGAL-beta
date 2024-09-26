@@ -13,12 +13,12 @@ internal class CellularPopulationInstance<V, F>(
 ) : CellularPopulation<V, F> {
     override val maxSize: Int get() = size
 
-    override fun copy(): CellularPopulation<V, F> =
+    override fun clone(newName: String): CellularPopulation<V, F> =
         CellularPopulationInstance(
             dimens = dimens,
-            name = name,
+            name = newName,
             factory = factory,
-            population = population.copyOf(),
+            population = Array(maxSize) { index -> population[index].clone() },
             size = size,
         )
 }

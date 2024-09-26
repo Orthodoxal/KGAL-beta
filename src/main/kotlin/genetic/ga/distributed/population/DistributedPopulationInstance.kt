@@ -40,5 +40,5 @@ internal class DistributedPopulationInstance<V, F>(
         }
         set(_) {}
 
-    override fun copy(): Population<V, F> = this
+    override fun clone(newName: String): Population<V, F> = this
 }

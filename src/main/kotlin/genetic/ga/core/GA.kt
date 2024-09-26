@@ -6,7 +6,6 @@ import genetic.ga.core.state.StopPolicy
 import genetic.statistics.provider.STAT_COLLECTOR
 import genetic.statistics.provider.StatisticsProvider
 import genetic.statistics.provider.StatisticsProvider.Companion.BASE_COLLECTOR_ID
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.job
 import kotlinx.coroutines.runBlocking
 import kotlin.random.Random
@@ -18,9 +17,6 @@ interface GA<V, F> {
 
     val random: Random
     val iteration: Int
-
-    val mainDispatcher: CoroutineDispatcher?
-    val extraDispatchers: List<CoroutineDispatcher>
 
     val statisticsProvider: StatisticsProvider
 

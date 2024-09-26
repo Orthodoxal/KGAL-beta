@@ -8,7 +8,7 @@ suspend fun <F> PanmicticLifecycle<DoubleArray, F>.mutGaussian(
     stddev: Double,
     chance: Double,
     gaussianChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(chance, onlySingleRun) { chromosome ->
+    parallelWorkersLimit: Int = parallelismConfig.count,
+) = mutation(chance, parallelWorkersLimit) { chromosome ->
     mutationGaussian(chromosome.value, mean, stddev, gaussianChance, random)
 }

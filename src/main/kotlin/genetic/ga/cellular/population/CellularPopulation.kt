@@ -9,7 +9,7 @@ import genetic.ga.core.population.PopulationFactory
 interface CellularPopulation<V, F> : Population<V, F> {
     val dimens: Dimens
 
-    override fun copy(): CellularPopulation<V, F>
+    override fun clone(newName: String): CellularPopulation<V, F>
 }
 
 fun <V, F> population(

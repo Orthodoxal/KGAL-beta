@@ -3,14 +3,11 @@ package genetic.ga.core.lifecycle
 import genetic.ga.core.GA
 import genetic.ga.core.population.Population
 import genetic.statistics.note.StatisticNote
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlin.random.Random
 
-internal class BaseLifecycle<V, F>(
+abstract class AbstractLifecycle<V, F>(
     private val ga: GA<V, F>,
-    multiRunHelper: MultiRunHelper = MultiRunHelperInstance(),
-    lifecycleStore: LifecycleStore = LifecycleStoreInstance(),
-) : Lifecycle<V, F>, MultiRunHelper by multiRunHelper, LifecycleStore by lifecycleStore {
+) : Lifecycle<V, F> {
     override val random: Random get() = ga.random
 
     override val iteration: Int
@@ -25,7 +22,7 @@ internal class BaseLifecycle<V, F>(
             ga.fitnessFunction = value
         }
 
-    override val extraDispatchers: List<CoroutineDispatcher> get() = ga.extraDispatchers
+    override val store: MutableMap<Any, Any?> = mutableMapOf()
 
     override var finishByStopConditions: Boolean = false
     override var finishedByMaxIteration: Boolean = false

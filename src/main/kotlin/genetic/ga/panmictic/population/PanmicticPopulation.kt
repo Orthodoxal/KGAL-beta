@@ -8,7 +8,7 @@ import genetic.ga.core.population.PopulationFactory
 interface PanmicticPopulation<V, F> : Population<V, F> {
     var buffer: Int
 
-    override fun copy(): PanmicticPopulation<V, F>
+    override fun clone(newName: String): PanmicticPopulation<V, F>
 }
 
 fun <V, F> population(

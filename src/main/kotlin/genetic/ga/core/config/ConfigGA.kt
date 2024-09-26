@@ -1,16 +1,15 @@
 package genetic.ga.core.config
 
 import genetic.ga.core.lifecycle.Lifecycle
+import genetic.ga.core.parallelism.config.ParallelismConfig
 import genetic.statistics.config.StatisticsConfig
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlin.random.Random
 
 interface ConfigGA<V, F, L : Lifecycle<V, F>> {
     val random: Random
     val fitnessFunction: (V) -> F
-    val mainDispatcher: CoroutineDispatcher?
-    val extraDispatchers: List<CoroutineDispatcher>
     val statisticsConfig: StatisticsConfig
+    val parallelismConfig: ParallelismConfig
 
     val beforeEvolution: suspend L.() -> Unit
     val evolution: suspend L.() -> Unit
