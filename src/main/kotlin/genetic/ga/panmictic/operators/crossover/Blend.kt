@@ -7,9 +7,9 @@ import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxBlend(
     chance: Double,
     alpha: Double,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverBlend(chromosome1.value, chromosome2.value, alpha, random)
 }
 
@@ -17,8 +17,8 @@ suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxBlend(
 suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxBlend(
     chance: Double,
     alpha: Float,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverBlend(chromosome1.value, chromosome2.value, alpha, random)
 }

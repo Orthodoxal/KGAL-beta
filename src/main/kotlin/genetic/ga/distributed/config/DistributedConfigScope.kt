@@ -29,6 +29,6 @@ class DistributedConfigScope<V, F>(
         this.evolution = evolution.takeIf { !useDefault } ?: { baseEvolve(); evolution(); stopBy(maxIteration) }
     }
 
-    override val baseEvolve: suspend DistributedLifecycle<V, F>.() -> Unit = { startChildren(parallelismConfig.count) }
+    override val baseEvolve: suspend DistributedLifecycle<V, F>.() -> Unit = { startChildren(parallelismConfig.workersCount) }
     override var evolution: suspend DistributedLifecycle<V, F>.() -> Unit = { baseEvolve(); stopBy(maxIteration) }
 }

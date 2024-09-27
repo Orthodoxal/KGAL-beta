@@ -2,20 +2,25 @@ package genetic.ga.panmictic.operators.mutation
 
 import genetic.chromosome.Chromosome
 import genetic.ga.core.lifecycle.size
-import genetic.ga.core.parallelism.processor.execute
 import genetic.ga.core.population.get
+import genetic.ga.core.processor.process
 import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 import genetic.utils.randomByChance
+import kotlin.random.Random
 
 suspend inline fun <V, F> PanmicticLifecycle<V, F>.mutation(
     chance: Double,
-    parallelWorkersLimit: Int,
-    crossinline mutation: (chromosome: Chromosome<V, F>) -> Unit,
+    parallelismLimit: Int,
+    crossinline mutation: (chromosome: Chromosome<V, F>, random: Random) -> Unit,
 ) {
-    execute(
-        parallelWorkersLimit = parallelWorkersLimit,
+    process(
+        parallelismLimit = parallelismLimit,
         startIteration = elitism,
         endIteration = size,
-        action = { index -> randomByChance(chance) { mutation(population[index]) } },
+        action = { index, random ->
+            randomByChance(chance, random) {
+                mutation(population[index], random)
+            }
+        },
     )
 }

@@ -7,60 +7,60 @@ import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 
 @JvmName("selRouletteFitInt")
 suspend fun <V> PanmicticLifecycle<V, Int>.selRoulette(
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
 ) {
     val totalFitness = population.get().fold(0L) { acc: Long, chromosome: Chromosome<V, Int> ->
         acc + (chromosome.fitness ?: error("Fitness is null"))
     }
-    selection(parallelWorkersLimit) { source -> selectionRouletteFitInt(source, totalFitness, random) }
+    selection(parallelismLimit) { source, random -> selectionRouletteFitInt(source, totalFitness, random) }
 }
 
 @JvmName("selRouletteFitLong")
 suspend fun <V> PanmicticLifecycle<V, Long>.selRoulette(
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
 ) {
     val totalFitness = population.get().fold(0L) { acc: Long, chromosome: Chromosome<V, Long> ->
         acc + (chromosome.fitness ?: error("Fitness is null"))
     }
-    selection(parallelWorkersLimit) { source -> selectionRouletteFitLong(source, totalFitness, random) }
+    selection(parallelismLimit) { source, random -> selectionRouletteFitLong(source, totalFitness, random) }
 }
 
 @JvmName("selRouletteFitShort")
 suspend fun <V> PanmicticLifecycle<V, Short>.selRoulette(
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
 ) {
     val totalFitness = population.get().fold(0L) { acc: Long, chromosome: Chromosome<V, Short> ->
         acc + (chromosome.fitness ?: error("Fitness is null"))
     }
-    selection(parallelWorkersLimit) { source -> selectionRouletteFitShort(source, totalFitness, random) }
+    selection(parallelismLimit) { source, random -> selectionRouletteFitShort(source, totalFitness, random) }
 }
 
 @JvmName("selRouletteFitByte")
 suspend fun <V> PanmicticLifecycle<V, Byte>.selRoulette(
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
 ) {
     val totalFitness = population.get().fold(0L) { acc: Long, chromosome: Chromosome<V, Byte> ->
         acc + (chromosome.fitness ?: error("Fitness is null"))
     }
-    selection(parallelWorkersLimit) { source -> selectionRouletteFitByte(source, totalFitness, random) }
+    selection(parallelismLimit) { source, random -> selectionRouletteFitByte(source, totalFitness, random) }
 }
 
 @JvmName("selRouletteFitDouble")
 suspend fun <V> PanmicticLifecycle<V, Double>.selRoulette(
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
 ) {
     val totalFitness = population.get().fold(0.0) { acc: Double, chromosome: Chromosome<V, Double> ->
         acc + (chromosome.fitness ?: error("Fitness is null"))
     }
-    selection(parallelWorkersLimit) { source -> selectionRouletteFitDouble(source, totalFitness, random) }
+    selection(parallelismLimit) { source, random -> selectionRouletteFitDouble(source, totalFitness, random) }
 }
 
 @JvmName("selRouletteFitFloat")
 suspend fun <V> PanmicticLifecycle<V, Float>.selRoulette(
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
 ) {
     val totalFitness = population.get().fold(0f) { acc: Float, chromosome: Chromosome<V, Float> ->
         acc + (chromosome.fitness ?: error("Fitness is null"))
     }
-    selection(parallelWorkersLimit) { source -> selectionRouletteFitFloat(source, totalFitness, random) }
+    selection(parallelismLimit) { source, random -> selectionRouletteFitFloat(source, totalFitness, random) }
 }

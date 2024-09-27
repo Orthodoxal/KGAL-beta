@@ -1,14 +1,13 @@
 package genetic.ga.panmictic
 
 import genetic.ga.core.GA
-import genetic.ga.core.parallelism.config.ParallelismConfigScope
-import genetic.ga.core.parallelism.config.parallelismConfig
+import genetic.ga.core.processor.parallelism.config.ParallelismConfig
 import genetic.ga.panmictic.config.PanmicticConfig
 import genetic.ga.panmictic.config.PanmicticConfigScope
 import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 import genetic.ga.panmictic.population.PanmicticPopulation
-import genetic.statistics.config.StatisticsConfigScope
-import genetic.statistics.config.statConfig
+import genetic.statistics.config.StatisticsConfig
+import genetic.statistics.config.statisticsConfig
 import kotlin.random.Random
 
 interface PanmicticGA<V, F> : GA<V, F> {
@@ -28,14 +27,14 @@ fun <V, F> pGA(
     fitnessFunction: (V) -> F,
     elitism: Int = 0,
     random: Random = Random,
-    statConfig: StatisticsConfigScope.() -> Unit = { },
-    parallelismConfig: ParallelismConfigScope.() -> Unit = { },
+    parallelismConfig: ParallelismConfig = ParallelismConfig(),
+    statisticsConfig: StatisticsConfig = StatisticsConfig(),
     evolution: suspend PanmicticLifecycle<V, F>.() -> Unit,
 ): GA<V, F> = panmicticGA(population, fitnessFunction, random) {
-    this.parallelismConfig(parallelismConfig)
+    this.parallelismConfig = parallelismConfig
     this.elitism = elitism
     evolve(useDefault = true, evolution)
-    this.statConfig(statConfig)
+    this.statisticsConfig = statisticsConfig
 }
 
 inline fun <V, F> panmicticGA(

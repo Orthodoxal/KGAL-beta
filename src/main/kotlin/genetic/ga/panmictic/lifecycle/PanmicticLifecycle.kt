@@ -2,7 +2,7 @@ package genetic.ga.panmictic.lifecycle
 
 import genetic.ga.core.lifecycle.AbstractLifecycle
 import genetic.ga.core.lifecycle.Lifecycle
-import genetic.ga.core.parallelism.config.ParallelismConfig
+import genetic.ga.core.processor.parallelism.config.ParallelismConfig
 import genetic.ga.panmictic.PanmicticGA
 
 interface PanmicticLifecycle<V, F> : Lifecycle<V, F> {

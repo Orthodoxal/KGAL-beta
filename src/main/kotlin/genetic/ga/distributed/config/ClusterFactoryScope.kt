@@ -9,8 +9,8 @@ import genetic.ga.cellular.neighborhood.CellularNeighborhood
 import genetic.ga.cellular.population.CellularPopulation
 import genetic.ga.cellular.type.CellularType
 import genetic.ga.core.GA
-import genetic.ga.core.parallelism.config.ParallelismConfig
-import genetic.ga.core.parallelism.config.clone
+import genetic.ga.core.processor.parallelism.config.ParallelismConfig
+import genetic.ga.core.processor.parallelism.config.clone
 import genetic.ga.core.population.Population
 import genetic.ga.core.population.Population.Companion.DEFAULT_POPULATION_NAME
 import genetic.ga.panmictic.config.PanmicticConfigScope
@@ -93,11 +93,11 @@ fun <V, F> ClusterFactoryScope<V, F>.cGAs(
             this.neighborhood = neighborhood
             this.cellularType = cellularType
             evolveCellNoWrap(
-                parallelismConfig.count,
+                parallelismConfig.workersCount,
                 beforeLifecycleIteration,
                 afterLifecycleIteration,
-            ) { chromosome, neighbours ->
-                with(cellLifecycle(chromosome, neighbours)) { cellLifecycle(); cellChromosome }
+            ) { chromosome, neighbours, random ->
+                with(cellLifecycle(chromosome, neighbours, random)) { cellLifecycle(); cellChromosome }
             }
         }
     }
@@ -122,11 +122,11 @@ inline fun <V, F> ClusterFactoryScope<V, F>.cGAs(
         this.neighborhood = neighborhood(index)
         this.cellularType = cellularType(index)
         evolveCellNoWrap(
-            this.parallelismConfig.count,
+            this.parallelismConfig.workersCount,
             beforeLifecycleIteration,
             afterLifecycleIteration,
-        ) { chromosome, neighbours ->
-            with(cellLifecycle(chromosome, neighbours)) { cellLifecycle(); cellChromosome }
+        ) { chromosome, neighbours, random ->
+            with(cellLifecycle(chromosome, neighbours, random)) { cellLifecycle(); cellChromosome }
         }
     }
 }

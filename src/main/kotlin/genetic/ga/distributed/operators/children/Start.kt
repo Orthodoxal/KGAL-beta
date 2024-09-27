@@ -1,7 +1,7 @@
 package genetic.ga.distributed.operators.children
 
 import genetic.ga.core.GA
-import genetic.ga.core.parallelism.processor.execute
+import genetic.ga.core.processor.process
 import genetic.ga.core.state.GAState
 import genetic.ga.distributed.lifecycle.DistributedLifecycle
 import genetic.ga.distributed.lifecycle.LifecycleStartOption
@@ -10,13 +10,13 @@ private val List<GA<*, *>>.anyFinishedByStopConditions
     get() = any { it.state is GAState.FINISHED.ByStopConditions }
 
 suspend fun <V, F> DistributedLifecycle<V, F>.startChildren(
-    parallelWorkersLimit: Int,
+    parallelismLimit: Int,
 ) {
-    execute(
-        parallelWorkersLimit = parallelWorkersLimit,
+    process(
+        parallelismLimit = parallelismLimit,
         startIteration = 0,
         endIteration = clusters.size,
-        action = { iteration ->
+        action = { iteration, _ ->
             when (val startOption = startOption) {
                 LifecycleStartOption.Start -> clusters[iteration].start()
                 LifecycleStartOption.Resume -> clusters[iteration].resume()

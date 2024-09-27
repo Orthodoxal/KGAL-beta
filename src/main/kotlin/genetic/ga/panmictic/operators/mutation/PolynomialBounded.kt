@@ -9,7 +9,7 @@ suspend fun <F> PanmicticLifecycle<DoubleArray, F>.mutPolynomialBounded(
     up: Double,
     chance: Double,
     polynomialBoundedChance: Double,
-    parallelWorkersLimit: Int = parallelismConfig.count,
-) = mutation(chance, parallelWorkersLimit) { chromosome ->
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
     mutationPolynomialBounded(chromosome.value, eta, low, up, polynomialBoundedChance, random)
 }

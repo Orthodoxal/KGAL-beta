@@ -6,7 +6,7 @@ import genetic.ga.cellular.type.CellularType
 import genetic.ga.cellular.utils.Dimens
 import genetic.ga.core.lifecycle.AbstractLifecycle
 import genetic.ga.core.lifecycle.Lifecycle
-import genetic.ga.core.parallelism.config.ParallelismConfig
+import genetic.ga.core.processor.parallelism.config.ParallelismConfig
 
 interface CellularLifecycle<V, F> : Lifecycle<V, F> {
     var elitism: Boolean

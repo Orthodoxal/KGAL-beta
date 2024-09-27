@@ -7,8 +7,8 @@ import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxSimulatedBinary(
     chance: Double,
     eta: Double,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverSimulatedBinary(chromosome1.value, chromosome2.value, eta, random)
 }

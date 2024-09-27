@@ -28,27 +28,27 @@ class CellularConfigScope<V, F>(
     override var beforeEvolution: suspend CellularLifecycle<V, F>.() -> Unit = baseBefore
 
     fun CellularConfigScope<V, F>.evolveCell(
-        parallelWorkersLimit: Int = parallelismConfig.count,
+        parallelismLimit: Int = parallelismConfig.workersCount,
         beforeLifecycleIteration: (suspend CellularLifecycle<V, F>.() -> Unit)?,
         afterLifecycleIteration: (suspend CellularLifecycle<V, F>.() -> Unit)?,
         cellLifecycle: suspend CellLifecycle<V, F>.() -> Unit,
     ) = evolveCellNoWrap(
-        parallelWorkersLimit = parallelWorkersLimit,
+        parallelismLimit = parallelismLimit,
         beforeLifecycleIteration = beforeLifecycleIteration,
         afterLifecycleIteration = afterLifecycleIteration,
-    ) { chromosome, neighbours ->
-        with(cellLifecycle(chromosome, neighbours)) { cellLifecycle(); cellChromosome }
+    ) { chromosome, neighbours, random ->
+        with(cellLifecycle(chromosome, neighbours, random)) { cellLifecycle(); cellChromosome }
     }
 
     fun CellularConfigScope<V, F>.evolveCellNoWrap(
-        parallelWorkersLimit: Int = parallelismConfig.count,
+        parallelismLimit: Int = parallelismConfig.workersCount,
         beforeLifecycleIteration: (suspend CellularLifecycle<V, F>.() -> Unit)?,
         afterLifecycleIteration: (suspend CellularLifecycle<V, F>.() -> Unit)?,
-        cellLifecycle: suspend CellularLifecycle<V, F>.(chromosome: Chromosome<V, F>, neighbours: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
+        cellLifecycle: suspend CellularLifecycle<V, F>.(chromosome: Chromosome<V, F>, neighbours: Array<Chromosome<V, F>>, random: Random) -> Chromosome<V, F>,
     ) = evolve(
         useDefault = true,
         evolution = buildCellularLifecycle(
-            parallelWorkersLimit = parallelWorkersLimit,
+            parallelismLimit = parallelismLimit,
             beforeLifecycleIteration = beforeLifecycleIteration,
             afterLifecycleIteration = afterLifecycleIteration,
             cellLifecycle = cellLifecycle,

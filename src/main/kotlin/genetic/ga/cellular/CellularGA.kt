@@ -9,10 +9,8 @@ import genetic.ga.cellular.neighborhood.CellularNeighborhood
 import genetic.ga.cellular.population.CellularPopulation
 import genetic.ga.cellular.type.CellularType
 import genetic.ga.core.GA
-import genetic.ga.core.parallelism.config.ParallelismConfigScope
-import genetic.ga.core.parallelism.config.parallelismConfig
-import genetic.statistics.config.StatisticsConfigScope
-import genetic.statistics.config.statConfig
+import genetic.ga.core.processor.parallelism.config.ParallelismConfig
+import genetic.statistics.config.StatisticsConfig
 import kotlin.random.Random
 
 interface CellularGA<V, F> : GA<V, F> {
@@ -36,25 +34,24 @@ inline fun <V, F> cGA(
     elitism: Boolean = false,
     cellularType: CellularType = CellularType.Synchronous,
     random: Random = Random,
-    statConfig: StatisticsConfigScope.() -> Unit = { },
-    parallelismConfig: ParallelismConfigScope.() -> Unit = { },
+    parallelismConfig: ParallelismConfig = ParallelismConfig(),
+    statisticsConfig: StatisticsConfig = StatisticsConfig(),
     noinline beforeLifecycleIteration: (suspend CellularLifecycle<V, F>.() -> Unit)? = null,
     noinline afterLifecycleIteration: (suspend CellularLifecycle<V, F>.() -> Unit)? = null,
     crossinline cellLifecycle: suspend CellLifecycle<V, F>.() -> Unit,
 ): GA<V, F> = cellularGA(population, fitnessFunction, random) {
-    this.parallelismConfig(parallelismConfig)
+    this.parallelismConfig = parallelismConfig
     this.elitism = elitism
     this.cellularType = cellularType
     this.neighborhood = neighborhood
     evolveCellNoWrap(
-        parallelWorkersLimit = this.parallelismConfig.count,
+        parallelismLimit = this.parallelismConfig.workersCount,
         beforeLifecycleIteration = beforeLifecycleIteration,
         afterLifecycleIteration = afterLifecycleIteration,
-    ) { chromosome, neighbours ->
-        with(cellLifecycle(chromosome, neighbours)) { cellLifecycle(); cellChromosome }
+    ) { chromosome, neighbours, random ->
+        with(cellLifecycle(chromosome, neighbours, random)) { cellLifecycle(); cellChromosome }
     }
-
-    this.statConfig(statConfig)
+    this.statisticsConfig = statisticsConfig
 }
 
 inline fun <V, F> cellularGA(

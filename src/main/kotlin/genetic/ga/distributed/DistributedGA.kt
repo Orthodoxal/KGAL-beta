@@ -1,8 +1,7 @@
 package genetic.ga.distributed
 
 import genetic.ga.core.GA
-import genetic.ga.core.parallelism.config.ParallelismConfigScope
-import genetic.ga.core.parallelism.config.parallelismConfig
+import genetic.ga.core.processor.parallelism.config.ParallelismConfig
 import genetic.ga.distributed.config.ClusterFactoryScope
 import genetic.ga.distributed.config.DistributedConfig
 import genetic.ga.distributed.config.DistributedConfigScope
@@ -10,8 +9,7 @@ import genetic.ga.distributed.lifecycle.DistributedLifecycle
 import genetic.ga.distributed.population.DistributedPopulation
 import genetic.ga.distributed.population.DistributedPopulation.Companion.DEFAULT_NAME_BUILDER
 import genetic.ga.distributed.population.population
-import genetic.statistics.config.StatisticsConfigScope
-import genetic.statistics.config.statConfig
+import genetic.statistics.config.StatisticsConfig
 import kotlin.random.Random
 
 interface DistributedGA<V, F> : GA<V, F> {
@@ -33,18 +31,16 @@ inline fun <V, F> dGA(
         throw IllegalStateException("Fitness function for cluster of distributed GA not implemented")
     },
     random: Random = Random,
-    statConfig: StatisticsConfigScope.() -> Unit = { },
-    parallelismConfig: ParallelismConfigScope.() -> Unit = { },
+    parallelismConfig: ParallelismConfig = ParallelismConfig(),
+    statisticsConfig: StatisticsConfig = StatisticsConfig(),
     noinline nameBuilder: (childNames: List<String>) -> String = DEFAULT_NAME_BUILDER,
     noinline evolution: (suspend DistributedLifecycle<V, F>.() -> Unit)? = null,
 ): DistributedGA<V, F> =
     distributedGA(maxIteration, fitnessFunction, random, nameBuilder) {
-        this.parallelismConfig(parallelismConfig)
-
+        this.parallelismConfig = parallelismConfig
         this.clusters.addAll(clusters())
         evolution?.let { evolve(useDefault = true, evolution) }
-
-        this.statConfig(statConfig)
+        this.statisticsConfig = statisticsConfig
     }
 
 inline fun <V, F> distributedGA(

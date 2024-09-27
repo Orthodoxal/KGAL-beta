@@ -7,9 +7,9 @@ import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
@@ -17,9 +17,9 @@ suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.cxUniform(
 suspend fun <F> PanmicticLifecycle<BooleanArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
@@ -27,9 +27,9 @@ suspend fun <F> PanmicticLifecycle<BooleanArray, F>.cxUniform(
 suspend fun <F> PanmicticLifecycle<ByteArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
@@ -37,9 +37,9 @@ suspend fun <F> PanmicticLifecycle<ByteArray, F>.cxUniform(
 suspend fun <F> PanmicticLifecycle<CharArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
@@ -47,9 +47,9 @@ suspend fun <F> PanmicticLifecycle<CharArray, F>.cxUniform(
 suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxUniform(
     chance: Double = 0.9,
     chanceUniform: Double,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
@@ -57,9 +57,9 @@ suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxUniform(
 suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
@@ -67,9 +67,9 @@ suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxUniform(
 suspend fun <F> PanmicticLifecycle<IntArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
@@ -77,9 +77,9 @@ suspend fun <F> PanmicticLifecycle<IntArray, F>.cxUniform(
 suspend fun <F> PanmicticLifecycle<LongArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
@@ -87,9 +87,9 @@ suspend fun <F> PanmicticLifecycle<LongArray, F>.cxUniform(
 suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
@@ -97,8 +97,8 @@ suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.cxUniform(
 suspend fun <F> PanmicticLifecycle<ShortArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }

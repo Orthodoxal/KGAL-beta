@@ -5,6 +5,6 @@ import genetic.ga.core.operators.evaluation.fitnessAll
 import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 
 suspend fun <V, F> PanmicticLifecycle<V, F>.evaluation(
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     fitnessFunction: (V) -> F = this.fitnessFunction,
-) = fitnessAll(elitism, size, parallelWorkersLimit, fitnessFunction)
+) = fitnessAll(elitism, size, parallelismLimit, fitnessFunction)

@@ -22,6 +22,6 @@ fun <V, F> CellLifecycle<V, F>.evaluation(
  * NOTE! DO NOT USE IT IN [CellLifecycle]! Use [evaluation]
  */
 suspend fun <V, F> CellularLifecycle<V, F>.evaluationAll(
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     fitnessFunction: (V) -> F = this.fitnessFunction,
-) = fitnessAll(0, size, parallelWorkersLimit, fitnessFunction)
+) = fitnessAll(0, size, parallelismLimit, fitnessFunction)

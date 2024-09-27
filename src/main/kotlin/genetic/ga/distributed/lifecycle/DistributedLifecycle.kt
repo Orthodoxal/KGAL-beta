@@ -3,7 +3,7 @@ package genetic.ga.distributed.lifecycle
 import genetic.ga.core.GA
 import genetic.ga.core.lifecycle.AbstractLifecycle
 import genetic.ga.core.lifecycle.Lifecycle
-import genetic.ga.core.parallelism.config.ParallelismConfig
+import genetic.ga.core.processor.parallelism.config.ParallelismConfig
 import genetic.ga.distributed.DistributedGA
 
 interface DistributedLifecycle<V, F> : Lifecycle<V, F> {

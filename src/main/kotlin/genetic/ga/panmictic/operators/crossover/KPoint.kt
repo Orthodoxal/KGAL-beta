@@ -7,9 +7,9 @@ import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.cxKPoint(
     chance: Double,
     count: Int,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
@@ -17,9 +17,9 @@ suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.cxKPoint(
 suspend fun <F> PanmicticLifecycle<BooleanArray, F>.cxKPoint(
     chance: Double,
     count: Int,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
@@ -27,9 +27,9 @@ suspend fun <F> PanmicticLifecycle<BooleanArray, F>.cxKPoint(
 suspend fun <F> PanmicticLifecycle<ByteArray, F>.cxKPoint(
     chance: Double,
     count: Int,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
@@ -37,9 +37,9 @@ suspend fun <F> PanmicticLifecycle<ByteArray, F>.cxKPoint(
 suspend fun <F> PanmicticLifecycle<CharArray, F>.cxKPoint(
     chance: Double,
     count: Int,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
@@ -47,9 +47,9 @@ suspend fun <F> PanmicticLifecycle<CharArray, F>.cxKPoint(
 suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxKPoint(
     chance: Double = 0.9,
     count: Int,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
@@ -57,9 +57,9 @@ suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxKPoint(
 suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxKPoint(
     chance: Double,
     count: Int,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
@@ -67,9 +67,9 @@ suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxKPoint(
 suspend fun <F> PanmicticLifecycle<IntArray, F>.cxKPoint(
     chance: Double,
     count: Int,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
@@ -77,9 +77,9 @@ suspend fun <F> PanmicticLifecycle<IntArray, F>.cxKPoint(
 suspend fun <F> PanmicticLifecycle<LongArray, F>.cxKPoint(
     chance: Double,
     count: Int,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
@@ -87,9 +87,9 @@ suspend fun <F> PanmicticLifecycle<LongArray, F>.cxKPoint(
 suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.cxKPoint(
     chance: Double,
     count: Int,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
@@ -97,8 +97,8 @@ suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.cxKPoint(
 suspend fun <F> PanmicticLifecycle<ShortArray, F>.cxKPoint(
     chance: Double,
     count: Int,
-    parallelWorkersLimit: Int = parallelismConfig.count,
+    parallelismLimit: Int = parallelismConfig.workersCount,
     crossoverType: CrossoverType = CrossoverType.Iterative,
-) = crossover(chance, parallelWorkersLimit, crossoverType) { chromosome1, chromosome2 ->
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
     crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }

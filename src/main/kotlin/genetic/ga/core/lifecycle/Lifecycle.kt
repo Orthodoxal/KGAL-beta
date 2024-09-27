@@ -1,6 +1,6 @@
 package genetic.ga.core.lifecycle
 
-import genetic.ga.core.parallelism.config.ParallelismConfig
+import genetic.ga.core.processor.parallelism.config.ParallelismConfig
 import genetic.ga.core.population.Population
 import genetic.statistics.note.StatisticNote
 import kotlin.random.Random

@@ -2,16 +2,17 @@ package genetic.ga.panmictic.operators.selection
 
 import genetic.chromosome.Chromosome
 import genetic.ga.core.lifecycle.size
-import genetic.ga.core.parallelism.processor.execute
 import genetic.ga.core.population.copyOf
 import genetic.ga.core.population.get
 import genetic.ga.core.population.set
+import genetic.ga.core.processor.process
 import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 import genetic.ga.panmictic.operators.selection.elitism.moveToStartElitChromosomes
+import kotlin.random.Random
 
 suspend inline fun <V, F> PanmicticLifecycle<V, F>.selection(
-    parallelWorkersLimit: Int,
-    crossinline selection: (source: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
+    parallelismLimit: Int,
+    crossinline selection: (source: Array<Chromosome<V, F>>, random: Random) -> Chromosome<V, F>,
 ) {
     if (elitism > 0) {
         moveToStartElitChromosomes()
@@ -20,18 +21,20 @@ suspend inline fun <V, F> PanmicticLifecycle<V, F>.selection(
     }
 
     val tempPopulation = population.copyOf()
-    execute(
-        parallelWorkersLimit = parallelWorkersLimit,
+    process(
+        parallelismLimit = parallelismLimit,
         startIteration = elitism,
         endIteration = size,
-        action = { index -> tempPopulation[index] = selection(population.get()) },
+        action = { index, random ->
+            tempPopulation[index] = selection(population.get(), random)
+        },
     )
     population.set(tempPopulation)
 }
 
 suspend inline fun <V, F> PanmicticLifecycle<V, F>.selectionWithIndex(
-    parallelWorkersLimit: Int,
-    crossinline selection: (index: Int, source: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
+    parallelismLimit: Int,
+    crossinline selection: (index: Int, source: Array<Chromosome<V, F>>, random: Random) -> Chromosome<V, F>,
 ) {
     if (elitism > 0) {
         moveToStartElitChromosomes()
@@ -40,11 +43,13 @@ suspend inline fun <V, F> PanmicticLifecycle<V, F>.selectionWithIndex(
     }
 
     val tempPopulation = population.copyOf()
-    execute(
-        parallelWorkersLimit = parallelWorkersLimit,
+    process(
+        parallelismLimit = parallelismLimit,
         startIteration = elitism,
         endIteration = size,
-        action = { tempPopulation[it] = selection(it, population.get()) },
+        action = { index, random ->
+            tempPopulation[index] = selection(index, population.get(), random)
+        },
     )
     population.set(tempPopulation)
 }

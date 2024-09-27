@@ -1,11 +1,11 @@
 package genetic.ga.core.config
 
 import genetic.ga.core.lifecycle.Lifecycle
-import genetic.ga.core.parallelism.config.ParallelismConfig
+import genetic.ga.core.processor.parallelism.config.ParallelismConfig
 import genetic.statistics.config.StatisticsConfig
 
 abstract class AbstractConfigGAScope<V, F, L : Lifecycle<V, F>> : ConfigGA<V, F, L> {
-    override var statisticsConfig: StatisticsConfig = StatisticsConfig
+    override var statisticsConfig: StatisticsConfig = StatisticsConfig()
     override var parallelismConfig: ParallelismConfig = ParallelismConfig()
 
     override var beforeEvolution: suspend L.() -> Unit = { }

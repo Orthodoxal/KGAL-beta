@@ -15,7 +15,7 @@ class StatisticsConfigScope(
     override var defaultCollector: FlowCollector<StatisticNote<Any?>> = DEFAULT_COLLECTOR,
 ) : StatisticsConfig
 
-inline fun AbstractConfigGAScope<*, *, *>.statConfig(
+inline fun AbstractConfigGAScope<*, *, *>.statisticsConfig(
     config: StatisticsConfigScope.() -> Unit,
 ) {
     statisticsConfig = StatisticsConfigScope().apply(config)

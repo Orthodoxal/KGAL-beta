@@ -23,9 +23,27 @@ interface StatisticsConfig {
     val coroutineContext: CoroutineContext
     val enableDefaultCollector: Boolean
     val defaultCollector: FlowCollector<StatisticNote<Any?>>
-
-    companion object Default : StatisticsConfig by StatisticsConfigScope()
 }
+
+fun StatisticsConfig(
+    replay: Int = DEFAULT_REPLAY,
+    extraBufferCapacity: Int = DEFAULT_EXTRA_BUFFER_CAPACITY,
+    onBufferOverflow: BufferOverflow = DEFAULT_ON_BUFFER_OVERFLOW,
+    coroutineContext: CoroutineContext = DEFAULT_COROUTINE_CONTEXT,
+    enableDefaultCollector: Boolean = DEFAULT_ENABLE_DEFAULT_COLLECTOR,
+    defaultCollector: FlowCollector<StatisticNote<Any?>> = DEFAULT_COLLECTOR,
+): StatisticsConfig =
+    StatisticsConfigScope(
+        replay = replay,
+        extraBufferCapacity = extraBufferCapacity,
+        onBufferOverflow = onBufferOverflow,
+        coroutineContext = coroutineContext,
+        enableDefaultCollector = enableDefaultCollector,
+        defaultCollector = defaultCollector,
+    )
+
+inline fun statisticsConfig(config: StatisticsConfigScope.() -> Unit): StatisticsConfig =
+    StatisticsConfigScope().apply(config)
 
 val StatisticsConfig.flow: MutableSharedFlow<StatisticNote<Any?>>
     get() = MutableSharedFlow(replay, extraBufferCapacity, onBufferOverflow)
