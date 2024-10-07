@@ -1,13 +1,13 @@
 package genetic.ga.panmictic.operators.crossover
 
-import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
-import genetic.ga.base_operators.crossover.ordered.crossoverOrderedIntArray
-import genetic.ga.panmictic.builder.PanmicticGABuilder
+import genetic.ga.core.operators.crossover.ordered.crossoverOrdered
+import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 
-suspend fun <F> SimpleClusterLifecycle<IntArray, F>.crossoverOrderedIntArray(
-    panmicticGABuilder: PanmicticGABuilder<IntArray, F>,
+@JvmName("cxOrderedIntArray")
+suspend fun <F> PanmicticLifecycle<IntArray, F>.cxOrdered(
     chance: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverOrderedIntArray(chromosome1.value, chromosome2.value, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverOrdered(chromosome1.value, chromosome2.value, random)
 }

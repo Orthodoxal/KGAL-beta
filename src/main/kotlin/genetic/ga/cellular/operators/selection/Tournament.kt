@@ -1,11 +1,8 @@
 package genetic.ga.cellular.operators.selection
 
-import genetic.ga.base_operators.selection.tournament.DEFAULT_TOURNAMENT_SIZE
-import genetic.ga.base_operators.selection.tournament.selectionTournament
-import genetic.ga.cellular.builder.CellularGABuilder
-import genetic.ga.cellular.lifecycle.SimpleClusterCellLifecycle
+import genetic.ga.cellular.lifecycle.CellLifecycle
+import genetic.ga.core.operators.selection.tournament.selectionTournament
 
-fun <V, F> SimpleClusterCellLifecycle<V, F>.selectionTournament(
-    cellularGABuilder: CellularGABuilder<V, F>,
-    tournamentSize: Int = DEFAULT_TOURNAMENT_SIZE,
-) = selection(cellularGABuilder) { source -> selectionTournament(source, tournamentSize, random) }
+fun <V, F> CellLifecycle<V, F>.selTournament(
+    tournamentSize: Int,
+) = selection { source -> selectionTournament(source, tournamentSize, random) }

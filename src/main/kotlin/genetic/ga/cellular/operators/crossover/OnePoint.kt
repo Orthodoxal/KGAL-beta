@@ -1,75 +1,74 @@
 package genetic.ga.cellular.operators.crossover
 
-import genetic.ga.base_operators.crossover.one_point.*
-import genetic.ga.cellular.builder.CellularGABuilder
-import genetic.ga.cellular.lifecycle.SimpleClusterCellLifecycle
+import genetic.ga.core.operators.crossover.one_point.crossoverOnePoint
+import genetic.ga.cellular.lifecycle.CellLifecycle
 
-fun <T, F> SimpleClusterCellLifecycle<Array<T>, F>.crossoverOnePointArray(
-    cellularGABuilder: CellularGABuilder<Array<T>, F>,
+@JvmName("cxOnePointArray")
+fun <T, F> CellLifecycle<Array<T>, F>.cxOnePoint(
     chance: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverOnePointArray(chromosome1.value, chromosome2.value, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<BooleanArray, F>.crossoverOnePointBooleanArray(
-    cellularGABuilder: CellularGABuilder<BooleanArray, F>,
+@JvmName("cxOnePointBooleanArray")
+fun <F> CellLifecycle<BooleanArray, F>.cxOnePoint(
     chance: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverOnePointBooleanArray(chromosome1.value, chromosome2.value, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<ByteArray, F>.crossoverOnePointByteArray(
-    cellularGABuilder: CellularGABuilder<ByteArray, F>,
+@JvmName("cxOnePointByteArray")
+fun <F> CellLifecycle<ByteArray, F>.cxOnePoint(
     chance: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverOnePointByteArray(chromosome1.value, chromosome2.value, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<CharArray, F>.crossoverOnePointCharArray(
-    cellularGABuilder: CellularGABuilder<CharArray, F>,
+@JvmName("cxOnePointCharArray")
+fun <F> CellLifecycle<CharArray, F>.cxOnePoint(
     chance: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverOnePointCharArray(chromosome1.value, chromosome2.value, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<DoubleArray, F>.crossoverOnePointDoubleArray(
-    cellularGABuilder: CellularGABuilder<DoubleArray, F>,
+@JvmName("cxOnePointDoubleArray")
+fun <F> CellLifecycle<DoubleArray, F>.cxOnePoint(
     chance: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverOnePointDoubleArray(chromosome1.value, chromosome2.value, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<FloatArray, F>.crossoverOnePointFloatArray(
-    cellularGABuilder: CellularGABuilder<FloatArray, F>,
+@JvmName("cxOnePointFloatArray")
+fun <F> CellLifecycle<FloatArray, F>.cxOnePoint(
     chance: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverOnePointFloatArray(chromosome1.value, chromosome2.value, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<IntArray, F>.crossoverOnePointIntArray(
-    cellularGABuilder: CellularGABuilder<IntArray, F>,
+@JvmName("cxOnePointIntArray")
+fun <F> CellLifecycle<IntArray, F>.cxOnePoint(
     chance: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverOnePointIntArray(chromosome1.value, chromosome2.value, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<LongArray, F>.crossoverOnePointLongArray(
-    cellularGABuilder: CellularGABuilder<LongArray, F>,
+@JvmName("cxOnePointLongArray")
+fun <F> CellLifecycle<LongArray, F>.cxOnePoint(
     chance: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverOnePointLongArray(chromosome1.value, chromosome2.value, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <T, F> SimpleClusterCellLifecycle<MutableList<T>, F>.crossoverOnePointMutableList(
-    cellularGABuilder: CellularGABuilder<MutableList<T>, F>,
+@JvmName("cxOnePointMutableList")
+fun <T, F> CellLifecycle<MutableList<T>, F>.cxOnePoint(
     chance: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverOnePointMutableList(chromosome1.value, chromosome2.value, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<ShortArray, F>.crossoverOnePointShortArray(
-    cellularGABuilder: CellularGABuilder<ShortArray, F>,
+@JvmName("cxOnePointShortArray")
+fun <F> CellLifecycle<ShortArray, F>.cxOnePoint(
     chance: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverOnePointShortArray(chromosome1.value, chromosome2.value, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverOnePoint(chromosome1.value, chromosome2.value, random)
 }

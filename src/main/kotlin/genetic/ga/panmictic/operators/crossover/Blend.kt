@@ -1,24 +1,24 @@
 package genetic.ga.panmictic.operators.crossover
 
-import genetic.ga.base_operators.crossover.blend.crossoverBlendDoubleArray
-import genetic.ga.base_operators.crossover.blend.crossoverBlendFloatArray
-import genetic.ga.cellular.lifecycle.SimpleClusterCellLifecycle
-import genetic.ga.panmictic.builder.PanmicticGABuilder
+import genetic.ga.core.operators.crossover.blend.crossoverBlend
+import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 
-suspend fun <F> SimpleClusterCellLifecycle<DoubleArray, F>.crossoverBlendDoubleArray(
-    panmicticGABuilder: PanmicticGABuilder<DoubleArray, F>,
+@JvmName("cxBlendDoubleArray")
+suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxBlend(
     chance: Double,
     alpha: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverBlendDoubleArray(chromosome1.value, chromosome2.value, alpha, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverBlend(chromosome1.value, chromosome2.value, alpha, random)
 }
 
-suspend fun <F> SimpleClusterCellLifecycle<FloatArray, F>.crossoverBlendFloatArray(
-    panmicticGABuilder: PanmicticGABuilder<FloatArray, F>,
+@JvmName("cxBlendFloatArray")
+suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxBlend(
     chance: Double,
     alpha: Float,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverBlendFloatArray(chromosome1.value, chromosome2.value, alpha, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverBlend(chromosome1.value, chromosome2.value, alpha, random)
 }

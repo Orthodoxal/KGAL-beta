@@ -1,17 +1,15 @@
 package genetic.ga.panmictic.operators.mutation
 
-import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
-import genetic.ga.base_operators.mutation.polynomial_bounded.mutationPolynomialBounded
-import genetic.ga.panmictic.builder.PanmicticGABuilder
+import genetic.ga.core.operators.mutation.polynomial_bounded.mutationPolynomialBounded
+import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 
-suspend fun <F> SimpleClusterLifecycle<DoubleArray, F>.mutationPolynomialBounded(
-    panmicticGABuilder: PanmicticGABuilder<DoubleArray, F>,
+suspend fun <F> PanmicticLifecycle<DoubleArray, F>.mutPolynomialBounded(
     eta: Double,
     low: Double,
     up: Double,
-    mutationChance: Double,
-    mutationPolynomialBoundedChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationPolynomialBounded(chromosome.value, eta, low, up, mutationPolynomialBoundedChance, random)
+    chance: Double,
+    polynomialBoundedChance: Double,
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
+    mutationPolynomialBounded(chromosome.value, eta, low, up, polynomialBoundedChance, random)
 }

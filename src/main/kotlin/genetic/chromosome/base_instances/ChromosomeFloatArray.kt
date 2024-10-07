@@ -1,11 +1,11 @@
 package genetic.chromosome.base_instances
 
 import genetic.chromosome.Chromosome
+import kotlin.random.Random
 
 data class ChromosomeFloatArray<F : Comparable<F>>(
     override var value: FloatArray,
     override var fitness: F? = null,
-    private val clone: (ChromosomeFloatArray<F>.() -> ChromosomeFloatArray<F>)? = null,
 ) : Chromosome<FloatArray, F> {
     override fun compareTo(other: Chromosome<FloatArray, F>): Int = compareValues(fitness, other.fitness)
 
@@ -15,8 +15,8 @@ data class ChromosomeFloatArray<F : Comparable<F>>(
 
         other as ChromosomeFloatArray<*>
 
-        if (!value.contentEquals(other.value)) return false
-        return fitness == other.fitness
+        if (fitness != other.fitness) return false
+        return value.contentEquals(other.value)
     }
 
     override fun hashCode(): Int {
@@ -25,5 +25,8 @@ data class ChromosomeFloatArray<F : Comparable<F>>(
         return result
     }
 
-    override fun clone(): Chromosome<FloatArray, F> = clone?.let { it() } ?: copy(value = value.copyOf())
+    override fun clone(): Chromosome<FloatArray, F> = copy(value = value.copyOf())
 }
+
+fun <F : Comparable<F>> Random.floats(size: Int) =
+    ChromosomeFloatArray<F>(value = FloatArray(size) { nextFloat() })

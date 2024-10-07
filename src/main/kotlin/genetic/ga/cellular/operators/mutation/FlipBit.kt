@@ -1,22 +1,20 @@
 package genetic.ga.cellular.operators.mutation
 
-import genetic.ga.base_operators.mutation.flip_bit.mutationFlipBitBooleanArray
-import genetic.ga.base_operators.mutation.flip_bit.mutationFlipBitIntArray
-import genetic.ga.cellular.builder.CellularGABuilder
-import genetic.ga.cellular.lifecycle.SimpleClusterCellLifecycle
+import genetic.ga.core.operators.mutation.flip_bit.mutationFlipBit
+import genetic.ga.cellular.lifecycle.CellLifecycle
 
-fun <F> SimpleClusterCellLifecycle<BooleanArray, F>.mutationFlipBitBooleanArray(
-    cellularGABuilder: CellularGABuilder<BooleanArray, F>,
-    mutationChance: Double,
-    mutationFlipBitChance: Double,
-) = mutation(cellularGABuilder, mutationChance) { chromosome ->
-    mutationFlipBitBooleanArray(chromosome.value, mutationFlipBitChance, random)
+@JvmName("mutFlipBitBooleanArray")
+fun <F> CellLifecycle<BooleanArray, F>.mutFlipBit(
+    chance: Double,
+    flipBitChance: Double,
+) = mutation(chance) { chromosome ->
+    mutationFlipBit(chromosome.value, flipBitChance, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<IntArray, F>.mutationFlipBitIntArray(
-    cellularGABuilder: CellularGABuilder<IntArray, F>,
-    mutationChance: Double,
-    mutationFlipBitChance: Double,
-) = mutation(cellularGABuilder, mutationChance) { chromosome ->
-    mutationFlipBitIntArray(chromosome.value, mutationFlipBitChance, random)
+@JvmName("mutFlipBitIntArray")
+fun <F> CellLifecycle<IntArray, F>.mutFlipBit(
+    chance: Double,
+    flipBitChance: Double,
+) = mutation(chance) { chromosome ->
+    mutationFlipBit(chromosome.value, flipBitChance, random)
 }

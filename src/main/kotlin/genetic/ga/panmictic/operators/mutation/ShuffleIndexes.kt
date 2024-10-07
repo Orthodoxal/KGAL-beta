@@ -1,95 +1,94 @@
 package genetic.ga.panmictic.operators.mutation
 
-import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
-import genetic.ga.base_operators.mutation.shuffle_indexes.mutationShuffleIndexes
-import genetic.ga.panmictic.builder.PanmicticGABuilder
+import genetic.ga.core.operators.mutation.shuffle_indexes.mutationShuffleIndexes
+import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 
-suspend fun <T, F> SimpleClusterLifecycle<Array<T>, F>.mutationShuffleIndexesArray(
-    panmicticGABuilder: PanmicticGABuilder<Array<T>, F>,
-    mutationChance: Double,
-    mutationShuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
+@JvmName("mutShuffleIndexesArray")
+suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.mutShuffleIndexes(
+    chance: Double,
+    shuffleIndexesChance: Double,
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
+    mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<BooleanArray, F>.mutationShuffleIndexesBooleanArray(
-    panmicticGABuilder: PanmicticGABuilder<BooleanArray, F>,
-    mutationChance: Double,
-    mutationShuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
+@JvmName("mutShuffleIndexesBooleanArray")
+suspend fun <F> PanmicticLifecycle<BooleanArray, F>.mutShuffleIndexes(
+    chance: Double,
+    shuffleIndexesChance: Double,
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
+    mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<ByteArray, F>.mutationShuffleIndexesByteArray(
-    panmicticGABuilder: PanmicticGABuilder<ByteArray, F>,
-    mutationChance: Double,
-    mutationShuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
+@JvmName("mutShuffleIndexesByteArray")
+suspend fun <F> PanmicticLifecycle<ByteArray, F>.mutShuffleIndexes(
+    chance: Double,
+    shuffleIndexesChance: Double,
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
+    mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<CharArray, F>.mutationShuffleIndexesCharArray(
-    panmicticGABuilder: PanmicticGABuilder<CharArray, F>,
-    mutationChance: Double,
-    mutationShuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
+@JvmName("mutShuffleIndexesCharArray")
+suspend fun <F> PanmicticLifecycle<CharArray, F>.mutShuffleIndexes(
+    chance: Double,
+    shuffleIndexesChance: Double,
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
+    mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<DoubleArray, F>.mutationShuffleIndexesDoubleArray(
-    panmicticGABuilder: PanmicticGABuilder<DoubleArray, F>,
-    mutationChance: Double,
-    mutationShuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
+@JvmName("mutShuffleIndexesDoubleArray")
+suspend fun <F> PanmicticLifecycle<DoubleArray, F>.mutShuffleIndexes(
+    chance: Double,
+    shuffleIndexesChance: Double,
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
+    mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<FloatArray, F>.mutationShuffleIndexesFloatArray(
-    panmicticGABuilder: PanmicticGABuilder<FloatArray, F>,
-    mutationChance: Double,
-    mutationShuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
+@JvmName("mutShuffleIndexesFloatArray")
+suspend fun <F> PanmicticLifecycle<FloatArray, F>.mutShuffleIndexes(
+    chance: Double,
+    shuffleIndexesChance: Double,
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
+    mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<IntArray, F>.mutationShuffleIndexesIntArray(
-    panmicticGABuilder: PanmicticGABuilder<IntArray, F>,
-    mutationChance: Double,
-    mutationShuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
+@JvmName("mutShuffleIndexesIntArray")
+suspend fun <F> PanmicticLifecycle<IntArray, F>.mutShuffleIndexes(
+    chance: Double,
+    shuffleIndexesChance: Double,
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
+    mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<LongArray, F>.mutationShuffleIndexesLongArray(
-    panmicticGABuilder: PanmicticGABuilder<LongArray, F>,
-    mutationChance: Double,
-    mutationShuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
+@JvmName("mutShuffleIndexesLongArray")
+suspend fun <F> PanmicticLifecycle<LongArray, F>.mutShuffleIndexes(
+    chance: Double,
+    shuffleIndexesChance: Double,
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
+    mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
-suspend fun <T, F> SimpleClusterLifecycle<MutableList<T>, F>.mutationShuffleIndexesBooleanMutableList(
-    panmicticGABuilder: PanmicticGABuilder<MutableList<T>, F>,
-    mutationChance: Double,
-    mutationShuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
+@JvmName("mutShuffleIndexesMutableList")
+suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.mutShuffleIndexes(
+    chance: Double,
+    shuffleIndexesChance: Double,
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
+    mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<ShortArray, F>.mutationShuffleIndexesShortArray(
-    panmicticGABuilder: PanmicticGABuilder<ShortArray, F>,
-    mutationChance: Double,
-    mutationShuffleIndexesChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationShuffleIndexes(chromosome.value, mutationShuffleIndexesChance, random)
+@JvmName("mutShuffleIndexesShortArray")
+suspend fun <F> PanmicticLifecycle<ShortArray, F>.mutShuffleIndexes(
+    chance: Double,
+    shuffleIndexesChance: Double,
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
+    mutationShuffleIndexes(chromosome.value, shuffleIndexesChance, random)
 }

@@ -6,7 +6,6 @@ import kotlin.random.Random
 data class ChromosomeBooleanArray<F : Comparable<F>>(
     override var value: BooleanArray,
     override var fitness: F? = null,
-    private val clone: (ChromosomeBooleanArray<F>.() -> ChromosomeBooleanArray<F>)? = null,
 ) : Chromosome<BooleanArray, F> {
     override fun compareTo(other: Chromosome<BooleanArray, F>): Int = compareValues(fitness, other.fitness)
 
@@ -16,8 +15,8 @@ data class ChromosomeBooleanArray<F : Comparable<F>>(
 
         other as ChromosomeBooleanArray<*>
 
-        if (!value.contentEquals(other.value)) return false
-        return fitness == other.fitness
+        if (fitness != other.fitness) return false
+        return value.contentEquals(other.value)
     }
 
     override fun hashCode(): Int {
@@ -26,12 +25,8 @@ data class ChromosomeBooleanArray<F : Comparable<F>>(
         return result
     }
 
-    override fun clone(): Chromosome<BooleanArray, F> = clone?.let { it() } ?: copy(value = value.copyOf())
+    override fun clone(): Chromosome<BooleanArray, F> = copy(value = value.copyOf())
 }
 
-fun <F : Comparable<F>> ChromosomeBooleanArray(
-    valueSize: Int,
-    random: Random = Random,
-    fitness: F? = null,
-    clone: (ChromosomeBooleanArray<F>.() -> ChromosomeBooleanArray<F>)? = null,
-) = ChromosomeBooleanArray(value = BooleanArray(valueSize) { random.nextBoolean() }, fitness, clone)
+fun <F : Comparable<F>> Random.booleans(size: Int) =
+    ChromosomeBooleanArray<F>(value = BooleanArray(size) { nextBoolean() })

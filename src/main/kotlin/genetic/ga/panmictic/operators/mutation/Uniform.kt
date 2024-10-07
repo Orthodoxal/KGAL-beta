@@ -1,38 +1,37 @@
 package genetic.ga.panmictic.operators.mutation
 
-import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
-import genetic.ga.panmictic.builder.PanmicticGABuilder
-import genetic.ga.base_operators.mutation.uniform.mutationUniform
+import genetic.ga.core.operators.mutation.uniform.mutationUniform
+import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 
-suspend fun <F> SimpleClusterLifecycle<DoubleArray, F>.mutationUniform(
-    panmicticGABuilder: PanmicticGABuilder<DoubleArray, F>,
+@JvmName("DoubleArray")
+suspend fun <F> PanmicticLifecycle<DoubleArray, F>.mutUniform(
     low: Double,
     up: Double,
-    mutationChance: Double,
-    mutationUniformChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationUniform(chromosome.value, low, up, mutationUniformChance, random)
+    chance: Double,
+    uniformChance: Double,
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
+    mutationUniform(chromosome.value, low, up, uniformChance, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<IntArray, F>.mutationUniform(
-    panmicticGABuilder: PanmicticGABuilder<IntArray, F>,
+@JvmName("IntArray")
+suspend fun <F> PanmicticLifecycle<IntArray, F>.mutUniform(
     low: Int,
     up: Int,
-    mutationChance: Double,
-    mutationUniformChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationUniform(chromosome.value, low, up, mutationUniformChance, random)
+    chance: Double,
+    uniformChance: Double,
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
+    mutationUniform(chromosome.value, low, up, uniformChance, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<LongArray, F>.mutationUniform(
-    panmicticGABuilder: PanmicticGABuilder<LongArray, F>,
+@JvmName("LongArray")
+suspend fun <F> PanmicticLifecycle<LongArray, F>.mutUniform(
     low: Long,
     up: Long,
-    mutationChance: Double,
-    mutationUniformChance: Double,
-    onlySingleRun: Boolean = false,
-) = mutation(panmicticGABuilder, mutationChance, onlySingleRun) { chromosome ->
-    mutationUniform(chromosome.value, low, up, mutationUniformChance, random)
+    chance: Double,
+    uniformChance: Double,
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = mutation(chance, parallelismLimit) { chromosome, random ->
+    mutationUniform(chromosome.value, low, up, uniformChance, random)
 }

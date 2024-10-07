@@ -1,22 +1,20 @@
 package genetic.ga.cellular.operators.crossover
 
-import genetic.ga.cellular.builder.CellularGABuilder
-import genetic.ga.cellular.lifecycle.SimpleClusterCellLifecycle
-import genetic.ga.base_operators.crossover.blend.crossoverBlendDoubleArray
-import genetic.ga.base_operators.crossover.blend.crossoverBlendFloatArray
+import genetic.ga.core.operators.crossover.blend.crossoverBlend
+import genetic.ga.cellular.lifecycle.CellLifecycle
 
-fun <F> SimpleClusterCellLifecycle<DoubleArray, F>.crossoverBlendDoubleArray(
-    cellularGABuilder: CellularGABuilder<DoubleArray, F>,
+@JvmName("cxBlendDoubleArray")
+fun <F> CellLifecycle<DoubleArray, F>.cxBlend(
     chance: Double,
     alpha: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverBlendDoubleArray(chromosome1.value, chromosome2.value, alpha, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverBlend(chromosome1.value, chromosome2.value, alpha, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<FloatArray, F>.crossoverBlendFloatArray(
-    cellularGABuilder: CellularGABuilder<FloatArray, F>,
+@JvmName("cxBlendFloatArray")
+fun <F> CellLifecycle<FloatArray, F>.cxBlend(
     chance: Double,
     alpha: Float,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverBlendFloatArray(chromosome1.value, chromosome2.value, alpha, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverBlend(chromosome1.value, chromosome2.value, alpha, random)
 }

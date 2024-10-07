@@ -1,14 +1,14 @@
 package genetic.ga.panmictic.operators.crossover
 
-import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
-import genetic.ga.base_operators.crossover.simulated_binary.crossoverSimulatedBinaryDoubleArray
-import genetic.ga.panmictic.builder.PanmicticGABuilder
+import genetic.ga.core.operators.crossover.simulated_binary.crossoverSimulatedBinary
+import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 
-suspend fun <F> SimpleClusterLifecycle<DoubleArray, F>.crossoverSimulatedBinaryDoubleArray(
-    panmicticGABuilder: PanmicticGABuilder<DoubleArray, F>,
+@JvmName("cxSimulatedBinaryDoubleArray")
+suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxSimulatedBinary(
     chance: Double,
     eta: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverSimulatedBinaryDoubleArray(chromosome1.value, chromosome2.value, eta, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverSimulatedBinary(chromosome1.value, chromosome2.value, eta, random)
 }

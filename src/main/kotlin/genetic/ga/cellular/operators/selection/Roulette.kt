@@ -1,60 +1,52 @@
 package genetic.ga.cellular.operators.selection
 
 import genetic.chromosome.Chromosome
-import genetic.ga.base_operators.selection.roulette.*
-import genetic.ga.cellular.builder.CellularGABuilder
-import genetic.ga.cellular.lifecycle.SimpleClusterCellLifecycle
+import genetic.ga.cellular.lifecycle.CellLifecycle
 
-fun <V> SimpleClusterCellLifecycle<V, Int>.selectionRouletteFitInt(
-    cellularGABuilder: CellularGABuilder<V, Int>,
-) = selection(cellularGABuilder) { source ->
+@JvmName("selRouletteFitInt")
+fun <V> CellLifecycle<V, Int>.selRoulette() = selection { source ->
     val totalFitness = source.fold(0L) { acc: Long, chromosome: Chromosome<V, Int> ->
         acc + (chromosome.fitness ?: error("Fitness is null"))
     }
-    selectionRouletteFitInt(source, totalFitness, random)
+    genetic.ga.core.operators.selection.roulette.selectionRouletteFitInt(source, totalFitness, random)
 }
 
-fun <V> SimpleClusterCellLifecycle<V, Long>.selectionRouletteFitLong(
-    cellularGABuilder: CellularGABuilder<V, Long>,
-) = selection(cellularGABuilder) { source ->
+@JvmName("selRouletteFitLong")
+fun <V> CellLifecycle<V, Long>.selRoulette() = selection { source ->
     val totalFitness = source.fold(0L) { acc: Long, chromosome: Chromosome<V, Long> ->
         acc + (chromosome.fitness ?: error("Fitness is null"))
     }
-    selectionRouletteFitLong(source, totalFitness, random)
+    genetic.ga.core.operators.selection.roulette.selectionRouletteFitLong(source, totalFitness, random)
 }
 
-fun <V> SimpleClusterCellLifecycle<V, Short>.selectionRouletteFitShort(
-    cellularGABuilder: CellularGABuilder<V, Short>,
-) = selection(cellularGABuilder) { source ->
+@JvmName("selRouletteFitShort")
+fun <V> CellLifecycle<V, Short>.selRoulette() = selection { source ->
     val totalFitness = source.fold(0L) { acc: Long, chromosome: Chromosome<V, Short> ->
         acc + (chromosome.fitness ?: error("Fitness is null"))
     }
-    selectionRouletteFitShort(source, totalFitness, random)
+    genetic.ga.core.operators.selection.roulette.selectionRouletteFitShort(source, totalFitness, random)
 }
 
-fun <V> SimpleClusterCellLifecycle<V, Byte>.selectionRouletteFitByte(
-    cellularGABuilder: CellularGABuilder<V, Byte>,
-) = selection(cellularGABuilder) { source ->
+@JvmName("selRouletteFitByte")
+fun <V> CellLifecycle<V, Byte>.selRoulette() = selection { source ->
     val totalFitness = source.fold(0L) { acc: Long, chromosome: Chromosome<V, Byte> ->
         acc + (chromosome.fitness ?: error("Fitness is null"))
     }
-    selectionRouletteFitByte(source, totalFitness, random)
+    genetic.ga.core.operators.selection.roulette.selectionRouletteFitByte(source, totalFitness, random)
 }
 
-fun <V> SimpleClusterCellLifecycle<V, Double>.selectionRouletteFitDouble(
-    cellularGABuilder: CellularGABuilder<V, Double>,
-) = selection(cellularGABuilder) { source ->
+@JvmName("selRouletteFitDouble")
+fun <V> CellLifecycle<V, Double>.selRoulette() = selection { source ->
     val totalFitness = source.fold(0.0) { acc: Double, chromosome: Chromosome<V, Double> ->
         acc + (chromosome.fitness ?: error("Fitness is null"))
     }
-    selectionRouletteFitDouble(source, totalFitness, random)
+    genetic.ga.core.operators.selection.roulette.selectionRouletteFitDouble(source, totalFitness, random)
 }
 
-fun <V> SimpleClusterCellLifecycle<V, Float>.selectionRouletteFitFloat(
-    cellularGABuilder: CellularGABuilder<V, Float>,
-) = selection(cellularGABuilder) { source ->
+@JvmName("selRouletteFitFloat")
+fun <V> CellLifecycle<V, Float>.selRoulette() = selection { source ->
     val totalFitness = source.fold(0f) { acc: Float, chromosome: Chromosome<V, Float> ->
         acc + (chromosome.fitness ?: error("Fitness is null"))
     }
-    selectionRouletteFitFloat(source, totalFitness, random)
+    genetic.ga.core.operators.selection.roulette.selectionRouletteFitFloat(source, totalFitness, random)
 }

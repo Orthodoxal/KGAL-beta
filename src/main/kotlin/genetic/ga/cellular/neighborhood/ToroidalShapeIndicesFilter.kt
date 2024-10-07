@@ -1,5 +1,6 @@
 package genetic.ga.cellular.neighborhood
 
+import genetic.ga.cellular.utils.Dimens
 import genetic.ga.cellular.utils.coordinatesInNArrayByPosition
 import genetic.ga.cellular.utils.positionByCoordinatesInNArray
 
@@ -9,19 +10,19 @@ import genetic.ga.cellular.utils.positionByCoordinatesInNArray
  */
 fun toroidalShapeIndicesFilter(
     position: Int,
-    dimensionalSizes: IntArray,
+    dimens: Dimens,
     indicesOneArray: IntArray,
     indicesNArray: Array<IntArray>,
 ): IntArray {
-    val positionCoordinatesNArray = coordinatesInNArrayByPosition(position, dimensionalSizes)
+    val positionCoordinatesNArray = coordinatesInNArrayByPosition(position, dimens)
     return IntArray(indicesOneArray.size) { neighbourIndex ->
-        val neighbourCoordinatesNArray = IntArray(dimensionalSizes.size) { dimenIndex ->
+        val neighbourCoordinatesNArray = IntArray(dimens.size) { dimenIndex ->
             positionCoordinatesNArray[dimenIndex] + indicesNArray[neighbourIndex][dimenIndex]
         }
 
         var isNeedReEvaluate = false
         neighbourCoordinatesNArray.forEachIndexed { index, coordinate ->
-            val dimenSize = dimensionalSizes[index]
+            val dimenSize = dimens.value[index]
             if (coordinate < 0) { // координата не отрицательна
                 isNeedReEvaluate = true
                 neighbourCoordinatesNArray[index] = dimenSize + coordinate
@@ -32,7 +33,7 @@ fun toroidalShapeIndicesFilter(
         }
 
         if (isNeedReEvaluate) {
-            positionByCoordinatesInNArray(neighbourCoordinatesNArray, dimensionalSizes)
+            positionByCoordinatesInNArray(neighbourCoordinatesNArray, dimens)
         } else {
             position + indicesOneArray[neighbourIndex]
         }

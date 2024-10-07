@@ -1,95 +1,104 @@
 package genetic.ga.panmictic.operators.crossover
 
-import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
-import genetic.ga.base_operators.crossover.uniform.*
-import genetic.ga.panmictic.builder.PanmicticGABuilder
+import genetic.ga.core.operators.crossover.uniform.crossoverUniform
+import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 
-suspend fun <T, F> SimpleClusterLifecycle<Array<T>, F>.crossoverUniformArray(
-    panmicticGABuilder: PanmicticGABuilder<Array<T>, F>,
+@JvmName("cxUniformArray")
+suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<BooleanArray, F>.crossoverUniformBooleanArray(
-    panmicticGABuilder: PanmicticGABuilder<BooleanArray, F>,
+@JvmName("cxUniformBooleanArray")
+suspend fun <F> PanmicticLifecycle<BooleanArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformBooleanArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<ByteArray, F>.crossoverUniformByteArray(
-    panmicticGABuilder: PanmicticGABuilder<ByteArray, F>,
+@JvmName("cxUniformByteArray")
+suspend fun <F> PanmicticLifecycle<ByteArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformByteArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<CharArray, F>.crossoverUniformCharArray(
-    panmicticGABuilder: PanmicticGABuilder<CharArray, F>,
+@JvmName("cxUniformCharArray")
+suspend fun <F> PanmicticLifecycle<CharArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformCharArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<DoubleArray, F>.crossoverUniformDoubleArray(
-    panmicticGABuilder: PanmicticGABuilder<DoubleArray, F>,
+@JvmName("cxUniformDoubleArray")
+suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxUniform(
     chance: Double = 0.9,
     chanceUniform: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformDoubleArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<FloatArray, F>.crossoverUniformFloatArray(
-    panmicticGABuilder: PanmicticGABuilder<FloatArray, F>,
+@JvmName("cxUniformFloatArray")
+suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformFloatArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<IntArray, F>.crossoverUniformIntArray(
-    panmicticGABuilder: PanmicticGABuilder<IntArray, F>,
+@JvmName("cxUniformIntArray")
+suspend fun <F> PanmicticLifecycle<IntArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformIntArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<LongArray, F>.crossoverUniformLongArray(
-    panmicticGABuilder: PanmicticGABuilder<LongArray, F>,
+@JvmName("cxUniformLongArray")
+suspend fun <F> PanmicticLifecycle<LongArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformLongArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <T, F> SimpleClusterLifecycle<MutableList<T>, F>.crossoverUniformMutableList(
-    panmicticGABuilder: PanmicticGABuilder<MutableList<T>, F>,
+@JvmName("cxUniformMutableList")
+suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformMutableList(chromosome1.value, chromosome2.value, chanceUniform, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<ShortArray, F>.crossoverUniformShortArray(
-    panmicticGABuilder: PanmicticGABuilder<ShortArray, F>,
+@JvmName("cxUniformShortArray")
+suspend fun <F> PanmicticLifecycle<ShortArray, F>.cxUniform(
     chance: Double,
     chanceUniform: Double,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverUniformShortArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }

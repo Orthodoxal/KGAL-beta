@@ -1,95 +1,104 @@
 package genetic.ga.panmictic.operators.crossover
 
-import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
-import genetic.ga.base_operators.crossover.k_point.*
-import genetic.ga.panmictic.builder.PanmicticGABuilder
+import genetic.ga.core.operators.crossover.k_point.crossoverKPoint
+import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 
-suspend fun <T, F> SimpleClusterLifecycle<Array<T>, F>.crossoverKPointArray(
-    panmicticGABuilder: PanmicticGABuilder<Array<T>, F>,
+@JvmName("cxKPointArray")
+suspend fun <T, F> PanmicticLifecycle<Array<T>, F>.cxKPoint(
     chance: Double,
     count: Int,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointArray(chromosome1.value, chromosome2.value, count, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<BooleanArray, F>.crossoverKPointBooleanArray(
-    panmicticGABuilder: PanmicticGABuilder<BooleanArray, F>,
+@JvmName("cxKPointBooleanArray")
+suspend fun <F> PanmicticLifecycle<BooleanArray, F>.cxKPoint(
     chance: Double,
     count: Int,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointBooleanArray(chromosome1.value, chromosome2.value, count, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<ByteArray, F>.crossoverKPointByteArray(
-    panmicticGABuilder: PanmicticGABuilder<ByteArray, F>,
+@JvmName("cxKPointByteArray")
+suspend fun <F> PanmicticLifecycle<ByteArray, F>.cxKPoint(
     chance: Double,
     count: Int,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointByteArray(chromosome1.value, chromosome2.value, count, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<CharArray, F>.crossoverKPointCharArray(
-    panmicticGABuilder: PanmicticGABuilder<CharArray, F>,
+@JvmName("cxKPointCharArray")
+suspend fun <F> PanmicticLifecycle<CharArray, F>.cxKPoint(
     chance: Double,
     count: Int,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointCharArray(chromosome1.value, chromosome2.value, count, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<DoubleArray, F>.crossoverKPointDoubleArray(
-    panmicticGABuilder: PanmicticGABuilder<DoubleArray, F>,
+@JvmName("cxKPointDoubleArray")
+suspend fun <F> PanmicticLifecycle<DoubleArray, F>.cxKPoint(
     chance: Double = 0.9,
     count: Int,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointDoubleArray(chromosome1.value, chromosome2.value, count, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<FloatArray, F>.crossoverKPointFloatArray(
-    panmicticGABuilder: PanmicticGABuilder<FloatArray, F>,
+@JvmName("cxKPointFloatArray")
+suspend fun <F> PanmicticLifecycle<FloatArray, F>.cxKPoint(
     chance: Double,
     count: Int,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointFloatArray(chromosome1.value, chromosome2.value, count, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<IntArray, F>.crossoverKPointIntArray(
-    panmicticGABuilder: PanmicticGABuilder<IntArray, F>,
+@JvmName("cxKPointIntArray")
+suspend fun <F> PanmicticLifecycle<IntArray, F>.cxKPoint(
     chance: Double,
     count: Int,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointIntArray(chromosome1.value, chromosome2.value, count, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<LongArray, F>.crossoverKPointLongArray(
-    panmicticGABuilder: PanmicticGABuilder<LongArray, F>,
+@JvmName("cxKPointLongArray")
+suspend fun <F> PanmicticLifecycle<LongArray, F>.cxKPoint(
     chance: Double,
     count: Int,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointLongArray(chromosome1.value, chromosome2.value, count, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <T, F> SimpleClusterLifecycle<MutableList<T>, F>.crossoverKPointMutableList(
-    panmicticGABuilder: PanmicticGABuilder<MutableList<T>, F>,
+@JvmName("cxKPointMutableList")
+suspend fun <T, F> PanmicticLifecycle<MutableList<T>, F>.cxKPoint(
     chance: Double,
     count: Int,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointMutableList(chromosome1.value, chromosome2.value, count, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }
 
-suspend fun <F> SimpleClusterLifecycle<ShortArray, F>.crossoverKPointShortArray(
-    panmicticGABuilder: PanmicticGABuilder<ShortArray, F>,
+@JvmName("cxKPointShortArray")
+suspend fun <F> PanmicticLifecycle<ShortArray, F>.cxKPoint(
     chance: Double,
     count: Int,
-    onlySingleRun: Boolean = false,
-) = crossover(panmicticGABuilder, chance, onlySingleRun) { chromosome1, chromosome2 ->
-    crossoverKPointShortArray(chromosome1.value, chromosome2.value, count, random)
+    parallelismLimit: Int = parallelismConfig.workersCount,
+    crossoverType: CrossoverType = CrossoverType.Iterative,
+) = crossover(chance, parallelismLimit, crossoverType) { chromosome1, chromosome2, random ->
+    crossoverKPoint(chromosome1.value, chromosome2.value, count, random)
 }

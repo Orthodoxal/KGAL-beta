@@ -1,35 +1,26 @@
 package genetic.ga.panmictic.operators.mutation
 
 import genetic.chromosome.Chromosome
-import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
-import genetic.ga.panmictic.builder.PanmicticGABuilder
-import genetic.utils.clusters.runWithExtraDispatchersIterative
-import genetic.utils.forEach
+import genetic.ga.core.lifecycle.size
+import genetic.ga.core.population.get
+import genetic.ga.core.processor.process
+import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 import genetic.utils.randomByChance
+import kotlin.random.Random
 
-suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.mutation(
-    panmicticGABuilder: PanmicticGABuilder<V, F>,
+suspend inline fun <V, F> PanmicticLifecycle<V, F>.mutation(
     chance: Double,
-    onlySingleRun: Boolean,
-    crossinline mutation: (chromosome: Chromosome<V, F>) -> Unit,
+    parallelismLimit: Int,
+    crossinline mutation: (chromosome: Chromosome<V, F>, random: Random) -> Unit,
 ) {
-    if (isSingleRun || onlySingleRun) {
-        singleRunMutation(panmicticGABuilder, chance, mutation)
-    } else {
-        multiRunMutation(panmicticGABuilder, chance, mutation)
-    }
-}
-
-inline fun <V, F> SimpleClusterLifecycle<V, F>.singleRunMutation(
-    panmicticGABuilder: PanmicticGABuilder<V, F>,
-    chance: Double,
-    mutation: (chromosome: Chromosome<V, F>) -> Unit,
-) = population.forEach(elitism, populationSize) { randomByChance(chance) { mutation(it) } }
-
-suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.multiRunMutation(
-    panmicticGABuilder: PanmicticGABuilder<V, F>,
-    chance: Double,
-    crossinline mutation: (chromosome: Chromosome<V, F>) -> Unit,
-) = runWithExtraDispatchersIterative(elitism, populationSize) { iteration ->
-    randomByChance(chance) { mutation(population[iteration]) }
+    process(
+        parallelismLimit = parallelismLimit,
+        startIteration = elitism,
+        endIteration = size,
+        action = { index, random ->
+            randomByChance(chance, random) {
+                mutation(population[index], random)
+            }
+        },
+    )
 }

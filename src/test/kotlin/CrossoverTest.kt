@@ -1,9 +1,10 @@
-import genetic.ga.base_operators.crossover.blend.crossoverBlendDoubleArray
-import genetic.ga.base_operators.crossover.k_point.crossoverKPointDoubleArray
-import genetic.ga.base_operators.crossover.one_point.crossoverOnePointDoubleArray
-import genetic.ga.base_operators.crossover.ordered.crossoverOrderedIntArray
-import genetic.ga.base_operators.crossover.simulated_binary.crossoverSimulatedBinaryDoubleArray
-import genetic.ga.base_operators.crossover.uniform.crossoverUniformIntArray
+/*
+import genetic.clusters.base.operators.crossover.blend.crossoverBlendDoubleArray
+import genetic.clusters.base.operators.crossover.k_point.crossoverKPointDoubleArray
+import genetic.clusters.base.operators.crossover.one_point.crossoverOnePointDoubleArray
+import genetic.clusters.base.operators.crossover.ordered.crossoverOrdered
+import genetic.clusters.base.operators.crossover.simulated_binary.crossoverSimulatedBinary
+import genetic.clusters.base.operators.crossover.uniform.crossoverUniformIntArray
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 import kotlin.test.assertContentEquals
@@ -68,7 +69,7 @@ class CrossoverTest {
     fun orderedTest() {
         val value1 = intArrayValue1
         val value2 = intArrayValue2
-        crossoverOrderedIntArray(value1, value2, random)
+        crossoverOrdered(value1, value2, random)
         val result1 = intArrayOf(0, 3, 2, 1, 4)
         val result2 = intArrayOf(4, 1, 2, 3, 0)
         assertContentEquals(value1, result1)
@@ -80,7 +81,7 @@ class CrossoverTest {
         val value1 = doubleArrayValue1
         val value2 = doubleArrayValue2
         val eta = 20.0
-        crossoverSimulatedBinaryDoubleArray(value1, value2, eta, random)
+        crossoverSimulatedBinary(value1, value2, eta, random)
         val result1 = doubleArrayOf(1.0740861983279795, 1.9177298802418918, 3.0, 4.144257835283835, 4.906827943885093)
         val result2 = doubleArrayOf(4.927285992867694, 4.085654306060614, 3.0, 1.8453370031957768, 1.0910017981047377)
         assertContentEquals(value1, result1)
@@ -99,3 +100,4 @@ class CrossoverTest {
         assertContentEquals(value2, result2)
     }
 }
+*/

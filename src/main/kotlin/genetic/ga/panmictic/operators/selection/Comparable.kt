@@ -1,17 +1,15 @@
 package genetic.ga.panmictic.operators.selection
 
-import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
-import genetic.ga.base_operators.selection.comparable.selectionBest
-import genetic.ga.base_operators.selection.comparable.selectionWorst
-import genetic.ga.panmictic.builder.PanmicticGABuilder
+import genetic.ga.core.operators.selection.comparable.selectionBest
+import genetic.ga.core.operators.selection.comparable.selectionWorst
+import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
+import genetic.ga.core.population.get
 import genetic.utils.fillArrayChromosomeBySubArray
 
-fun <V, F> SimpleClusterLifecycle<V, F>.selectionBest(
-    panmicticGABuilder: PanmicticGABuilder<V, F>,
+fun <V, F> PanmicticLifecycle<V, F>.selBest(
     count: Int,
-) = fillArrayChromosomeBySubArray(population, selectionBest(population, count))
+) = fillArrayChromosomeBySubArray(population.get(), selectionBest(population.get(), count))
 
-fun <V, F> SimpleClusterLifecycle<V, F>.selectionWorst(
-    panmicticGABuilder: PanmicticGABuilder<V, F>,
+fun <V, F> PanmicticLifecycle<V, F>.selWorst(
     count: Int,
-) = fillArrayChromosomeBySubArray(population, selectionWorst(population, count))
+) = fillArrayChromosomeBySubArray(population.get(), selectionWorst(population.get(), count))

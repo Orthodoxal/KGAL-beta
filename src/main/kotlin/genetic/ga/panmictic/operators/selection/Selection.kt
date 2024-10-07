@@ -1,19 +1,19 @@
 package genetic.ga.panmictic.operators.selection
 
 import genetic.chromosome.Chromosome
-import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
-import genetic.ga.panmictic.builder.PanmicticGABuilder
+import genetic.ga.core.lifecycle.size
+import genetic.ga.core.population.copyOf
+import genetic.ga.core.population.get
+import genetic.ga.core.population.set
+import genetic.ga.core.processor.process
+import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 import genetic.ga.panmictic.operators.selection.elitism.moveToStartElitChromosomes
-import genetic.utils.clusters.runWithExtraDispatchersIterative
-import genetic.utils.loop
+import kotlin.random.Random
 
-suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.selection(
-    panmicticGABuilder: PanmicticGABuilder<V, F>,
-    elitism: Int,
-    onlySingleRun: Boolean,
-    crossinline selection: (source: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
+suspend inline fun <V, F> PanmicticLifecycle<V, F>.selection(
+    parallelismLimit: Int,
+    crossinline selection: (source: Array<Chromosome<V, F>>, random: Random) -> Chromosome<V, F>,
 ) {
-    this.elitism = elitism
     if (elitism > 0) {
         moveToStartElitChromosomes()
     } else if (elitism < 0) {
@@ -21,37 +21,21 @@ suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.selection(
     }
 
     val tempPopulation = population.copyOf()
-    if (isSingleRun || onlySingleRun) {
-        singleRunSelection(panmicticGABuilder, tempPopulation, selection)
-    } else {
-        multiRunSelection(panmicticGABuilder, tempPopulation, selection)
-    }
-    population = tempPopulation
+    process(
+        parallelismLimit = parallelismLimit,
+        startIteration = elitism,
+        endIteration = size,
+        action = { index, random ->
+            tempPopulation[index] = selection(population.get(), random)
+        },
+    )
+    population.set(tempPopulation)
 }
 
-inline fun <V, F> SimpleClusterLifecycle<V, F>.singleRunSelection(
-    panmicticGABuilder: PanmicticGABuilder<V, F>,
-    tempPopulation: Array<Chromosome<V, F>>,
-    selection: (source: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
-) = loop(elitism, populationSize) { index ->
-    tempPopulation[index] = selection(population)
-}
-
-suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.multiRunSelection(
-    panmicticGABuilder: PanmicticGABuilder<V, F>,
-    tempPopulation: Array<Chromosome<V, F>>,
-    crossinline selection: (source: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
-) = runWithExtraDispatchersIterative(elitism, populationSize) { iteration ->
-    tempPopulation[iteration] = selection(population)
-}
-
-suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.selectionWithIndex(
-    panmicticGABuilder: PanmicticGABuilder<V, F>,
-    elitism: Int,
-    onlySingleRun: Boolean,
-    crossinline selection: (index: Int, source: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
+suspend inline fun <V, F> PanmicticLifecycle<V, F>.selectionWithIndex(
+    parallelismLimit: Int,
+    crossinline selection: (index: Int, source: Array<Chromosome<V, F>>, random: Random) -> Chromosome<V, F>,
 ) {
-    this.elitism = elitism
     if (elitism > 0) {
         moveToStartElitChromosomes()
     } else if (elitism < 0) {
@@ -59,27 +43,13 @@ suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.selectionWithIndex(
     }
 
     val tempPopulation = population.copyOf()
-    if (isSingleRun || onlySingleRun) {
-        singleRunSelectionWithIndex(panmicticGABuilder, tempPopulation, selection)
-    } else {
-        multiRunSelectionWithIndex(panmicticGABuilder, tempPopulation, selection)
-    }
-    population = tempPopulation
+    process(
+        parallelismLimit = parallelismLimit,
+        startIteration = elitism,
+        endIteration = size,
+        action = { index, random ->
+            tempPopulation[index] = selection(index, population.get(), random)
+        },
+    )
+    population.set(tempPopulation)
 }
-
-inline fun <V, F> SimpleClusterLifecycle<V, F>.singleRunSelectionWithIndex(
-    panmicticGABuilder: PanmicticGABuilder<V, F>,
-    tempPopulation: Array<Chromosome<V, F>>,
-    selection: (index: Int, source: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
-) = loop(elitism, populationSize) { index ->
-    tempPopulation[index] = selection(index, population)
-}
-
-suspend inline fun <V, F> SimpleClusterLifecycle<V, F>.multiRunSelectionWithIndex(
-    panmicticGABuilder: PanmicticGABuilder<V, F>,
-    tempPopulation: Array<Chromosome<V, F>>,
-    crossinline selection: (index: Int, source: Array<Chromosome<V, F>>) -> Chromosome<V, F>,
-) = runWithExtraDispatchersIterative(elitism, populationSize) { iteration ->
-    tempPopulation[iteration] = selection(iteration, population)
-}
-

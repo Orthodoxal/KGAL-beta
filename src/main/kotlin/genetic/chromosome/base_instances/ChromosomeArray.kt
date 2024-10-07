@@ -1,6 +1,7 @@
 package genetic.chromosome.base_instances
 
 import genetic.chromosome.Chromosome
+import kotlin.random.Random
 
 data class ChromosomeArray<T, F : Comparable<F>>(
     override var value: Array<T>,
@@ -17,15 +18,19 @@ data class ChromosomeArray<T, F : Comparable<F>>(
 
         other as ChromosomeArray<*, *>
 
-        if (!value.contentEquals(other.value)) return false
         if (fitness != other.fitness) return false
-        return clone == other.clone
+        return value.contentEquals(other.value)
     }
 
     override fun hashCode(): Int {
         var result = value.contentHashCode()
         result = 31 * result + (fitness?.hashCode() ?: 0)
-        result = 31 * result + (clone?.hashCode() ?: 0)
         return result
     }
 }
+
+inline fun <reified T, F : Comparable<F>> Random.array(
+    size: Int,
+    factory: (index: Int, random: Random) -> T,
+    noinline clone: (ChromosomeArray<T, F>.() -> ChromosomeArray<T, F>)?,
+) = ChromosomeArray(Array(size) { factory(it, this) }, clone = clone)

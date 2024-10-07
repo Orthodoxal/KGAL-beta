@@ -2,12 +2,12 @@ package genetic.ga.cellular.utils
 
 fun positionByCoordinatesInNArray(
     coordinates: IntArray,
-    dimensionalSizes: IntArray,
+    dimens: Dimens,
 ): Int {
     var pos = 0
-    repeat(dimensionalSizes.size) { n ->
+    repeat(dimens.size) { n ->
         var multi = 1
-        repeat(n) { i -> multi *= dimensionalSizes[i] }
+        repeat(n) { i -> multi *= dimens.value[i] }
         pos += coordinates[n] * multi
     }
     return pos
@@ -15,9 +15,9 @@ fun positionByCoordinatesInNArray(
 
 fun coordinatesInNArrayByPosition(
     position: Int,
-    dimensionalSizes: IntArray,
-): IntArray = IntArray(dimensionalSizes.size) { n ->
+    dimens: Dimens,
+): IntArray = IntArray(dimens.size) { n ->
     var multi = 1
-    repeat(n) { i -> multi *= dimensionalSizes[i] }
-    (position / multi) % dimensionalSizes[n]
+    repeat(n) { i -> multi *= dimens.value[i] }
+    (position / multi) % dimens.value[n]
 }

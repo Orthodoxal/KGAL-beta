@@ -1,12 +1,11 @@
 package genetic.ga.cellular.operators.crossover
 
-import genetic.ga.cellular.builder.CellularGABuilder
-import genetic.ga.cellular.lifecycle.SimpleClusterCellLifecycle
-import genetic.ga.base_operators.crossover.ordered.crossoverOrderedIntArray
+import genetic.ga.core.operators.crossover.ordered.crossoverOrdered
+import genetic.ga.cellular.lifecycle.CellLifecycle
 
-fun <F> SimpleClusterCellLifecycle<IntArray, F>.crossoverOrderedIntArray(
-    cellularGABuilder: CellularGABuilder<IntArray, F>,
+@JvmName("cxOrderedIntArray")
+fun <F> CellLifecycle<IntArray, F>.cxOrdered(
     chance: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverOrderedIntArray(chromosome1.value, chromosome2.value, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverOrdered(chromosome1.value, chromosome2.value, random)
 }

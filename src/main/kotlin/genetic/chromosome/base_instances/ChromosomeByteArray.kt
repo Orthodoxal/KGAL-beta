@@ -1,11 +1,11 @@
 package genetic.chromosome.base_instances
 
 import genetic.chromosome.Chromosome
+import kotlin.random.Random
 
 data class ChromosomeByteArray<F : Comparable<F>>(
     override var value: ByteArray,
     override var fitness: F? = null,
-    private val clone: (ChromosomeByteArray<F>.() -> ChromosomeByteArray<F>)? = null,
 ) : Chromosome<ByteArray, F> {
     override fun compareTo(other: Chromosome<ByteArray, F>): Int = compareValues(fitness, other.fitness)
 
@@ -15,8 +15,8 @@ data class ChromosomeByteArray<F : Comparable<F>>(
 
         other as ChromosomeByteArray<*>
 
-        if (!value.contentEquals(other.value)) return false
-        return fitness == other.fitness
+        if (fitness != other.fitness) return false
+        return value.contentEquals(other.value)
     }
 
     override fun hashCode(): Int {
@@ -25,5 +25,8 @@ data class ChromosomeByteArray<F : Comparable<F>>(
         return result
     }
 
-    override fun clone(): Chromosome<ByteArray, F> = clone?.let { it() } ?: copy(value = value.copyOf())
+    override fun clone(): Chromosome<ByteArray, F> = copy(value = value.copyOf())
 }
+
+fun <F : Comparable<F>> Random.bytes(size: Int) =
+    ChromosomeByteArray<F>(value = nextBytes(size))

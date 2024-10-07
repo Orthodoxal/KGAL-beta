@@ -1,16 +1,14 @@
 package genetic.ga.cellular.operators.crossover
 
-import genetic.ga.cellular.builder.CellularGABuilder
-import genetic.ga.cellular.lifecycle.SimpleClusterCellLifecycle
-import genetic.ga.base_operators.crossover.simulated_binary.crossoverSimulatedBinaryDoubleArray
-import genetic.ga.base_operators.crossover.simulated_binary_bounded.crossoverSimulatedBinaryBounded
+import genetic.ga.core.operators.crossover.simulated_binary_bounded.crossoverSimulatedBinaryBounded
+import genetic.ga.cellular.lifecycle.CellLifecycle
 
-fun <F> SimpleClusterCellLifecycle<DoubleArray, F>.crossoverSimulatedBinaryBoundedDoubleArray(
-    cellularGABuilder: CellularGABuilder<DoubleArray, F>,
+@JvmName("cxSimulatedBinaryBoundedDoubleArray")
+fun <F> CellLifecycle<DoubleArray, F>.cxSimulatedBinaryBounded(
     chance: Double,
     eta: Double,
     low: Double,
     up: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
+) = crossover(chance) { chromosome1, chromosome2 ->
     crossoverSimulatedBinaryBounded(chromosome1.value, chromosome2.value, eta, low, up, random)
 }

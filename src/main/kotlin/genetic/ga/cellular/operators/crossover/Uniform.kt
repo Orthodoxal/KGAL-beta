@@ -1,85 +1,84 @@
 package genetic.ga.cellular.operators.crossover
 
-import genetic.ga.base_operators.crossover.uniform.*
-import genetic.ga.cellular.builder.CellularGABuilder
-import genetic.ga.cellular.lifecycle.SimpleClusterCellLifecycle
+import genetic.ga.core.operators.crossover.uniform.crossoverUniform
+import genetic.ga.cellular.lifecycle.CellLifecycle
 
-fun <T, F> SimpleClusterCellLifecycle<Array<T>, F>.crossoverUniformArray(
-    cellularGABuilder: CellularGABuilder<Array<T>, F>,
+@JvmName("crossoverUniformArray")
+fun <T, F> CellLifecycle<Array<T>, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<BooleanArray, F>.crossoverUniformBooleanArray(
-    cellularGABuilder: CellularGABuilder<BooleanArray, F>,
+@JvmName("crossoverUniformBooleanArray")
+fun <F> CellLifecycle<BooleanArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformBooleanArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<ByteArray, F>.crossoverUniformByteArray(
-    cellularGABuilder: CellularGABuilder<ByteArray, F>,
+@JvmName("crossoverUniformByteArray")
+fun <F> CellLifecycle<ByteArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformByteArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<CharArray, F>.crossoverUniformCharArray(
-    cellularGABuilder: CellularGABuilder<CharArray, F>,
+@JvmName("crossoverUniformCharArray")
+fun <F> CellLifecycle<CharArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformCharArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<DoubleArray, F>.crossoverUniformDoubleArray(
-    cellularGABuilder: CellularGABuilder<DoubleArray, F>,
+@JvmName("crossoverUniformDoubleArray")
+fun <F> CellLifecycle<DoubleArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformDoubleArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<FloatArray, F>.crossoverUniformFloatArray(
-    cellularGABuilder: CellularGABuilder<FloatArray, F>,
+@JvmName("crossoverUniformFloatArray")
+fun <F> CellLifecycle<FloatArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformFloatArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<IntArray, F>.crossoverUniformIntArray(
-    cellularGABuilder: CellularGABuilder<IntArray, F>,
+@JvmName("crossoverUniformIntArray")
+fun <F> CellLifecycle<IntArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformIntArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<LongArray, F>.crossoverUniformLongArray(
-    cellularGABuilder: CellularGABuilder<LongArray, F>,
+@JvmName("crossoverUniformLongArray")
+fun <F> CellLifecycle<LongArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformLongArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <T, F> SimpleClusterCellLifecycle<MutableList<T>, F>.crossoverUniformMutableList(
-    cellularGABuilder: CellularGABuilder<MutableList<T>, F>,
+@JvmName("crossoverUniformMutableList")
+fun <T, F> CellLifecycle<MutableList<T>, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformMutableList(chromosome1.value, chromosome2.value, chanceUniform, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }
 
-fun <F> SimpleClusterCellLifecycle<ShortArray, F>.crossoverUniformShortArray(
-    cellularGABuilder: CellularGABuilder<ShortArray, F>,
+@JvmName("crossoverUniformShortArray")
+fun <F> CellLifecycle<ShortArray, F>.crossoverUniform(
     chance: Double,
     chanceUniform: Double,
-) = crossover(cellularGABuilder, chance) { chromosome1, chromosome2 ->
-    crossoverUniformShortArray(chromosome1.value, chromosome2.value, chanceUniform, random)
+) = crossover(chance) { chromosome1, chromosome2 ->
+    crossoverUniform(chromosome1.value, chromosome2.value, chanceUniform, random)
 }

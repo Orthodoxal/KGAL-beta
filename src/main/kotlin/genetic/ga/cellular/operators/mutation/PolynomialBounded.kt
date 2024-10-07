@@ -1,16 +1,14 @@
 package genetic.ga.cellular.operators.mutation
 
-import genetic.ga.base_operators.mutation.polynomial_bounded.mutationPolynomialBounded
-import genetic.ga.cellular.builder.CellularGABuilder
-import genetic.ga.cellular.lifecycle.SimpleClusterCellLifecycle
+import genetic.ga.core.operators.mutation.polynomial_bounded.mutationPolynomialBounded
+import genetic.ga.cellular.lifecycle.CellLifecycle
 
-fun <F> SimpleClusterCellLifecycle<DoubleArray, F>.mutationPolynomialBounded(
-    cellularGABuilder: CellularGABuilder<DoubleArray, F>,
+fun <F> CellLifecycle<DoubleArray, F>.mutPolynomialBounded(
     eta: Double,
     low: Double,
     up: Double,
-    mutationChance: Double,
-    mutationPolynomialBoundedChance: Double,
-) = mutation(cellularGABuilder, mutationChance) { chromosome ->
-    mutationPolynomialBounded(chromosome.value, eta, low, up, mutationPolynomialBoundedChance, random)
+    chance: Double,
+    polynomialBoundedChance: Double,
+) = mutation(chance) { chromosome ->
+    mutationPolynomialBounded(chromosome.value, eta, low, up, polynomialBoundedChance, random)
 }

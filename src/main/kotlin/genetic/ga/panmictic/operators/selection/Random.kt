@@ -1,11 +1,8 @@
 package genetic.ga.panmictic.operators.selection
 
-import genetic.clusters.simple_cluster.lifecycle.SimpleClusterLifecycle
-import genetic.ga.base_operators.selection.random.selectionRandom
-import genetic.ga.panmictic.builder.PanmicticGABuilder
+import genetic.ga.core.operators.selection.random.selectionRandom
+import genetic.ga.panmictic.lifecycle.PanmicticLifecycle
 
-suspend fun <V, F> SimpleClusterLifecycle<V, F>.selectionRandom(
-    panmicticGABuilder: PanmicticGABuilder<V, F>,
-    elitism: Int = 0,
-    onlySingleRun: Boolean = false,
-) = selection(panmicticGABuilder, elitism, onlySingleRun) { source -> selectionRandom(source, random) }
+suspend fun <V, F> PanmicticLifecycle<V, F>.selRandom(
+    parallelismLimit: Int = parallelismConfig.workersCount,
+) = selection(parallelismLimit) { source, random -> selectionRandom(source, random) }

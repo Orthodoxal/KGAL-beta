@@ -1,9 +1,10 @@
 package genetic.ga.cellular.neighborhood.moore
 
 import genetic.ga.cellular.neighborhood.CellularNeighborhood
+import genetic.ga.cellular.utils.Dimens
 import genetic.ga.cellular.utils.positionByCoordinatesInNArray
 
-class Moore(override val radius: Int) : CellularNeighborhood {
+data class Moore(override val radius: Int) : CellularNeighborhood {
 
     override fun neighboursCount(dimenCount: Int): Int {
         var result = radius
@@ -11,14 +12,14 @@ class Moore(override val radius: Int) : CellularNeighborhood {
         return result
     }
 
-    override fun neighboursIndicesMatrix(dimensionalSizes: IntArray): Pair<IntArray, Array<IntArray>> {
-        val dimenCount = dimensionalSizes.size
+    override fun neighboursIndicesMatrix(dimens: Dimens): Pair<IntArray, Array<IntArray>> {
+        val dimenCount = dimens.size
         val radDimen = radius * 2 + 1
         var neighboursCount = radDimen
         repeat(dimenCount - 1) { neighboursCount *= radDimen }
         neighboursCount--
 
-        val coordinates = IntArray(dimensionalSizes.size) { -radius }
+        val coordinates = IntArray(dimens.size) { -radius }
         val resultOneArray = IntArray(neighboursCount)
         val resultNArray = Array(neighboursCount) { IntArray(dimenCount) }
         var resultIndex = 0
@@ -29,7 +30,7 @@ class Moore(override val radius: Int) : CellularNeighborhood {
                 coordinates[dimenIndex] = coordinates[dimenIndex] + 1
                 continue
             }
-            resultOneArray[resultIndex] = positionByCoordinatesInNArray(coordinates, dimensionalSizes)
+            resultOneArray[resultIndex] = positionByCoordinatesInNArray(coordinates, dimens)
             resultNArray[resultIndex] = coordinates.copyOf()
             resultIndex++
             coordinates[dimenIndex] = coordinates[dimenIndex] + 1
